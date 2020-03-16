@@ -1,9 +1,24 @@
 
 
 .root {
-    -fx-font-size: 12.6;
+    -fx-font-size: 12;
     -fx-text-fill: #e7e7e7;
-    -fx-base: #525252;
+    -fx-base: #2f2c2b;
+    -fx-background-color: #2f2c2b;
+}
+
+.bread-crumb-bar {
+    -fx-background-color: #2f2c2b;
+}
+
+.groupPane {
+    -fx-background-color: #2f2c2b;
+    -fx-background-radius: 1.2;
+    -fx-padding: 10 10 10 10;
+}
+
+.backPane {
+    -fx-background-color: #201c1c;
 }
 
 .menu-item {
@@ -11,7 +26,7 @@
 }
 
 .menu-bar {
-    /*-fx-background-color: #f4f4f4;*/
+    -fx-background-color: #2f2c2b;
 }
 
 .split-pane *.split-pane-divider {
@@ -37,17 +52,23 @@
 
 .text-field {
     /*-fx-prompt-text-fill: #fffd8c; */
-    -fx-text-fill: #eeeeee;
+    -fx-text-fill: #ffffff;
     -fx-highlight-fill: #5792d6;
-    -fx-pref-height: 24;
-    -fx-background-color: #474747;
+    -fx-pref-height: 22;
+    -fx-background-color: #312f2d;
+    -fx-border-width: 1;
+    -fx-border-color: #818181;
     -fx-font-family: Arial;
     -fx-font-size: 12;
     -fx-background-radius: 1;
 }
 
+.text-field:focused {
+    -fx-background-color: #413d37;
+}
+
 .jfx-button {
-    -fx-background-color: #717171;
+    -fx-background-color: #423d3d;
     -fx-pref-width: 100;
     -fx-pref-height: 30;
     -fx-background-radius: 0;
@@ -58,40 +79,40 @@
     -fx-pref-height: 30;
 }
 
-
-.groupPane {
-    -fx-background-color: #717171;
-    -fx-background-radius: 4.2;
-    -fx-padding: 10 10 10 10;
-}
-
-.backPane {
-    -fx-background-color: #535353;
+#btnTestConnection {
+    -fx-background-color: #2f4e7f;
 }
 
 #connSettingTabView {
 }
 
+#connSettingTabView .tab .tab-label {
+    -fx-font-size: 11;
+    -fx-content-display: top;
+}
+
+
 #connSettingTabView .headers-region {
-    -fx-background-color: #6c6c6c;
+    -fx-background-color: #2f2c2b;
 }
 
 #connSettingTabView .tab-header-background {
-    -fx-background-color: #6c6c6c;
+    -fx-background-color: #2f2c2b;
 }
 
 #connSettingTabView .tab:selected {
-    -fx-background-color: #8d8d8d;
+    -fx-background-color: #40645d;
     -fx-text-fill: #32322b;
 }
 
 #connSettingTabView .tab {
-    -fx-pref-height: 45;
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
     -fx-font-size: 12.6;
 }
 
 #connSettingTabView .tab-header-area .tab-selected-line {
-    -fx-background-color: #60fff7
+    -fx-background-color: #60fff7;
 }
 
 #connSettingTabView .tab-header-area .jfx-rippler {

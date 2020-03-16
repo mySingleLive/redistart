@@ -5,6 +5,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,11 +18,11 @@
 <?import org.controlsfx.control.ToggleSwitch?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 
-<VBox prefHeight="320.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
+<VBox prefHeight="350.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
    <children>
-      <JFXTabPane fx:id="connSettingTabView" prefWidth="300.0">
+      <JFXTabPane fx:id="connSettingTabView" prefWidth="300.0" styleClass="connSettingsTabView">
          <tabs>
-            <Tab text="基本">
+            <Tab fx:id="tabConn" text="连接">
                <VBox styleClass="backPane">
                   <children>
                      <GridPane styleClass="groupPane">
@@ -34,10 +38,18 @@
                         <children>
                            <Label text="Redis地址" GridPane.rowIndex="1" />
                            <Label text="Redis端口" GridPane.rowIndex="2" />
-                           <CustomTextField fx:id="txAddress" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="名称" />
                            <CustomTextField fx:id="txName" GridPane.columnIndex="1" />
-                           <CustomTextField fx:id="txPort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           <CustomTextField fx:id="txAddress" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <children>
+                                 <CustomTextField fx:id="txPort" prefColumnCount="0" prefWidth="60.0" text="6379" />
+                                 <Region prefHeight="200.0" />
+                              </children>
+                              <GridPane.margin>
+                                 <Insets top="5.0" />
+                              </GridPane.margin>
+                           </HBox>
                         </children>
                         <padding>
                            <Insets left="10.0" />
@@ -68,11 +80,21 @@
                      </GridPane>
                   </children>
                   <padding>
-                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                   </padding>
                </VBox>
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/connection.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
             </Tab>
-            <Tab text="SSL">
+            <Tab text="安全">
                <VBox>
                   <children>
                      <GridPane>
@@ -92,7 +114,7 @@
                         </VBox.margin>
                      </GridPane>
                      <Region prefHeight="10.0" />
-                     <GridPane>
+                     <GridPane styleClass="groupPane">
                        <columnConstraints>
                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
@@ -103,23 +125,74 @@
                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                           <Label text="Label" />
+                           <Label text="SSL公钥" />
+                           <Label text="SSL私钥" GridPane.rowIndex="1" />
+                           <CustomTextField GridPane.columnIndex="1" />
+                           <CustomTextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label text="授权" GridPane.rowIndex="2" />
+                           <CustomTextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         </children>
                      </GridPane>
                   </children>
+                  <padding>
+                     <Insets left="20.0" right="20.0" top="10.0" />
+                  </padding>
                </VBox>
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/security.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
+            </Tab>
+            <Tab text="隧道">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/tunnel.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
+            </Tab>
+            <Tab text="高级">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/advanced.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="1.0" />
+                     </effect>
+                  </ImageView>
+               </graphic>
             </Tab>
          </tabs>
       </JFXTabPane>
       <Region prefHeight="30.0" styleClass="backPane" />
       <HBox alignment="TOP_RIGHT" styleClass="backPane">
          <children>
+            <Region />
+            <JFXButton fx:id="btnTestConnection" onAction="#onOkAction" text="测试连接" />
+            <Region prefWidth="80.0" />
             <JFXButton onAction="#onOkAction" text="确定" />
             <Region prefWidth="30.0" />
             <JFXButton onAction="#onCancelAction" text="取消" />
-            <Region prefWidth="30.0" />
+            <Region prefWidth="20.0" />
          </children>
       </HBox>
-      <Region prefHeight="20.0" />
+      <Region prefHeight="30.0" />
    </children>
 </VBox>
