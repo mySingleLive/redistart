@@ -1,0 +1,106 @@
+
+
+.root {
+    -fx-font-size: 12.6;
+    -fx-text-fill: #e7e7e7;
+    -fx-base: #525252;
+}
+
+.menu-item {
+    -fx-text-fill: #e7e7e7;
+}
+
+.menu-bar {
+    /*-fx-background-color: #f4f4f4;*/
+}
+
+.split-pane *.split-pane-divider {
+    -fx-padding: 1 1 1 0;
+}
+
+
+#statusBar {
+    -fx-border-width: 2;
+}
+
+#navigationTree {
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+}
+
+#connSettingTabView {
+}
+
+#connSettingTabView .tab-header-background {
+    -fx-background-color: #9a9a9a;
+}
+
+.text-field {
+    /*-fx-prompt-text-fill: #fffd8c; */
+    -fx-text-fill: #eeeeee;
+    -fx-highlight-fill: #5792d6;
+    -fx-pref-height: 24;
+    -fx-background-color: #474747;
+    -fx-font-family: Arial;
+    -fx-font-size: 12;
+    -fx-background-radius: 1;
+}
+
+.jfx-button {
+    -fx-background-color: #717171;
+    -fx-pref-width: 100;
+    -fx-pref-height: 30;
+    -fx-background-radius: 0;
+}
+
+.portField {
+    -fx-pref-width: 50;
+    -fx-pref-height: 30;
+}
+
+
+.groupPane {
+    -fx-background-color: #717171;
+    -fx-background-radius: 4.2;
+    -fx-padding: 10 10 10 10;
+}
+
+.backPane {
+    -fx-background-color: #535353;
+}
+
+#connSettingTabView {
+}
+
+#connSettingTabView .headers-region {
+    -fx-background-color: #6c6c6c;
+}
+
+#connSettingTabView .tab-header-background {
+    -fx-background-color: #6c6c6c;
+}
+
+#connSettingTabView .tab:selected {
+    -fx-background-color: #8d8d8d;
+    -fx-text-fill: #32322b;
+}
+
+#connSettingTabView .tab {
+    -fx-pref-height: 45;
+    -fx-font-size: 12.6;
+}
+
+#connSettingTabView .tab-header-area .tab-selected-line {
+    -fx-background-color: #60fff7
+}
+
+#connSettingTabView .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: #60fff7;
+}
+
+
+
+
+
+
+
