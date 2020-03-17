@@ -1,11 +1,13 @@
 package com.dtflys.redistart.controller;
 
 import com.dtflys.redistart.utils.RSController;
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -33,10 +35,17 @@ public class ConnectionSettingController implements RSController {
     @FXML
     private FontIcon iconPwdVisibility;
 
+    @FXML
+    private JFXToggleButton tbSSL;
+
+    @FXML
+    private GridPane secGroup;
+
+
     @Override
     public void init(Map<String, Object> args) {
-
         hideAuthText();
+        secGroup.disableProperty().bind(tbSSL.selectedProperty().not());
     }
 
     private void hideAuthText() {

@@ -17,6 +17,12 @@
     -fx-padding: 10 10 10 10;
 }
 
+.groupPane2 {
+    -fx-background-color: #443f3e;
+    -fx-background-radius: 1.2;
+    -fx-padding: 10 10 10 10;
+}
+
 .backPane {
     -fx-background-color: #201c1c;
 }
@@ -32,6 +38,8 @@
 .split-pane *.split-pane-divider {
     -fx-padding: 1 1 1 0;
 }
+
+
 
 
 #statusBar {
@@ -91,11 +99,6 @@
     -fx-content-display: top;
 }
 
-
-#connSettingTabView .headers-region {
-    -fx-background-color: #2f2c2b;
-}
-
 #connSettingTabView .tab-header-background {
     -fx-background-color: #2f2c2b;
 }
@@ -119,6 +122,41 @@
     -jfx-rippler-fill: #60fff7;
 }
 
+
+#sshSettingTabView .tab {
+    -fx-pref-height: 30;
+    -fx-pref-width: 80;
+}
+
+#sshSettingTabView .tab .tab-label {
+    -fx-font-size: 12;
+    -fx-content-display: top;
+}
+
+
+#sshSettingTabView .tab-header-background {
+    -fx-background-color: #252121;
+}
+
+#sshSettingTabView .tab {
+    -fx-background-color: #252322;
+    -fx-text-fill: #32322b;
+    -fx-border-width: 0;
+}
+
+
+#sshSettingTabView .tab:selected {
+    -fx-background-color: #2f2c2b;
+    -fx-text-fill: #32322b;
+}
+
+#sshSettingTabView .tab-header-area .tab-selected-line {
+    -fx-opacity: 0;
+}
+
+#sshSettingTabView .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: #2f2c2b;
+}
 
 
 
