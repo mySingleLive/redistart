@@ -1,7 +1,8 @@
 
 
 .root {
-    -fx-font-size: 12;
+    -fx-font-family: Helvetica;
+    -fx-font-size: 11;
     -fx-text-fill: #e7e7e7;
     -fx-base: #2f2c2b;
     -fx-background-color: #2f2c2b;
@@ -18,7 +19,7 @@
 }
 
 .groupPane2 {
-    -fx-background-color: #443f3e;
+    -fx-background-color: #403b3a;
     -fx-background-radius: 1.2;
     -fx-padding: 10 10 10 10;
 }
@@ -39,8 +40,15 @@
     -fx-padding: 1 1 1 0;
 }
 
+.check-box {
+    -fx-focus-color: transparent;
+}
 
-
+.check-box .box {
+    -fx-background-color: #272524;
+    -fx-border-width: 1;
+    -fx-border-color: #818181;
+}
 
 #statusBar {
     -fx-border-width: 2;
@@ -66,7 +74,6 @@
     -fx-background-color: #312f2d;
     -fx-border-width: 1;
     -fx-border-color: #818181;
-    -fx-font-family: Arial;
     -fx-font-size: 12;
     -fx-background-radius: 1;
 }
@@ -75,10 +82,21 @@
     -fx-background-color: #413d37;
 }
 
+.combo-box {
+    -fx-text-fill: #ffffff;
+    -fx-highlight-fill: #5792d6;
+    -fx-pref-height: 22;
+    -fx-background-color: #312f2d;
+    -fx-border-width: 1;
+    -fx-border-color: #818181;
+    -fx-font-family: Arial;
+    -fx-font-size: 12;
+}
+
 .jfx-button {
     -fx-background-color: #423d3d;
-    -fx-pref-width: 100;
-    -fx-pref-height: 30;
+    -fx-pref-width: 80;
+    -fx-pref-height: 25;
     -fx-background-radius: 0;
 }
 
@@ -100,7 +118,7 @@
 }
 
 #connSettingTabView .tab-header-background {
-    -fx-background-color: #2f2c2b;
+    -fx-background-color: #403b3a;
 }
 
 #connSettingTabView .tab:selected {
@@ -110,7 +128,7 @@
 
 #connSettingTabView .tab {
     -fx-pref-height: 80;
-    -fx-pref-width: 80;
+    -fx-pref-width: 110;
     -fx-font-size: 12.6;
 }
 
@@ -124,38 +142,44 @@
 
 
 #sshSettingTabView .tab {
-    -fx-pref-height: 30;
+    -fx-pref-height: 26;
     -fx-pref-width: 80;
 }
 
 #sshSettingTabView .tab .tab-label {
-    -fx-font-size: 12;
+    -fx-font-size: 11;
     -fx-content-display: top;
+    -fx-text-fill: #838373;
 }
 
 
 #sshSettingTabView .tab-header-background {
-    -fx-background-color: #252121;
+    -fx-background-color: #201c1c;
 }
 
 #sshSettingTabView .tab {
-    -fx-background-color: #252322;
-    -fx-text-fill: #32322b;
+    -fx-background-color: #2d2a29;
     -fx-border-width: 0;
 }
 
 
 #sshSettingTabView .tab:selected {
-    -fx-background-color: #2f2c2b;
-    -fx-text-fill: #32322b;
+    -fx-background-color: #2f4e7f;
 }
+
+#sshSettingTabView .tab:selected .tab-label {
+    -fx-font-size: 11;
+    -fx-content-display: top;
+    -fx-text-fill: #dedec4;
+}
+
 
 #sshSettingTabView .tab-header-area .tab-selected-line {
     -fx-opacity: 0;
 }
 
 #sshSettingTabView .tab-header-area .jfx-rippler {
-    -jfx-rippler-fill: #2f2c2b;
+    -jfx-rippler-fill: #5792d6;
 }
 
 

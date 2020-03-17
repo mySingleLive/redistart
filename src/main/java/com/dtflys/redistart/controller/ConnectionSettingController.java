@@ -4,7 +4,9 @@ import com.dtflys.redistart.utils.RSController;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -36,16 +38,23 @@ public class ConnectionSettingController implements RSController {
     private FontIcon iconPwdVisibility;
 
     @FXML
-    private JFXToggleButton tbSSL;
+    private CheckBox cbUseSSL;
 
     @FXML
     private GridPane secGroup;
+
+    @FXML
+    private CheckBox cbUseSSH;
+
+    @FXML
+    private TabPane sshSettingTabView;
 
 
     @Override
     public void init(Map<String, Object> args) {
         hideAuthText();
-        secGroup.disableProperty().bind(tbSSL.selectedProperty().not());
+        secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
+        sshSettingTabView.disableProperty().bind(cbUseSSH.selectedProperty().not());
     }
 
     private void hideAuthText() {
