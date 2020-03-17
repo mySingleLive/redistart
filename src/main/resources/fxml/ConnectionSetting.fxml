@@ -2,12 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,8 +15,8 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.ToggleSwitch?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox prefHeight="350.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
    <children>
@@ -39,11 +39,11 @@
                            <Label text="Redis地址" GridPane.rowIndex="1" />
                            <Label text="Redis端口" GridPane.rowIndex="2" />
                            <Label text="名称" />
-                           <CustomTextField fx:id="txName" GridPane.columnIndex="1" />
-                           <CustomTextField fx:id="txAddress" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <CustomTextField fx:id="txName" promptText="(必填) 连接名称" GridPane.columnIndex="1" />
+                           <CustomTextField fx:id="txAddress" promptText="(必填) Redis服务地址" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <children>
-                                 <CustomTextField fx:id="txPort" prefColumnCount="0" prefWidth="60.0" text="6379" />
+                                 <CustomTextField fx:id="txPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) Redis服务端口" text="6379" />
                                  <Region prefHeight="200.0" />
                               </children>
                               <GridPane.margin>
@@ -69,7 +69,21 @@
                        </rowConstraints>
                         <children>
                            <Label text="密码" />
-                           <CustomTextField GridPane.columnIndex="1" />
+                           <HBox GridPane.columnIndex="1">
+                              <children>
+                                 <PasswordField fx:id="txAuth" minWidth="0.0" prefWidth="0.0" promptText="(可选)" visible="false" />
+                                 <TextField fx:id="txAuthVisible" prefWidth="260.0" promptText="(可选)" />
+                                 <Region prefWidth="10.0" />
+                                 <FontIcon fx:id="iconPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
+                                    <HBox.margin>
+                                       <Insets left="10.0" top="2.0" />
+                                    </HBox.margin>
+                                 </FontIcon>
+                              </children>
+                              <padding>
+                                 <Insets top="5.0" />
+                              </padding>
+                           </HBox>
                         </children>
                         <padding>
                            <Insets left="10.0" />
@@ -84,22 +98,15 @@
                   </padding>
                </VBox>
                <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/connection.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="1.0" />
-                     </effect>
-                  </ImageView>
+                  <FontIcon iconColor="WHITE" iconLiteral="fas-plug" iconSize="35" />
                </graphic>
             </Tab>
             <Tab text="安全">
                <VBox>
                   <children>
-                     <GridPane>
+                     <GridPane styleClass="gr">
                        <columnConstraints>
-                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="152.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="100.0" />
                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="298.0" />
                        </columnConstraints>
                        <rowConstraints>
@@ -107,7 +114,7 @@
                        </rowConstraints>
                         <children>
                            <Label text="是否使用SSL" />
-                           <ToggleSwitch GridPane.columnIndex="1" />
+                           <JFXToggleButton text=" " GridPane.columnIndex="1" />
                         </children>
                         <VBox.margin>
                            <Insets left="10.0" top="10.0" />
@@ -139,29 +146,15 @@
                   </padding>
                </VBox>
                <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/security.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="1.0" />
-                     </effect>
-                  </ImageView>
+                  <FontIcon iconColor="WHITE" iconLiteral="fa-shield" iconSize="35" />
                </graphic>
             </Tab>
-            <Tab text="隧道">
+            <Tab text="SSH">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
                <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/tunnel.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="1.0" />
-                     </effect>
-                  </ImageView>
+                  <FontIcon iconColor="WHITE" iconLiteral="fas-lock" iconSize="35" />
                </graphic>
             </Tab>
             <Tab text="高级">
@@ -169,14 +162,7 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
                <graphic>
-                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/advanced.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="1.0" />
-                     </effect>
-                  </ImageView>
+                  <FontIcon iconColor="WHITE" iconLiteral="icm-cog" iconSize="35" />
                </graphic>
             </Tab>
          </tabs>
