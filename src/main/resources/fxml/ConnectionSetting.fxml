@@ -9,7 +9,6 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -19,9 +18,9 @@
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="460.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
+<VBox prefHeight="480.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
    <children>
-      <JFXTabPane fx:id="connSettingTabView" prefHeight="390.0" styleClass="connSettingsTabView">
+      <JFXTabPane fx:id="connSettingTabView" prefHeight="410.0" styleClass="connSettingsTabView">
          <tabs>
             <Tab fx:id="tabConn" text="连接">
                <VBox styleClass="backPane">
@@ -44,7 +43,7 @@
                            <CustomTextField fx:id="txAddress" promptText="(必填) Redis服务地址" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <children>
-                                 <CustomTextField fx:id="txPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) Redis服务端口" text="6379" />
+                                 <CustomTextField fx:id="txPort" alignment="CENTER" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号" text="6379" />
                                  <Region prefHeight="200.0" />
                               </children>
                               <GridPane.margin>
@@ -105,21 +104,14 @@
             <Tab text="SSL">
                <VBox>
                   <children>
-                     <GridPane styleClass="gr">
-                       <columnConstraints>
-                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" />
-                       </columnConstraints>
-                       <rowConstraints>
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                       </rowConstraints>
+                     <HBox>
                         <children>
-                           <Label />
                            <CheckBox fx:id="cbUseSSL" mnemonicParsing="false" text="使用SSL" />
                         </children>
                         <VBox.margin>
-                           <Insets left="10.0" top="10.0" />
+                           <Insets bottom="10.0" top="20.0" />
                         </VBox.margin>
-                     </GridPane>
+                     </HBox>
                      <Region prefHeight="10.0" />
                      <GridPane fx:id="secGroup" styleClass="groupPane">
                        <columnConstraints>
@@ -127,9 +119,9 @@
                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
                        </columnConstraints>
                        <rowConstraints>
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
                            <Label text="SSL公钥" />
@@ -153,21 +145,15 @@
               <content>
                   <VBox>
                      <children>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <HBox>
                            <children>
                               <CheckBox fx:id="cbUseSSH" mnemonicParsing="false" text="使用SSH隧道" />
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="10.0" />
+                              <Insets bottom="10.0" top="20.0" />
                            </VBox.margin>
-                        </GridPane>
-                        <JFXTabPane fx:id="sshSettingTabView" prefHeight="250.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                        </HBox>
+                        <JFXTabPane fx:id="sshSettingTabView" prefHeight="270.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
                             <Tab closable="false" text="SSH连接">
                                 <content>
@@ -179,8 +165,8 @@
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="280.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
                                                 <Label text="主机地址" />
@@ -188,7 +174,7 @@
                                                 <CustomTextField fx:id="txSSHHost" GridPane.columnIndex="1" />
                                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
-                                                      <CustomTextField fx:id="txSSHPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) SSH主机端口" text="22" />
+                                                      <CustomTextField fx:id="txSSHPort" alignment="CENTER" prefColumnCount="0" prefWidth="60.0" promptText="端口号" text="22" />
                                                       <Region prefHeight="200.0" />
                                                    </children>
                                                    <GridPane.margin>
@@ -213,8 +199,8 @@
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <VBox.margin>
                                                 <Insets top="5.0" />
@@ -223,7 +209,9 @@
                                                 <Label text="用户名" />
                                                 <CustomTextField GridPane.columnIndex="1" />
                                                 <Label text="验证方式" GridPane.rowIndex="1" />
-                                                <ComboBox promptText="选择SSH验证方式" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="cmbValidType" promptText="选择SSH验证方式" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                    
+                                                </ComboBox>
                                              </children>
                                              <padding>
                                                 <Insets left="10.0" />
@@ -236,11 +224,11 @@
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
                                                 <Label text="私钥" />
-                                                <CustomTextField GridPane.columnIndex="1" />
+                                                <CustomTextField promptText="SSH私钥" GridPane.columnIndex="1" />
                                              </children>
                                           </GridPane>
                                           <GridPane styleClass="groupPane2">
@@ -249,7 +237,7 @@
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <VBox.margin>
                                                 <Insets top="10.0" />
@@ -259,7 +247,7 @@
                                                 <HBox GridPane.columnIndex="1">
                                                    <children>
                                                       <PasswordField fx:id="txSshPassword" minWidth="0.0" prefWidth="0.0" promptText="(可选) Redis服务验证密码" visible="false" />
-                                                      <TextField fx:id="txSshPasswordVisible" prefWidth="260.0" promptText="(可选) Redis服务验证密码" />
+                                                      <TextField fx:id="txSshPasswordVisible" prefWidth="260.0" promptText="SSH验证密码" />
                                                       <Region prefWidth="10.0" />
                                                       <FontIcon fx:id="iconSshPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                                          <HBox.margin>
@@ -294,8 +282,51 @@
             <Tab text="高级">
               <content>
                 <VBox>
-
-                </VBox>
+                     <children>
+                        <GridPane styleClass="groupPane">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="220.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label text="连接超时时间(ms)" />
+                              <Label text="执行超时时间(ms)" GridPane.rowIndex="1" />
+                              <Label text="查询分页大小" GridPane.rowIndex="2" />
+                              <HBox GridPane.columnIndex="1">
+                                 <children>
+                                    <CustomTextField fx:id="txConnectionTimout" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="60000" />
+                                    <Region prefHeight="200.0" />
+                                 </children>
+                              </HBox>
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <CustomTextField fx:id="txConnectionTimout1" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="60000" />
+                                    <Region prefHeight="200.0" />
+                                 </children>
+                              </HBox>
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <CustomTextField fx:id="txConnectionTimout11" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="300" />
+                                    <Region prefHeight="200.0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding></VBox>
               </content>
                <graphic>
                   <FontIcon iconColor="WHITE" iconLiteral="icm-cog" iconSize="35" />

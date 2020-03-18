@@ -1,4 +1,6 @@
-package com.dtflys.redistart;
+package com.dtflys.redistart.utils;
+
+import com.dtflys.redistart.App;
 
 public class AppLauncher {
 

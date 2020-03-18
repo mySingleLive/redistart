@@ -21,7 +21,7 @@
         <commons.collections.version>4.1</commons.collections.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <mainClass>com.dtflys.redistart.AppLauncher</mainClass>
+        <mainClass>com.dtflys.redistart.utils.AppLauncher</mainClass>
         <info.name>RediStart</info.name>
         <info.displayName>RediStart</info.displayName>
     </properties>
@@ -162,6 +162,12 @@
             <artifactId>ikonli-icomoon-pack</artifactId>
             <version>${ikonli.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-ionicons-pack</artifactId>
+            <version>${ikonli.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>junit</groupId>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox prefHeight="481.0" prefWidth="297.0" style="-fx-background-color: #ffffff;" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.NavigationController">
+   <children>
+      <GridPane styleClass="searchPane">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <CustomTextField fx:id="txSearchField" prefHeight="30.0" styleClass="searchField">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <left>
+                  <HBox>
+                     <FontIcon iconColor="#e4e4e4" iconLiteral="fas-search" iconSize="16">
+                        <HBox.margin>
+                           <Insets left="4.5" top="4" />
+                        </HBox.margin>
+                     </FontIcon>
+                  </HBox>
+               </left>
+               <right>
+                  <HBox>
+                     <FontIcon fx:id="icnSearchCancel" iconColor="#e4e4e4" iconLiteral="icm-cross" iconSize="10" onMouseClicked="#onSearchCancel" styleClass="searchCancel">
+                        <HBox.margin>
+                           <Insets top="6.0" />
+                        </HBox.margin>
+                     </FontIcon>
+                  </HBox>
+               </right>
+            </CustomTextField>
+         </children>
+         <padding>
+            <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
+         </padding>
+      </GridPane>
+      <JFXTreeView fx:id="treeView" showRoot="false" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </JFXTreeView>
+   </children>
+</VBox>
