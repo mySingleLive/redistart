@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+
+<BorderPane fx:id="mainPane" prefHeight="164.0" prefWidth="431.0" styleClass="dialog-box" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.DialogController">
+   <bottom>
+      <HBox fx:id="buttonsBox" alignment="CENTER_RIGHT" prefHeight="60.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="okButton" onAction="#onOkAtion" text="确定" />
+            <JFXButton fx:id="cancelButton" onAction="#onCancelAction" text="取消">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </JFXButton>
+            <Region prefWidth="20.0" />
+         </children>
+      </HBox>
+   </bottom>
+   <left>
+      <Region prefHeight="200.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <VBox prefWidth="40.0" BorderPane.alignment="CENTER">
+         <children>
+            <FontIcon iconColor="#e4e0e0" iconLiteral="icm-cross" onMouseClicked="#onCloseAction">
+               <VBox.margin>
+                  <Insets left="18.0" top="10.0" />
+               </VBox.margin>
+            </FontIcon>
+         </children>
+      </VBox>
+   </right>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="40.0">
+               <children>
+                  <Label fx:id="lbTitle" text="title">
+                     <HBox.margin>
+                        <Insets left="5.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox fx:id="contentBox" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="lbContent" text="Label">
+                     <HBox.margin>
+                        <Insets left="40.0" top="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

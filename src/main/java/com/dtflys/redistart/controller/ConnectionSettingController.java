@@ -1,21 +1,31 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ControlUtils;
 import com.dtflys.redistart.utils.RSController;
-import com.jfoenix.controls.JFXToggleButton;
+import com.dtflys.redistart.view.DialogView;
+import com.jfoenix.controls.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ConnectionSettingController implements RSController {
 
@@ -30,10 +40,16 @@ public class ConnectionSettingController implements RSController {
     private RedisConnectionConfig connectionConfig;
 
     @FXML
+    private VBox mainBox;
+
+    @FXML
     private TextField txName;
 
     @FXML
-    private TextField txPort;
+    private TextField txRedisHost;
+
+    @FXML
+    private TextField txRedisPort;
 
     @FXML
     private PasswordField txAuth;
@@ -62,10 +78,12 @@ public class ConnectionSettingController implements RSController {
     @FXML
     private ComboBox cmbValidType;
 
+    private DialogView dialogView;
+
 
     @Override
     public void init(Map<String, Object> args) {
-        ControlUtils.numberField(txPort);
+        ControlUtils.numberField(txRedisPort);
         ControlUtils.numberField(txSSHPort);
         hideAuthText();
         secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
@@ -125,5 +143,88 @@ public class ConnectionSettingController implements RSController {
             iconPwdVisibility.setIconLiteral(LITERAL_PWD_INVISIBLE);
             showAuthText();
         }
+    }
+
+
+    private RedisConnectionConfig getConnectionConfig() {
+        String name = txName.getText();
+        String redisHost = txRedisHost.getText();
+        String redisPortText = txRedisPort.getText();
+        Integer redisPort = null;
+        try {
+            redisPort = Integer.parseInt(redisPortText);
+        } catch (Throwable th) {
+        }
+        String redisPassword = getAuthText();
+        RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
+        connectionConfig.setName(name);
+        connectionConfig.setRedisHost(redisHost);
+        connectionConfig.setRedisPort(redisPort);
+        connectionConfig.setRedisPassword(redisPassword);
+        return connectionConfig;
+    }
+
+
+    public void onTestConnectionAction(ActionEvent actionEvent) {
+        RedisConnectionConfig connectionConfig = getConnectionConfig();
+
+        dialogView.showStage(Modality.APPLICATION_MODAL, Map.of(
+                "title", "RediStart",
+                "content", "",
+                "width", 270,
+                "showCancelButton", false,
+                "onInit", (Consumer<DialogController>) dController -> {
+                    HBox contentBox = dController.getContentBox();
+                    contentBox.getChildren().clear();
+                    Region leftRegion = new Region();
+                    leftRegion.setPrefWidth(35);
+                    JFXSpinner spinner = new JFXSpinner();
+                    spinner.setPrefWidth(35);
+                    spinner.setPrefHeight(35);
+                    HBox.setMargin(spinner, new Insets(20, 0, 0, 0));
+                    Label label = new Label();
+                    label.setAlignment(Pos.CENTER_LEFT);
+                    HBox.setMargin(label, new Insets(42, 0, 0, 30));
+                    label.setText("请稍等...");
+                    contentBox.getChildren().addAll(leftRegion, spinner, label);
+                    JFXButton okButton = dController.getOkButton();
+                    okButton.setDisable(true);
+
+                    connectionService.startTestConnection(connectionConfig, result -> {
+                        Platform.runLater(() -> {
+                            spinner.setOpacity(0);
+                            okButton.setDisable(false);
+                            if (result) {
+                                label.setText("连接成功");
+                            } else {
+                                label.setText("连接失败");
+                            }
+                        });
+                    });
+
+                }
+        ));
+
+
+/*
+        connectionService.startTestConnection(connectionConfig, result -> {
+            Platform.runLater(() -> {
+                if (result) {
+                    System.out.println("连接成功");
+                    dialogView.showStage(Modality.APPLICATION_MODAL, Map.of(
+                            "title", "RediStart",
+                            "content", "连接成功",
+                            "width", 280
+                    ));
+                } else {
+                    dialogView.showStage(Modality.APPLICATION_MODAL, Map.of(
+                            "title", "RediStart",
+                            "content", "连接失败",
+                            "width", 280
+                    ));
+                }
+            });
+        });
+*/
     }
 }

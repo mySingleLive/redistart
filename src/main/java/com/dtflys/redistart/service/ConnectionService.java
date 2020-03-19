@@ -34,4 +34,22 @@ public class ConnectionService {
         }
     }
 
+    public void startTestConnection(RedisConnectionConfig connectionConfig, Consumer<Boolean> onTestEnd) {
+        RedisConnection connection = new RedisConnection(connectionConfig);
+        new Thread(() -> {
+            Boolean result = false;
+            try {
+                connection.openConnection();
+                result = true;
+            } catch (Throwable th) {
+                result = false;
+            } finally {
+                connection.closeConnection();
+            }
+            if (onTestEnd != null) {
+                onTestEnd.accept(result);
+            }
+        }).start();
+    }
+
 }

@@ -18,7 +18,7 @@
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="480.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
+<VBox fx:id="mainBox" prefHeight="480.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
    <children>
       <JFXTabPane fx:id="connSettingTabView" prefHeight="410.0" styleClass="connSettingsTabView">
          <tabs>
@@ -39,11 +39,11 @@
                            <Label text="Redis地址" GridPane.rowIndex="1" />
                            <Label text="Redis端口" GridPane.rowIndex="2" />
                            <Label text="名称" />
-                           <CustomTextField fx:id="txName" promptText="(必填) 连接名称" GridPane.columnIndex="1" />
-                           <CustomTextField fx:id="txAddress" promptText="(必填) Redis服务地址" text="localhost" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <CustomTextField fx:id="txName" promptText="连接名称" GridPane.columnIndex="1" />
+                           <CustomTextField fx:id="txRedisHost" promptText="(必填) Redis服务地址" text="localhost" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <children>
-                                 <CustomTextField fx:id="txPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号" text="6379" />
+                                 <CustomTextField fx:id="txRedisPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号" text="6379" />
                                  <Region prefHeight="200.0" />
                               </children>
                               <GridPane.margin>
@@ -76,7 +76,7 @@
                                  <Region prefWidth="10.0" />
                                  <FontIcon fx:id="iconPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                     <HBox.margin>
-                                       <Insets left="10.0" top="2.0" />
+                                       <Insets left="10.0" top="4.0" />
                                     </HBox.margin>
                                  </FontIcon>
                               </children>
@@ -251,7 +251,7 @@
                                                       <Region prefWidth="10.0" />
                                                       <FontIcon fx:id="iconSshPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                                          <HBox.margin>
-                                                            <Insets left="10.0" top="2.0" />
+                                                            <Insets left="10.0" top="4.0" />
                                                          </HBox.margin>
                                                       </FontIcon>
                                                    </children>
@@ -354,7 +354,7 @@
       <HBox alignment="TOP_RIGHT" prefHeight="25.0" styleClass="backPane">
          <children>
             <Region />
-            <JFXButton fx:id="btnTestConnection" ripplerFill="#4d9de3" text="测试连接" textAlignment="CENTER" />
+            <JFXButton fx:id="btnTestConnection" onAction="#onTestConnectionAction" ripplerFill="#4d9de3" text="测试连接" textAlignment="CENTER" />
             <Region prefWidth="160.0" />
             <JFXButton buttonType="RAISED" onAction="#onOkAction" text="确定" />
             <Region prefWidth="10.0" />

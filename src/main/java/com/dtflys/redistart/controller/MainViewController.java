@@ -3,6 +3,7 @@ package com.dtflys.redistart.controller;
 import com.dtflys.redistart.App;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.view.ConnectionSettingView;
+import com.dtflys.redistart.view.DialogView;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +41,9 @@ public class MainViewController implements Initializable {
     @Resource
     private ConnectionSettingView connectionSettingView;
 
+    @Resource
+    private DialogView dialogView;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,6 +54,7 @@ public class MainViewController implements Initializable {
     public void onAddConnectionItemAction(ActionEvent actionEvent) {
         connectionSettingView.showStage(Modality.WINDOW_MODAL, Map.of(
                 "modify", false,
+                "dialogView", dialogView,
                 "connectionService", connectionService));
     }
 }

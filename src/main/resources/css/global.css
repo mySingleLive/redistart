@@ -181,6 +181,11 @@
     -fx-background-radius: 0;
 }
 
+.dialog-box {
+    -fx-border-width: 1;
+    -fx-border-color: -rs-control-border-color;
+}
+
 .portField {
     -fx-pref-width: 50;
     -fx-pref-height: 30;

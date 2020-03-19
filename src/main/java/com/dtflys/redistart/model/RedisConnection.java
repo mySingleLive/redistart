@@ -2,6 +2,9 @@ package com.dtflys.redistart.model;
 
 import org.redisson.client.RedisClient;
 import org.redisson.client.RedisClientConfig;
+import org.redisson.client.codec.StringCodec;
+import org.redisson.client.protocol.RedisCommand;
+import org.redisson.client.protocol.RedisCommands;
 
 public class RedisConnection {
 
@@ -21,19 +24,12 @@ public class RedisConnection {
         return connectionConfig;
     }
 
-    private String getRedisAddress() {
-        String host = connectionConfig.getRedisHost();
-        Integer port = connectionConfig.getRedisPort();
-        return "redis://" + host + ":" + port;
-    }
 
     private RedisClientConfig createRedisConnectionConfig() {
         RedisClientConfig config = new RedisClientConfig();
         config.setAddress(connectionConfig.getRedisHost(), connectionConfig.getRedisPort())
         .setClientName(connectionConfig.getName())
         .setPassword(connectionConfig.getRedisPassword())
-        .setCommandTimeout(connectionConfig.getTimeout())
-        .setConnectTimeout(connectionConfig.getConnectTimeout())
         .setDatabase(0);
         return config;
     }
@@ -44,11 +40,13 @@ public class RedisConnection {
         redisConnection = redisClient.connect();
     }
 
-    public boolean info() {
-        return true;
+    public String ping() {
+        String response = redisConnection.sync(new StringCodec(), RedisCommands.PING);
+        return response;
     }
 
     public void closeConnection() {
+        redisClient.shutdown();
     }
 
     public RedisConnectionStatus getStatus() {

@@ -11,8 +11,10 @@ public class RedisConnectionItem extends RSBaseTreeItem {
     public RedisConnectionItem(RedisConnection connection) {
         super(connection.getConnectionConfig().getName(), RSItemType.REDIS_CONNECTION);
         this.connection = connection;
-        var box = new HBox();
+
     }
+
+
 
     public RedisConnection getConnection() {
         return connection;

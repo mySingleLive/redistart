@@ -6,6 +6,7 @@ import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
 import com.jfoenix.controls.JFXTreeView;
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 @FXMLController
@@ -34,9 +37,13 @@ public class NavigationController implements Initializable {
 
     private TreeItem<String> rootItem = new TreeItem<>("root");
 
+    private Map<RedisConnection, RedisConnectionItem> connectionItemMap = new HashMap<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         treeView.setRoot(rootItem);
+
+
 
         RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
         connectionConfig.setName("Test 1");
@@ -52,9 +59,17 @@ public class NavigationController implements Initializable {
                 new TreeItem<>("POINT_EXCHANGE:SHOP_CART:2061193"),
                 new TreeItem<>("POINT_EXCHANGE:SHOP_CART:PACK_ID"));
 
-        rootItem.getChildren().addAll(item1);
 
     }
+
+
+    private void addRedisConnectionItem(RedisConnection connection) {
+        RedisConnectionItem item = new RedisConnectionItem(connection);
+        connectionItemMap.put(connection, item);
+        rootItem.getChildren().add(item);
+    }
+
+
 
     public void onSearchCancel(MouseEvent mouseEvent) {
         txSearchField.setText("");
