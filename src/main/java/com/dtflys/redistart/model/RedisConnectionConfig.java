@@ -2,17 +2,33 @@ package com.dtflys.redistart.model;
 
 public class RedisConnectionConfig {
 
+    /* Connection Settings */
+
     private String name;
 
     private String redisHost;
 
-    private String redisPort;
+    private Integer redisPort;
 
     private String redisPassword;
 
+    /* SSL Settings */
+
     private Boolean isUseSSL;
 
-    private Boolean isUesSSH;
+    /* SSH Settings */
+
+    private Boolean isUseSSH;
+
+    /* Advanced Settings */
+
+    private Integer timeout;
+
+    private Integer connectTimeout;
+
+    private Integer reconnectTimeout;
+
+    private Integer connectionPoolSize;
 
     public String getName() {
         return name;
@@ -30,11 +46,11 @@ public class RedisConnectionConfig {
         this.redisHost = redisHost;
     }
 
-    public String getRedisPort() {
+    public Integer getRedisPort() {
         return redisPort;
     }
 
-    public void setRedisPort(String redisPort) {
+    public void setRedisPort(Integer redisPort) {
         this.redisPort = redisPort;
     }
 
@@ -54,11 +70,43 @@ public class RedisConnectionConfig {
         isUseSSL = useSSL;
     }
 
-    public Boolean getUesSSH() {
-        return isUesSSH;
+    public Boolean getUseSSH() {
+        return isUseSSH;
     }
 
-    public void setUesSSH(Boolean uesSSH) {
-        isUesSSH = uesSSH;
+    public void setUseSSH(Boolean useSSH) {
+        isUseSSH = useSSH;
+    }
+
+    public Integer getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public Integer getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
+    }
+
+    public void setConnectTimeout(Integer connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public Integer getReconnectTimeout() {
+        return reconnectTimeout;
+    }
+
+    public void setReconnectTimeout(Integer reconnectTimeout) {
+        this.reconnectTimeout = reconnectTimeout;
+    }
+
+    public Integer getConnectionPoolSize() {
+        return connectionPoolSize;
+    }
+
+    public void setConnectionPoolSize(Integer connectionPoolSize) {
+        this.connectionPoolSize = connectionPoolSize;
     }
 }

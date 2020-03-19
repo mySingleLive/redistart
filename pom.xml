@@ -17,6 +17,7 @@
         <spring.version>5.1.1.RELEASE</spring.version>
         <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
         <guava.version>28.1-jre</guava.version>
+        <redisson.version>3.6.0</redisson.version>
         <common.lang.version>3.5</common.lang.version>
         <commons.collections.version>4.1</commons.collections.version>
         <maven.compiler.source>11</maven.compiler.source>
@@ -167,7 +168,17 @@
             <artifactId>ikonli-ionicons-pack</artifactId>
             <version>${ikonli.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-devicons-pack</artifactId>
+            <version>${ikonli.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>${redisson.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

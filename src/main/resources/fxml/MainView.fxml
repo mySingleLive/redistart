@@ -5,11 +5,13 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.BreadCrumbBar?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane fx:id="mainPane" prefHeight="640.0" prefWidth="1024.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
    <bottom>
@@ -30,19 +32,28 @@
          <children>
             <MenuBar fx:id="menuBar">
               <menus>
-                <Menu mnemonicParsing="false" text="文件">
+                <Menu text="文件">
                   <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onAddConnectionItemAction" text="新建连接" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAddConnectionItemAction" text="新建连接">
+                           <graphic>
+                              <FontIcon iconColor="#f5f0f0" iconLiteral="fas-plug" iconSize="20" selectionEnd="1" styleClass="menuIcon" />
+                           </graphic></MenuItem>
                         <MenuItem mnemonicParsing="false" text="打开连接" />
                         <MenuItem mnemonicParsing="false" text="关闭连接" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem mnemonicParsing="false" text="退出RediStart" />
                   </items>
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
                 </Menu>
                 <Menu mnemonicParsing="false" text="编辑">
                   <items>
                     <MenuItem mnemonicParsing="false" text="Delete" />
                   </items>
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
                 </Menu>
               </menus>
             </MenuBar>

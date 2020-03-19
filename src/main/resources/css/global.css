@@ -1,35 +1,64 @@
 
+* {
+    /* global color */
+    -rs-back-color: #201c1c;
+    -rs-group-color1: #2f2c2b;
+    -rs-group-color2: #403b3a;
+    -rs-common-text-fill: #d6d6d6;
+
+    /* menu and tree color */
+    -rs-tree-background-color: #2f2c2b;
+    -rs-menu-selection-color: #5792d6;
+    -rs-tree-selection-color: #5792d6;
+
+    /* controls color */
+    -rs-control-background-color: #312f2d;
+    -rs-control-border-color: #818181;
+    -rs-control-highlight-fill: #5792d6;
+    -rs-controler-field-fill: #d6d6d6;
+
+    /* icons color */
+    -rs-icon-redis-connection-color: #ff4844;
+}
 
 .root {
     -fx-font-family: "YaHei Consolas Hybrid";
     -fx-font-size: 11;
-    -fx-text-fill: #e7e7e7;
-    -fx-base: #2f2c2b;
-    -fx-background-color: #2f2c2b;
+    -fx-font-weight: bold;
+    -fx-text-fill: -rs-common-text-fill;
+    -fx-base: -rs-group-color1;
+    -fx-background-color: -rs-group-color1;
 }
 
 .groupPane {
-    -fx-background-color: #2f2c2b;
+    -fx-background-color: -rs-group-color1;
     -fx-background-radius: 1.2;
     -fx-padding: 10 10 10 10;
 }
 
 .groupPane2 {
-    -fx-background-color: #403b3a;
+    -fx-background-color: -rs-group-color2;
     -fx-background-radius: 1.2;
     -fx-padding: 10 10 10 10;
 }
 
 .backPane {
-    -fx-background-color: #201c1c;
+    -fx-background-color: -rs-back-color;
 }
 
 .menu, .menu-item, .context-menu, .menu-bar, .bread-crumb-bar {
     -fx-background-color: #2f2c2b;
 }
 
+.menuIcon {
+    -fx-icon-size: 12px;
+    /*-fx-background-insets: 0 20 0 10;*/
+    -fx-pref-width: 17;
+    -fx-icon-color: -rs-common-text-fill;
+}
+
 .menu:hover, .menu-item:hover, .menu:showing {
-    -fx-background-color: #5792d6;
+    -fx-background-color: -rs-menu-selection-color;
 }
 
 .split-pane *.split-pane-divider {
@@ -43,22 +72,36 @@
 .check-box .box {
     -fx-background-color: #272524;
     -fx-border-width: 1;
-    -fx-border-color: #818181;
+    -fx-border-color: -rs-control-border-color;
 }
 
 .tree-view, .tree-cell {
-    -fx-background-color: #2f2c2b;
+    -fx-background-color: -rs-tree-background-color;
     -fx-background-radius: 0;
     -fx-focus-color: transparent;
-    -fx-text-fill: #e7e7e7;
+    -fx-text-fill: -rs-common-text-fill;
 }
 
 .tree-cell .arrow {
+    -fx-background-insets: 3.6 0 0 5.5;
+    -fx-pref-height: 10.5;
+    -fx-pref-width: 10.5;
+    -fx-content-display: center;
     -fx-background-color: WHITE;
 }
 
+.tree-cell:expanded .arrow {
+    -fx-background-insets: 1.8 1.2 2 3.8;
+    -fx-pref-height: 10.5;
+    -fx-pref-width: 10.5;
+    /*-fx-pref-height: 5.5;*/
+    -fx-content-display: center;
+    -fx-background-color: WHITE;
+}
+
+
 .tree-cell:selected {
-    -fx-background-color: #5792d6;
+    -fx-background-color: -rs-tree-selection-color;
 }
 
 .tree-cell .selection-bar {
@@ -70,6 +113,10 @@
     -fx-background-radius: 0;
 }
 
+.redisConnIcon {
+    -fx-icon-size: 25px;
+    -fx-icon-color: -rs-icon-redis-connection-color;
+}
 
 #statusBar {
     -fx-border-width: 2;
@@ -89,12 +136,12 @@
 
 .text-field {
     /*-fx-prompt-text-fill: #fffd8c; */
-    -fx-text-fill: #ffffff;
-    -fx-highlight-fill: #5792d6;
+    -fx-text-fill: -rs-controler-field-fill;
+    -fx-highlight-fill: -rs-control-highlight-fill;
     -fx-pref-height: 22;
-    -fx-background-color: #312f2d;
+    -fx-background-color: -rs-control-background-color;
     -fx-border-width: 1;
-    -fx-border-color: #818181;
+    -fx-border-color: -rs-control-border-color;
     -fx-font-size: 12;
     -fx-background-radius: 1;
 }
@@ -113,12 +160,12 @@
 }
 
 .combo-box {
-    -fx-text-fill: #ffffff;
-    -fx-highlight-fill: #5792d6;
+    -fx-text-fill: -rs-controler-field-fill;
+    -fx-highlight-fill: -rs-control-highlight-fill;
     -fx-pref-height: 22;
-    -fx-background-color: #312f2d;
+    -fx-background-color: -rs-control-background-color;
     -fx-border-width: 1;
-    -fx-border-color: #818181;
+    -fx-border-color: -rs-control-border-color;
 }
 
 .combo-box-popup .list-view {

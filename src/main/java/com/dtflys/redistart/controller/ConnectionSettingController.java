@@ -1,5 +1,8 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.model.RedisConnectionConfig;
+import com.dtflys.redistart.service.ConnectionService;
+import com.dtflys.redistart.utils.ControlUtils;
 import com.dtflys.redistart.utils.RSController;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.event.ActionEvent;
@@ -9,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.util.Map;
@@ -18,6 +22,12 @@ public class ConnectionSettingController implements RSController {
     private final static String LITERAL_PWD_VISIBLE = "icm-eye";
 
     private final static String LITERAL_PWD_INVISIBLE = "icm-eye-blocked";
+
+    private boolean modify = false;
+
+    private ConnectionService connectionService;
+
+    private RedisConnectionConfig connectionConfig;
 
     @FXML
     private TextField txName;
@@ -44,15 +54,19 @@ public class ConnectionSettingController implements RSController {
     private CheckBox cbUseSSH;
 
     @FXML
+    private CustomTextField txSSHPort;
+
+    @FXML
     private TabPane sshSettingTabView;
 
     @FXML
     private ComboBox cmbValidType;
 
 
-
     @Override
     public void init(Map<String, Object> args) {
+        ControlUtils.numberField(txPort);
+        ControlUtils.numberField(txSSHPort);
         hideAuthText();
         secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
         sshSettingTabView.disableProperty().bind(cbUseSSH.selectedProperty().not());

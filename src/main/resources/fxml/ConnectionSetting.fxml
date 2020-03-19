@@ -40,10 +40,10 @@
                            <Label text="Redis端口" GridPane.rowIndex="2" />
                            <Label text="名称" />
                            <CustomTextField fx:id="txName" promptText="(必填) 连接名称" GridPane.columnIndex="1" />
-                           <CustomTextField fx:id="txAddress" promptText="(必填) Redis服务地址" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <CustomTextField fx:id="txAddress" promptText="(必填) Redis服务地址" text="localhost" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <children>
-                                 <CustomTextField fx:id="txPort" alignment="CENTER" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号" text="6379" />
+                                 <CustomTextField fx:id="txPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号" text="6379" />
                                  <Region prefHeight="200.0" />
                               </children>
                               <GridPane.margin>
@@ -171,10 +171,10 @@
                                              <children>
                                                 <Label text="主机地址" />
                                                 <Label text="主机端口" GridPane.rowIndex="1" />
-                                                <CustomTextField fx:id="txSSHHost" GridPane.columnIndex="1" />
+                                                <CustomTextField fx:id="txSSHHost" text="localhost" GridPane.columnIndex="1" />
                                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
-                                                      <CustomTextField fx:id="txSSHPort" alignment="CENTER" prefColumnCount="0" prefWidth="60.0" promptText="端口号" text="22" />
+                                                      <CustomTextField fx:id="txSSHPort" prefColumnCount="0" prefWidth="60.0" promptText="端口号" text="22" />
                                                       <Region prefHeight="200.0" />
                                                    </children>
                                                    <GridPane.margin>
@@ -291,6 +291,8 @@
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <padding>
@@ -302,7 +304,7 @@
                            <children>
                               <Label text="连接超时时间(ms)" />
                               <Label text="执行超时时间(ms)" GridPane.rowIndex="1" />
-                              <Label text="查询分页大小" GridPane.rowIndex="2" />
+                              <Label text="查询分页大小" GridPane.rowIndex="4" />
                               <HBox GridPane.columnIndex="1">
                                  <children>
                                     <CustomTextField fx:id="txConnectionTimout" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="60000" />
@@ -315,9 +317,23 @@
                                     <Region prefHeight="200.0" />
                                  </children>
                               </HBox>
-                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <children>
                                     <CustomTextField fx:id="txConnectionTimout11" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="300" />
+                                    <Region prefHeight="200.0" />
+                                 </children>
+                              </HBox>
+                              <Label text="重新连接超时时间(ms)" GridPane.rowIndex="2" />
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <CustomTextField fx:id="txReconnectionTimout" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="60000" />
+                                    <Region prefHeight="200.0" />
+                                 </children>
+                              </HBox>
+                              <Label text="连接池大小" GridPane.rowIndex="3" />
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <children>
+                                    <CustomTextField fx:id="txPoolSize" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="5" />
                                     <Region prefHeight="200.0" />
                                  </children>
                               </HBox>
