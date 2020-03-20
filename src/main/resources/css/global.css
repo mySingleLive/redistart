@@ -8,17 +8,20 @@
 
     /* menu and tree color */
     -rs-tree-background-color: #2f2c2b;
-    -rs-menu-selection-color: #5792d6;
-    -rs-tree-selection-color: #5792d6;
+    -rs-menu-selection-color: #4674aa;
+    -rs-tree-selection-color: #4674aa;
+    -rs-tree-hover-color: #544f4d;
+
 
     /* controls color */
     -rs-control-background-color: #312f2d;
     -rs-control-border-color: #818181;
-    -rs-control-highlight-fill: #5792d6;
+    -rs-control-highlight-fill: #4674aa;
     -rs-controler-field-fill: #d6d6d6;
 
     /* icons color */
-    -rs-icon-redis-connection-color: #ff4844;
+    -rs-icon-redis-connection-color: #ff6f74;
+    -rs-icon-redis-database-color: #9db1b0;
 }
 
 .root {
@@ -80,7 +83,9 @@
     -fx-background-radius: 0;
     -fx-focus-color: transparent;
     -fx-text-fill: -rs-common-text-fill;
+    -fx-font-weight: bold;
 }
+
 
 .tree-cell .arrow {
     -fx-background-insets: 3.6 0 0 5.5;
@@ -99,10 +104,27 @@
     -fx-background-color: WHITE;
 }
 
+.tree-cell .graphic {
+    -fx-pref-width: 25;
+    -fx-pref-height: 25;
+    -fx-padding: 0 10 0 0;
+    -fx-background-color: #17ff00;
+}
+
+.tree-cell .jfx-spinner {
+    -fx-pref-width: 22;
+    -fx-pref-height: 22;
+}
+
+.tree-cell .jfx-spinner .arc {
+    -fx-stroke: #e88cfa;
+}
+
 
 .tree-cell:selected {
     -fx-background-color: -rs-tree-selection-color;
 }
+
 
 .tree-cell .selection-bar {
     -fx-background-color: transparent;
@@ -113,10 +135,21 @@
     -fx-background-radius: 0;
 }
 
-.redisConnIcon {
+.redis-conn-icon {
     -fx-icon-size: 25px;
     -fx-icon-color: -rs-icon-redis-connection-color;
+    -fx-pref-width: 25;
+    -fx-pref-height: 25;
 }
+
+.redis-db-icon {
+    -fx-icon-size: 14px;
+    -fx-icon-color: -rs-icon-redis-database-color;
+    -fx-pref-width: 25;
+    -fx-pref-height: 25;
+    -fx-background-insets: 0 20 0 0;
+}
+
 
 #statusBar {
     -fx-border-width: 2;
@@ -181,9 +214,27 @@
     -fx-background-radius: 0;
 }
 
+
+.window-close-button {
+    -fx-icon-color: #b8b8b8;
+    -fx-icon-size: 11;
+}
+
+.window-close-button:hover {
+    -fx-icon-color: #f9f9f9;
+    -fx-icon-size: 11;
+}
+
+
+.dialog-parent {
+    -fx-background-color: transparent;
+}
+
 .dialog-box {
-    -fx-border-width: 1;
+    -fx-border-width: 0;
+    -fx-background-color: -rs-group-color1;
     -fx-border-color: -rs-control-border-color;
+    /*-fx-effect: none;*/
 }
 
 .portField {

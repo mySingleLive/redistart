@@ -4,6 +4,7 @@ import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ControlUtils;
+import com.dtflys.redistart.utils.DialogUtils;
 import com.dtflys.redistart.utils.RSController;
 import com.dtflys.redistart.view.DialogView;
 import com.jfoenix.controls.*;
@@ -16,9 +17,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +122,9 @@ public class ConnectionSettingController implements RSController {
 
 
     public void onOkAction(ActionEvent actionEvent) {
+        RedisConnectionConfig connectionConfig = getConnectionConfig();
+        connectionService.addConnection(connectionConfig);
+
         Stage stage = (Stage) txName.getScene().getWindow();
         stage.close();
     }
@@ -147,8 +153,8 @@ public class ConnectionSettingController implements RSController {
 
 
     private RedisConnectionConfig getConnectionConfig() {
-        String name = txName.getText();
-        String redisHost = txRedisHost.getText();
+        String name = txName.getText().trim();
+        String redisHost = txRedisHost.getText().trim();
         String redisPortText = txRedisPort.getText();
         Integer redisPort = null;
         try {
@@ -157,6 +163,9 @@ public class ConnectionSettingController implements RSController {
         }
         String redisPassword = getAuthText();
         RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
+        if (StringUtils.isBlank(name)) {
+            name = redisHost + ":" + redisPort;
+        }
         connectionConfig.setName(name);
         connectionConfig.setRedisHost(redisHost);
         connectionConfig.setRedisPort(redisPort);
@@ -167,9 +176,7 @@ public class ConnectionSettingController implements RSController {
 
     public void onTestConnectionAction(ActionEvent actionEvent) {
         RedisConnectionConfig connectionConfig = getConnectionConfig();
-
-        dialogView.showStage(Modality.APPLICATION_MODAL, Map.of(
-                "title", "RediStart",
+        DialogUtils.showModalDialog(Map.of(
                 "content", "",
                 "width", 270,
                 "showCancelButton", false,
@@ -201,30 +208,7 @@ public class ConnectionSettingController implements RSController {
                             }
                         });
                     });
-
                 }
         ));
-
-
-/*
-        connectionService.startTestConnection(connectionConfig, result -> {
-            Platform.runLater(() -> {
-                if (result) {
-                    System.out.println("连接成功");
-                    dialogView.showStage(Modality.APPLICATION_MODAL, Map.of(
-                            "title", "RediStart",
-                            "content", "连接成功",
-                            "width", 280
-                    ));
-                } else {
-                    dialogView.showStage(Modality.APPLICATION_MODAL, Map.of(
-                            "title", "RediStart",
-                            "content", "连接失败",
-                            "width", 280
-                    ));
-                }
-            });
-        });
-*/
     }
 }

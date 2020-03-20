@@ -1,7 +1,8 @@
 package com.dtflys.redistart.controls.item;
 
 public enum RSItemType {
-    REDIS_CONNECTION("redisConnIcon", "di-redis")
+    REDIS_CONNECTION("redis-conn-icon", "di-redis"),
+    REDIS_DATABASE("redis-db-icon", "icm-database")
     ;
 
     private final String iconStyleClass;

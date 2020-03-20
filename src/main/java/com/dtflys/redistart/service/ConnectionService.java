@@ -2,7 +2,6 @@ package com.dtflys.redistart.service;
 
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -28,24 +27,21 @@ public class ConnectionService {
         return connection;
     }
 
+    public void setOnAfterAddConnection(Consumer<RedisConnection> onAfterAddConnection) {
+        this.onAfterAddConnection = onAfterAddConnection;
+    }
+
     private void afterAddConnection(RedisConnection connection) {
         if (onAfterAddConnection != null) {
             onAfterAddConnection.accept(connection);
         }
     }
 
+
     public void startTestConnection(RedisConnectionConfig connectionConfig, Consumer<Boolean> onTestEnd) {
         RedisConnection connection = new RedisConnection(connectionConfig);
         new Thread(() -> {
-            Boolean result = false;
-            try {
-                connection.openConnection();
-                result = true;
-            } catch (Throwable th) {
-                result = false;
-            } finally {
-                connection.closeConnection();
-            }
+            Boolean result = connection.testConnect();
             if (onTestEnd != null) {
                 onTestEnd.accept(result);
             }

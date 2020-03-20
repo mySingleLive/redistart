@@ -4,8 +4,14 @@ import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.FXMLView;
 import de.felixroske.jfxsupport.GUIState;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,7 +25,7 @@ import java.util.Map;
 
 public class AbstractRSView extends AbstractFxmlView {
 
-    private Parent load(String path, Map<String, Object> args) {
+    private static Parent load(String path, Map<String, Object> args) {
         FXMLLoader loader = new FXMLLoader(AbstractRSView.class.getResource(path));
         Parent root = null;
 
@@ -58,9 +64,27 @@ public class AbstractRSView extends AbstractFxmlView {
         return root;
     }
 
-    private void showView(String path, String title, StageStyle style, final Modality mode, Map<String, Object> args) {
+    public static void showView(String path, String title, StageStyle style, final Modality mode, Color winColor, Boolean useShadow, Map<String, Object> args) {
         Parent root = load(path, args);
-        Scene scene = new Scene(root);
+        if (useShadow != null && useShadow) {
+            DropShadow dropshadow = new DropShadow();// 阴影向外
+            dropshadow.setRadius(10);// 颜色蔓延的距离
+            dropshadow.setOffsetX(1);// 水平方向，0则向左右两侧，正则向右，负则向左
+            dropshadow.setOffsetY(1.5);// 垂直方向，0则向上下两侧，正则向下，负则向上
+            dropshadow.setSpread(0.1);// 颜色变淡的程度
+            dropshadow.setColor(Color.BLACK);// 设置颜色
+            root.setEffect(dropshadow);// 绑定指定窗口控件
+
+            HBox parentBox = new HBox();// 创建最底层的面板
+            parentBox.setAlignment(Pos.CENTER);// 设置对齐方式为居中
+            parentBox.setPadding(new Insets(dropshadow.getRadius()));// 设置要显示的阴影宽度为根控件与底层容器的四边距离
+            parentBox.getChildren().add(root);// 添加根控件到底层容器中
+            parentBox.getStylesheets().add("/css/global.css");
+            parentBox.getStyleClass().add("dialog-parent");
+            root = parentBox;
+        }
+        Scene scene = null;
+        scene = new Scene(root, winColor);
         Stage newStage = new Stage();
         newStage.setScene(scene);
         newStage.initModality(mode);
@@ -80,7 +104,7 @@ public class AbstractRSView extends AbstractFxmlView {
         return load(path, args);
     }
 
-    public void showStage(final Modality mode, Map<String, Object> args) {
+    public void showStage(final Modality mode, Color winColor, Boolean useShadow, Map<String, Object> args) {
         FXMLView fxmlView = getClass().getAnnotation(FXMLView.class);
         String path = fxmlView.value();
         String title = MapUtils.getString(args, "title");
@@ -89,16 +113,36 @@ public class AbstractRSView extends AbstractFxmlView {
         }
         String style = fxmlView.stageStyle();
         StageStyle stageStyle = StageStyle.valueOf(style.toUpperCase());
-        showView(path, title, stageStyle, mode, args);
+        showView(path, title, stageStyle, mode, winColor, useShadow, args);
     }
 
-    public void showStage(Map<String, Object> args) {
+    public void showStage(Color winColor, Boolean useShadow, Map<String, Object> args) {
         FXMLView fxmlView = getClass().getAnnotation(FXMLView.class);
         String path = fxmlView.value();
         String title = fxmlView.title();
         String style = fxmlView.stageStyle();
         StageStyle stageStyle = StageStyle.valueOf(style.toUpperCase());
-        showView(path, title, stageStyle, Modality.NONE, args);
+        showView(path, title, stageStyle, Modality.NONE, winColor, useShadow, args);
     }
+
+    public void showStage(final Modality mode, Map<String, Object> args) {
+        FXMLView fxmlView = getClass().getAnnotation(FXMLView.class);
+        String path = fxmlView.value();
+        String title = fxmlView.title();
+        String style = fxmlView.stageStyle();
+        StageStyle stageStyle = StageStyle.valueOf(style.toUpperCase());
+        showView(path, title, stageStyle, mode, null, null, args);
+    }
+
+
+    public void showStage(Map<String, Object> args) {
+        showStage(Modality.NONE, args);
+    }
+
+
+    public void showModalDialog(Map<String, Object> args) {
+        showStage(Modality.APPLICATION_MODAL, Color.TRANSPARENT, true, args);
+    }
+
 
 }

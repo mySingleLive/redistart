@@ -1,8 +1,12 @@
 package com.dtflys.redistart.controller;
 
 import com.dtflys.redistart.controls.item.RedisConnectionItem;
+import com.dtflys.redistart.controls.item.RedisDatabaseItem;
+import com.dtflys.redistart.event.RSEventHandler;
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
+import com.dtflys.redistart.model.RedisConnectionStatus;
+import com.dtflys.redistart.model.RedisDatabase;
 import com.dtflys.redistart.service.ConnectionService;
 import com.jfoenix.controls.JFXTreeView;
 import de.felixroske.jfxsupport.FXMLController;
@@ -18,10 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @FXMLController
 public class NavigationController implements Initializable {
@@ -42,33 +44,48 @@ public class NavigationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         treeView.setRoot(rootItem);
+        connectionService.setOnAfterAddConnection(this::addRedisConnectionItem);
 
-
-
-        RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
-        connectionConfig.setName("Test 1");
-        connectionConfig.setRedisHost("localhost");
-        connectionConfig.setRedisPort(6379);
-        connectionConfig.setUseSSL(false);
-        connectionConfig.setUseSSH(false);
-        RedisConnection connection = connectionService.addConnection(connectionConfig);
-        RedisConnectionItem item1 = new RedisConnectionItem(connection);
-
-        item1.getChildren().addAll(
-                new TreeItem<>("isFirstOrder:CHN2078:M1002100095"),
-                new TreeItem<>("POINT_EXCHANGE:SHOP_CART:2061193"),
-                new TreeItem<>("POINT_EXCHANGE:SHOP_CART:PACK_ID"));
-
-
+        treeView.setOnMouseClicked(event -> {
+            // 双击树中元素
+            if (event.getClickCount() == 2) {
+                Object item = treeView.getSelectionModel().getSelectedItem();
+                if (item instanceof RedisConnectionItem) {
+                    RedisConnectionItem connectionItem = (RedisConnectionItem) item;
+                    RedisConnection connection = connectionItem.getConnection();
+                    if (connection.getStatus() == RedisConnectionStatus.CLOSED) {
+                        connection.openConnection();
+                    }
+                }
+            }
+        });
     }
-
 
     private void addRedisConnectionItem(RedisConnection connection) {
-        RedisConnectionItem item = new RedisConnectionItem(connection);
-        connectionItemMap.put(connection, item);
-        rootItem.getChildren().add(item);
-    }
+        RedisConnectionItem connItem = new RedisConnectionItem(connection);
 
+        connection.getOnBeforeOpenConnection().addHandler(conn -> {
+            System.out.println("start opening connection");
+            Platform.runLater(() -> {
+                connItem.refresh(treeView);
+            });
+        });
+
+        connection.getOnAfterOpenConnection().addHandler(conn -> {
+            System.out.println("opened connection: " + conn.getConnectionConfig().getName());
+            Platform.runLater(() -> {
+                List<RedisDatabaseItem> databaseItems = conn.getDatabaseList()
+                        .stream()
+                        .map(database -> new RedisDatabaseItem(database))
+                        .collect(Collectors.toList());
+                connItem.getChildren().setAll(databaseItems);
+                connItem.setExpanded(true);
+                connItem.refresh(treeView);
+            });
+        });
+        connectionItemMap.put(connection, connItem);
+        rootItem.getChildren().add(connItem);
+    }
 
 
     public void onSearchCancel(MouseEvent mouseEvent) {

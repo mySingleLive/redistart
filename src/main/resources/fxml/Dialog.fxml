@@ -10,7 +10,7 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 
-<BorderPane fx:id="mainPane" prefHeight="164.0" prefWidth="431.0" styleClass="dialog-box" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.DialogController">
+<BorderPane fx:id="mainPane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="164.0" prefWidth="431.0" styleClass="dialog-box" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.DialogController">
    <bottom>
       <HBox fx:id="buttonsBox" alignment="CENTER_RIGHT" prefHeight="60.0" BorderPane.alignment="CENTER">
          <children>
@@ -30,11 +30,17 @@
    <right>
       <VBox prefWidth="40.0" BorderPane.alignment="CENTER">
          <children>
-            <FontIcon iconColor="#e4e0e0" iconLiteral="icm-cross" onMouseClicked="#onCloseAction">
+            <HBox>
                <VBox.margin>
-                  <Insets left="18.0" top="10.0" />
+                  <Insets left="18.0" />
                </VBox.margin>
-            </FontIcon>
+               <children>
+                  <FontIcon iconColor="#e4e0e0" iconLiteral="icm-cross" onMouseClicked="#onCloseAction" styleClass="window-close-button" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
          </children>
       </VBox>
    </right>

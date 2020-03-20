@@ -1,6 +1,7 @@
 package com.dtflys.redistart.controller;
 
 import com.dtflys.redistart.App;
+import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.view.ConnectionSettingView;
 import com.dtflys.redistart.view.DialogView;
@@ -47,9 +48,10 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        var stage = App.getStage();
         SplitPane.setResizableWithParent(leftBox, Boolean.FALSE);
     }
+
+
 
     public void onAddConnectionItemAction(ActionEvent actionEvent) {
         connectionSettingView.showStage(Modality.WINDOW_MODAL, Map.of(

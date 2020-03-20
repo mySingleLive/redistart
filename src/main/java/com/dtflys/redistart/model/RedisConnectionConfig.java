@@ -30,6 +30,8 @@ public class RedisConnectionConfig {
 
     private Integer connectionPoolSize;
 
+    private Integer queryPageSize;
+
     public String getName() {
         return name;
     }
@@ -108,5 +110,13 @@ public class RedisConnectionConfig {
 
     public void setConnectionPoolSize(Integer connectionPoolSize) {
         this.connectionPoolSize = connectionPoolSize;
+    }
+
+    public Integer getQueryPageSize() {
+        return queryPageSize;
+    }
+
+    public void setQueryPageSize(Integer queryPageSize) {
+        this.queryPageSize = queryPageSize;
     }
 }

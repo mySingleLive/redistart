@@ -1,8 +1,6 @@
 package com.dtflys.redistart.controls.item;
 
 import com.dtflys.redistart.model.RedisConnection;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 
 public class RedisConnectionItem extends RSBaseTreeItem {
 
@@ -11,13 +9,21 @@ public class RedisConnectionItem extends RSBaseTreeItem {
     public RedisConnectionItem(RedisConnection connection) {
         super(connection.getConnectionConfig().getName(), RSItemType.REDIS_CONNECTION);
         this.connection = connection;
-
     }
 
-
+    @Override
+    public RSItemStatus getItemStatus() {
+        switch (connection.getStatus()) {
+            case CONNECTING:
+                return RSItemStatus.WAITING;
+            default:
+                return super.getItemStatus();
+        }
+    }
 
     public RedisConnection getConnection() {
         return connection;
     }
+
 
 }
