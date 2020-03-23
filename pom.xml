@@ -27,6 +27,13 @@
         <info.displayName>RediStart</info.displayName>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>FontAwesomeFX</id>
+            <url>https://bintray.com/jerady/maven/FontAwesomeFX</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -173,6 +180,26 @@
             <artifactId>ikonli-devicons-pack</artifactId>
             <version>${ikonli.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-commons</artifactId>
+            <version>11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-controls</artifactId>
+            <version>11.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-fontawesome</artifactId>
+            <version>4.7.0-5</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.netty</groupId>

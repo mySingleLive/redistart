@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.BreadCrumbBar?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane fx:id="mainPane" prefHeight="640.0" prefWidth="1024.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
@@ -18,46 +24,115 @@
       <HBox fx:id="statusBar" prefHeight="22.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.2976" BorderPane.alignment="CENTER">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.24021526418786693" BorderPane.alignment="CENTER">
         <items>
             <VBox fx:id="leftBox" minWidth="60.0">
                 <fx:include source="NavigationView.fxml" VBox.vgrow="ALWAYS" />
             </VBox>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+          <AnchorPane fx:id="rightBox" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
         </items>
       </SplitPane>
    </center>
    <top>
-      <VBox prefHeight="50.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="appTitleBarBox" onMouseClicked="#onTitleBarClicked" prefHeight="30.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar fx:id="menuBar">
-              <menus>
-                <Menu text="文件">
-                  <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onAddConnectionItemAction" text="新建连接">
-                           <graphic>
-                              <FontIcon iconColor="#f5f0f0" iconLiteral="fas-plug" iconSize="20" selectionEnd="1" styleClass="menuIcon" />
-                           </graphic></MenuItem>
-                        <MenuItem mnemonicParsing="false" text="打开连接" />
-                        <MenuItem mnemonicParsing="false" text="关闭连接" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                    <MenuItem mnemonicParsing="false" text="退出RediStart" />
-                  </items>
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                </Menu>
-                <Menu mnemonicParsing="false" text="编辑">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                     <accelerator>
-                        <KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                </Menu>
-              </menus>
-            </MenuBar>
-            <BreadCrumbBar VBox.vgrow="ALWAYS" />
+            <GridPane prefHeight="30.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="28.0" minWidth="10.0" prefWidth="28.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="10.0" prefWidth="105.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="50.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <MenuBar fx:id="menuBar" prefHeight="38.0" prefWidth="101.0" GridPane.columnIndex="1">
+                    <menus>
+                      <Menu text="文件">
+                        <items>
+                              <MenuItem mnemonicParsing="false" onAction="#onAddConnectionItemAction" text="新建连接">
+                                 <graphic>
+                                    <FontIcon iconColor="#f5f0f0" iconLiteral="fas-plug" iconSize="20" selectionEnd="1" styleClass="menuIcon" />
+                                 </graphic>
+                              </MenuItem>
+                              <MenuItem mnemonicParsing="false" text="打开连接" />
+                              <MenuItem mnemonicParsing="false" text="关闭连接" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                          <MenuItem mnemonicParsing="false" text="退出RediStart" />
+                        </items>
+                           <accelerator>
+                              <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="编辑">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" />
+                        </items>
+                           <accelerator>
+                              <KeyCodeCombination alt="DOWN" code="E" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                     <children>
+                        <Label fx:id="appTitle" alignment="CENTER" text="RediStart" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                           <padding>
+                              <Insets top="6.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="6.0" top="4.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../image/RediStart.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="appCloseBox" onMouseClicked="#onAppCloseClicked" prefHeight="100.0" prefWidth="200.0" styleClass="window-close-button" GridPane.columnIndex="5">
+                     <children>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="14.0" top="8.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../image/icons_window_close_32px.png" />
+                           </image>
+                        </ImageView>
+                     </children></HBox>
+                  <HBox fx:id="appMaximizeBox" onMouseClicked="#onAppMaximizeClicked" prefHeight="100.0" prefWidth="200.0" styleClass="window-title-bar-button" GridPane.columnIndex="4">
+                     <children>
+                        <ImageView fx:id="imgvMaximize" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="14.0" top="8.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../image/icons_window_maximize_32px.png" />
+                           </image>
+                        </ImageView>
+                     </children></HBox>
+                  <HBox fx:id="appMinimizeBox" onMouseClicked="#onAppMinimizeClicked" prefHeight="100.0" prefWidth="200.0" styleClass="window-title-bar-button" GridPane.columnIndex="3">
+                     <children>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icons_window_minimize_32px.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="14.0" top="8.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children></HBox>
+               </children>
+            </GridPane>
          </children>
       </VBox>
    </top>

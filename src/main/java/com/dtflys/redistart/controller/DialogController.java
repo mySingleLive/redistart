@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class DialogController implements RSController {
+public class DialogController extends RSBorderlessController implements RSController {
 
     @FXML
     private BorderPane mainPane;
@@ -59,6 +59,7 @@ public class DialogController implements RSController {
 
     @Override
     public void init(Map<String, Object> args) {
+        super.movable(mainPane);
         lbTitle.setText(Optional.of(title).get());
         lbContent.setText(Optional.of(content).get());
         if (width != null) {
@@ -76,28 +77,12 @@ public class DialogController implements RSController {
             buttonsBox.getChildren().remove(cancelButton);
         }
 
-        mainPane.setOnMousePressed(event -> {
-            xOffset = event.getSceneX();
-            yOffset = event.getSceneY();
-        });
-
-        mainPane.setOnMouseDragged(event -> {
-            Stage stage = getStage();
-            stage.setX(event.getScreenX() - xOffset);
-            stage.setY(event.getScreenY() - yOffset);
-        });
 
         if (onInit != null) {
             onInit.accept(this);
         }
     }
 
-    private Stage getStage() {
-        if (stage == null) {
-            stage = (Stage) mainPane.getScene().getWindow();
-        }
-        return stage;
-    }
 
     public BorderPane getMainPane() {
         return mainPane;

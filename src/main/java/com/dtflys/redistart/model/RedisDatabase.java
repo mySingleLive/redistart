@@ -18,7 +18,7 @@ public class RedisDatabase {
 
     private Long averageTTL;
 
-    private final RSKeySet keySet;
+    private RSKeySet keySet;
 
     public RedisDatabase(RedisConnection connection) {
         this.connection = connection;
