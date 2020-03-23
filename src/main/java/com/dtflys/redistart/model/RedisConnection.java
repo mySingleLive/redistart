@@ -1,6 +1,7 @@
 package com.dtflys.redistart.model;
 
 import com.dtflys.redistart.event.RSEventHandlerList;
+import com.dtflys.redistart.model.command.RSCommandRecord;
 import org.apache.commons.collections4.MapUtils;
 import org.redisson.client.RedisClient;
 import org.redisson.client.RedisClientConfig;
@@ -46,6 +47,10 @@ public class RedisConnection {
         .setPassword(connectionConfig.getRedisPassword())
         .setDatabase(0);
         return config;
+    }
+
+    public void asyc(RSCommandRecord record) {
+        redisConnection.async(connectionConfig.getTimeout(), record.getRedisCommand(), record.getArguments());
     }
 
     public void openConnection() {

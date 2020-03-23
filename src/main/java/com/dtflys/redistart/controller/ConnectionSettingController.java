@@ -81,6 +81,9 @@ public class ConnectionSettingController implements RSController {
     @FXML
     private ComboBox cmbValidType;
 
+    @FXML
+    private CustomTextField txQueryPageSize;
+
     private DialogView dialogView;
 
 
@@ -88,6 +91,7 @@ public class ConnectionSettingController implements RSController {
     public void init(Map<String, Object> args) {
         ControlUtils.numberField(txRedisPort);
         ControlUtils.numberField(txSSHPort);
+        ControlUtils.numberField(txQueryPageSize);
         hideAuthText();
         secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
         sshSettingTabView.disableProperty().bind(cbUseSSH.selectedProperty().not());
@@ -155,7 +159,7 @@ public class ConnectionSettingController implements RSController {
     private RedisConnectionConfig getConnectionConfig() {
         String name = txName.getText().trim();
         String redisHost = txRedisHost.getText().trim();
-        String redisPortText = txRedisPort.getText();
+        String redisPortText = txRedisPort.getText().trim();
         Integer redisPort = null;
         try {
             redisPort = Integer.parseInt(redisPortText);
@@ -166,10 +170,21 @@ public class ConnectionSettingController implements RSController {
         if (StringUtils.isBlank(name)) {
             name = redisHost + ":" + redisPort;
         }
+        String queryPageSizeText = txQueryPageSize.getText().trim();
+        Integer queryPageSize = null;
+        try {
+            queryPageSize = Integer.parseInt(queryPageSizeText);
+        } catch (Throwable th) {
+        }
+        if (queryPageSize == null) {
+            queryPageSize = 300;
+        }
+
         connectionConfig.setName(name);
         connectionConfig.setRedisHost(redisHost);
         connectionConfig.setRedisPort(redisPort);
         connectionConfig.setRedisPassword(redisPassword);
+        connectionConfig.setQueryPageSize(queryPageSize);
         return connectionConfig;
     }
 

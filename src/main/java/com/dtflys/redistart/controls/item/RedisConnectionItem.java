@@ -1,6 +1,8 @@
 package com.dtflys.redistart.controls.item;
 
 import com.dtflys.redistart.model.RedisConnection;
+import com.dtflys.redistart.model.RedisConnectionStatus;
+import javafx.scene.control.TreeView;
 
 public class RedisConnectionItem extends RSBaseTreeItem {
 
@@ -9,6 +11,13 @@ public class RedisConnectionItem extends RSBaseTreeItem {
     public RedisConnectionItem(RedisConnection connection) {
         super(connection.getConnectionConfig().getName(), RSItemType.REDIS_CONNECTION);
         this.connection = connection;
+    }
+
+    @Override
+    public void doAction(TreeView treeView) {
+        if (connection.getStatus() == RedisConnectionStatus.CLOSED) {
+            connection.openConnection();
+        }
     }
 
     @Override

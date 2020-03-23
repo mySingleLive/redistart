@@ -1,5 +1,6 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.controls.item.RSBaseTreeItem;
 import com.dtflys.redistart.controls.item.RedisConnectionItem;
 import com.dtflys.redistart.controls.item.RedisDatabaseItem;
 import com.dtflys.redistart.event.RSEventHandler;
@@ -50,12 +51,8 @@ public class NavigationController implements Initializable {
             // 双击树中元素
             if (event.getClickCount() == 2) {
                 Object item = treeView.getSelectionModel().getSelectedItem();
-                if (item instanceof RedisConnectionItem) {
-                    RedisConnectionItem connectionItem = (RedisConnectionItem) item;
-                    RedisConnection connection = connectionItem.getConnection();
-                    if (connection.getStatus() == RedisConnectionStatus.CLOSED) {
-                        connection.openConnection();
-                    }
+                if (item instanceof RSBaseTreeItem) {
+                    ((RSBaseTreeItem) item).doAction(treeView);
                 }
             }
         });

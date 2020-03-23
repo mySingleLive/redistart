@@ -13,6 +13,7 @@ public abstract class RSBaseTreeItem extends TreeItem<String> {
     private FontIcon icon;
     private JFXSpinner spinner;
 
+    public abstract void doAction(TreeView treeView);
 
     public RSBaseTreeItem(String s, RSItemType itemType) {
         super(s);

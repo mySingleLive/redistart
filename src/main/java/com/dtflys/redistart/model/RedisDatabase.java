@@ -28,9 +28,13 @@ public class RedisDatabase {
     public void openDatabase() {
         if (!isOpened) {
             connection.getOnBeforeOpenDatabase().handle(this);
-
+            keySet.findNextPage();
             connection.getOnAfterOpenDatabase().handle(this);
         }
+    }
+
+    public RedisConnection getConnection() {
+        return connection;
     }
 
     public String getName() {
