@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane fx:id="mainPane" prefHeight="640.0" prefWidth="1024.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
+<BorderPane fx:id="mainPane" prefHeight="700.0" prefWidth="1100.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
    <bottom>
       <HBox fx:id="statusBar" prefHeight="22.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </bottom>
@@ -34,7 +34,7 @@
       </SplitPane>
    </center>
    <top>
-      <VBox fx:id="appTitleBarBox" onMouseClicked="#onTitleBarClicked" prefHeight="30.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="appTitleBarBox" onMouseClicked="#onTitleBarClicked" prefHeight="30.0" styleClass="window-title-bar" BorderPane.alignment="CENTER">
          <children>
             <GridPane prefHeight="30.0">
                <columnConstraints>
@@ -49,7 +49,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <MenuBar fx:id="menuBar" prefHeight="38.0" prefWidth="101.0" GridPane.columnIndex="1">
+                  <MenuBar fx:id="menuBar" prefWidth="101.0" GridPane.columnIndex="1">
                     <menus>
                       <Menu text="文件">
                         <items>
@@ -76,6 +76,9 @@
                            </accelerator>
                       </Menu>
                     </menus>
+                     <padding>
+                        <Insets bottom="2.0" top="2.0" />
+                     </padding>
                   </MenuBar>
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                      <children>
@@ -136,4 +139,44 @@
          </children>
       </VBox>
    </top>
+   <left>
+      <GridPane prefWidth="50.0" styleClass="left-side-tab-bar" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox prefHeight="50.0" prefWidth="50.0" styleClass="left-side-tab">
+               <children>
+                  <FontIcon iconColor="#838383" iconLiteral="dashicons-admin-plugins" iconSize="26">
+                     <HBox.margin>
+                        <Insets left="13.0" top="13.0" />
+                     </HBox.margin>
+                  </FontIcon>
+               </children>
+            </HBox>
+            <HBox prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="1">
+               <children>
+                  <FontIcon iconColor="#838383" iconLiteral="icm-key" iconSize="20">
+                     <HBox.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </HBox.margin>
+                  </FontIcon>
+               </children></HBox>
+            <HBox prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
+               <children>
+                  <FontIcon iconColor="#838383" iconLiteral="icm-folder" iconSize="20">
+                     <HBox.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </HBox.margin>
+                  </FontIcon>
+               </children></HBox>
+         </children>
+      </GridPane>
+   </left>
 </BorderPane>

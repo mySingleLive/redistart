@@ -108,11 +108,13 @@ public class DialogController extends RSBorderlessController implements RSContro
         getStage().close();
     }
 
-    public void onOkAtion(ActionEvent actionEvent) {
-        getStage().close();
-    }
 
     public void onCancelAction(ActionEvent actionEvent) {
         getStage().close();
     }
+
+    public void onOkAtion(ActionEvent actionEvent) {
+        getStage().close();
+    }
+
 }

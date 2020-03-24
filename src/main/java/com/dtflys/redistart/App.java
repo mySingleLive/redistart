@@ -18,6 +18,7 @@ public class App extends AbstractJavaFxApplicationSupport {
     @Override
     public void beforeInitialView(Stage stage, ConfigurableApplicationContext ctx) {
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(true);
     }
 
     public static void launchApp(String[] args) {

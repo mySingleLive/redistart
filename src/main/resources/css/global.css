@@ -4,21 +4,30 @@
     -rs-back-color: #201c1c;
     -rs-group-color1: #2f2c2b;
     -rs-group-color2: #403b3a;
+    -rs-group-color3: #4f4b4a;
+    -rs-group-color4: #676260;
     -rs-common-text-fill: #d6d6d6;
 
-    /* app window */
-    -rs-app-title-color: #78716e;
+    /* icons color */
+    -rs-icon-color: #838383;
+    -rs-icon-hover-color: #b4b4b4;
+    -rs-icon-selected-color: #e1e1e1;
 
+    /* app window */
+    -rs-app-title-color: #47413f;
+    -rs-app-title-bar-color: #4b4543;
+    -rs-app-status-bar-color: #47413f;
+    -rs-app-left-side-bar-color: #4d4746;
 
     /* menu and tree color */
-    -rs-tree-background-color: #2f2c2b;
+    -rs-tree-background-color: #3d3937;
     -rs-menu-selection-color: #4674aa;
     -rs-tree-selection-color: #4674aa;
     -rs-tree-hover-color: #544f4d;
 
 
     /* controls color */
-    -rs-control-background-color: #312f2d;
+    -rs-control-background-color: #4f4b4a;
     -rs-control-border-color: #818181;
     -rs-control-highlight-fill: #4674aa;
     -rs-controler-field-fill: #d6d6d6;
@@ -42,8 +51,12 @@
     -fx-text-fill: -rs-app-title-color;
 }
 
+.window-title-bar {
+    -fx-background-color: -rs-app-title-bar-color;
+}
 
 .window-title-bar-button {
+    -fx-background-color: -rs-app-title-bar-color;
 }
 
 .window-title-bar-button:hover {
@@ -57,6 +70,28 @@
 .window-close-button:hover {
     -fx-background-color: #ed2620;
 }
+
+.left-side-tab-bar {
+    -fx-background-color: -rs-app-left-side-bar-color;
+}
+
+.left-side-tab {
+    -fx-background-color: -rs-app-left-side-bar-color;
+}
+
+.left-side-tab .ikonli-font-icon {
+    -fx-icon-color: -rs-icon-color;
+}
+
+.left-side-tab:hover {
+    -fx-background-color: -rs-group-color4;
+}
+
+/*
+.left-side-tab:hover .ikonli-font-icon {
+    -fx-icon-color: -rs-icon-hover-color;
+}
+*/
 
 
 .dialog-close-button {
@@ -84,8 +119,10 @@
     -fx-background-color: -rs-back-color;
 }
 
+
+
 .menu, .menu-item, .context-menu, .menu-bar, .bread-crumb-bar {
-    -fx-background-color: #2f2c2b;
+    -fx-background-color: -rs-app-title-bar-color;
 }
 
 .menuIcon {
@@ -196,6 +233,7 @@
 
 
 #statusBar {
+    -fx-background-color: -rs-app-status-bar-color;
     -fx-border-width: 0;
 }
 
