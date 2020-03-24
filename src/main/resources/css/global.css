@@ -2,6 +2,9 @@
 * {
     /* global color */
     -rs-back-color: #201c1c;
+    -rs-back-color2: #232424;
+
+
     -rs-group-color1: #2f2c2b;
     -rs-group-color2: #403b3a;
     -rs-group-color3: #4f4b4a;
@@ -14,17 +17,16 @@
     -rs-icon-selected-color: #e1e1e1;
 
     /* app window */
-    -rs-app-title-color: #47413f;
-    -rs-app-title-bar-color: #4b4543;
+    -rs-app-title-color: #978b86;
+    -rs-app-title-bar-color: #3f3a38;
     -rs-app-status-bar-color: #47413f;
-    -rs-app-left-side-bar-color: #4d4746;
+    -rs-app-left-side-bar-color: #34302e;
 
     /* menu and tree color */
-    -rs-tree-background-color: #3d3937;
+    -rs-tree-background-color: #282828;
     -rs-menu-selection-color: #4674aa;
     -rs-tree-selection-color: #4674aa;
     -rs-tree-hover-color: #544f4d;
-
 
     /* controls color */
     -rs-control-background-color: #4f4b4a;
@@ -60,7 +62,7 @@
 }
 
 .window-title-bar-button:hover {
-    -fx-background-color: -rs-group-color2;
+    -fx-background-color: -rs-group-color4;
 }
 
 
@@ -339,6 +341,7 @@
 }
 
 #rightBox {
+    -fx-background-color: -rs-back-color2;
     -fx-border-width: 0;
 }
 

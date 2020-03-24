@@ -1,8 +1,10 @@
 package com.dtflys.redistart.controller;
 
 import com.dtflys.redistart.service.ConnectionService;
+import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
 import de.felixroske.jfxsupport.FXMLController;
+import de.felixroske.jfxsupport.GUIState;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,6 +66,7 @@ public class MainViewController extends RSBorderlessController implements Initia
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.movable(appTitleBarBox);
+        ResizeUtils.addResizeListener(GUIState.getStage(), mainPane);
         SplitPane.setResizableWithParent(leftBox, Boolean.FALSE);
         maximizeImage = imgvMaximize.getImage();
         maximizeRestoreImage = new Image( "/image/icons_max_restore_32px.png");
