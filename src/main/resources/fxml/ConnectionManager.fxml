@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" maxHeight="730.0" maxWidth="800.0" minHeight="730.0" minWidth="800.0" prefHeight="730.0" prefWidth="800.0" styleClass="conn-manager-pane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionManagerController">
+   <children>
+      <VBox alignment="CENTER" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" styleClass="conn-manager-banner-box">
+         <children>
+            <ImageView fitHeight="211.0" fitWidth="528.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/banner.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+      <HBox alignment="TOP_CENTER" maxHeight="65.0" minHeight="65.0" prefHeight="65.0" styleClass="conn-manager-banner-box">
+         <children>
+            <Label text="Version 1.0.0-Beta" textFill="#868181" />
+         </children>
+      </HBox>
+      <GridPane maxWidth="800.0" minWidth="800.0" prefWidth="800.0" styleClass="conn-manager-button-bar">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" minWidth="100.0" styleClass="conn-manager-button">
+               <children>
+                  <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/add_new_connection.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="新建连接">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="42.0" top="8.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" styleClass="conn-manager-button" GridPane.columnIndex="1">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/edit_connection.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="编辑连接">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="42.0" top="8.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" styleClass="conn-manager-button" GridPane.columnIndex="2">
+               <children>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/delete_connection.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="删除连接">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="42.0" top="8.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" styleClass="conn-manager-button" GridPane.columnIndex="3">
+               <children>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/import_connection.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="导入连接">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="42.0" top="8.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" styleClass="conn-manager-button" GridPane.columnIndex="4">
+               <children>
+                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/export_connection.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="导出连接">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="42.0" top="8.0" />
+               </padding>
+            </HBox>
+         </children>
+      </GridPane>
+      <TableView fx:id="connTableView" maxHeight="390.0" maxWidth="800.0" minWidth="800.0" prefHeight="390.0" prefWidth="800.0">
+        <columns>
+          <TableColumn fx:id="colConnName" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="163.0" text="名称" />
+          <TableColumn fx:id="colConnAddress" maxWidth="1.7976931348623157E308" minWidth="350.0" prefWidth="350.0" text="服务地址" />
+            <TableColumn fx:id="colConnSSH" maxWidth="1.7976931348623157E308" minWidth="115.0" prefWidth="115.0" text="SSH" />
+            <TableColumn fx:id="colConnCreateTime" maxWidth="1.7976931348623157E308" minWidth="94.0" prefWidth="112.0" text="创建时间" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
