@@ -1,6 +1,5 @@
 package com.dtflys.redistart.controller;
 
-import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ControlUtils;
@@ -10,23 +9,19 @@ import com.dtflys.redistart.view.DialogView;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 
-import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -37,6 +32,7 @@ public class ConnectionSettingController implements RSController {
     private final static String LITERAL_PWD_INVISIBLE = "icm-eye-blocked";
 
     private boolean modify = false;
+
 
     private ConnectionService connectionService;
 
@@ -96,6 +92,16 @@ public class ConnectionSettingController implements RSController {
         secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
         sshSettingTabView.disableProperty().bind(cbUseSSH.selectedProperty().not());
         cmbValidType.getItems().addAll("私钥", "密码");
+
+
+        if (modify && connectionConfig != null) {
+            txName.setText(connectionConfig.getName());
+            txRedisHost.setText(connectionConfig.getRedisHost());
+            txRedisPort.setText("" + connectionConfig.getRedisPort());
+            txAuth.setText(connectionConfig.getRedisPassword());
+            cbUseSSL.setSelected(connectionConfig.getIsUseSSL());
+            cbUseSSH.setSelected(connectionConfig.getIsUseSSH());
+        }
     }
 
     private void hideAuthText() {
@@ -126,8 +132,12 @@ public class ConnectionSettingController implements RSController {
 
 
     public void onOkAction(ActionEvent actionEvent) {
-        RedisConnectionConfig connectionConfig = getConnectionConfig();
-        connectionService.addConnection(connectionConfig);
+        RedisConnectionConfig newConfig = getConnectionConfig();
+        if (modify) {
+            BeanUtils.copyProperties(newConfig, connectionConfig);
+        } else {
+            connectionService.addConnection(newConfig);
+        }
 
         Stage stage = (Stage) txName.getScene().getWindow();
         stage.close();
@@ -185,6 +195,7 @@ public class ConnectionSettingController implements RSController {
         connectionConfig.setRedisPort(redisPort);
         connectionConfig.setRedisPassword(redisPassword);
         connectionConfig.setQueryPageSize(queryPageSize);
+        connectionConfig.setCreateTime(new Date());
         return connectionConfig;
     }
 

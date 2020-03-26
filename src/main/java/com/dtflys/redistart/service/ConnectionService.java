@@ -2,18 +2,18 @@ package com.dtflys.redistart.service;
 
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 @Component("connectionService")
 public class ConnectionService {
 
-    private List<RedisConnection> connections = new ArrayList<>();
+    private ObservableList<RedisConnection> connections = FXCollections.observableArrayList();
 
     private Map<RedisConnectionConfig, RedisConnection> connectionConfigMap = new HashMap<>();
 
@@ -48,4 +48,7 @@ public class ConnectionService {
         }).start();
     }
 
+    public ObservableList<RedisConnection> getConnections() {
+        return connections;
+    }
 }

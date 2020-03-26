@@ -1,122 +1,170 @@
 package com.dtflys.redistart.model;
 
+import javafx.beans.property.*;
+
+import java.util.Date;
+
 public class RedisConnectionConfig {
 
     /* Connection Settings */
 
-    private String name;
+    private final StringProperty name = new SimpleStringProperty();
 
-    private String redisHost;
+    private final StringProperty redisHost = new SimpleStringProperty();
 
-    private Integer redisPort;
+    private final IntegerProperty redisPort = new SimpleIntegerProperty();
 
-    private String redisPassword;
+    private final StringProperty redisPassword = new SimpleStringProperty();
 
     /* SSL Settings */
 
-    private Boolean isUseSSL;
+    private final BooleanProperty isUseSSL = new SimpleBooleanProperty(false);
 
     /* SSH Settings */
 
-    private Boolean isUseSSH;
+    private final BooleanProperty isUseSSH = new SimpleBooleanProperty(false);
 
     /* Advanced Settings */
 
-    private Integer timeout;
+    private final IntegerProperty timeout = new SimpleIntegerProperty();
 
-    private Integer connectTimeout;
+    private final IntegerProperty connectTimeout = new SimpleIntegerProperty();
 
-    private Integer reconnectTimeout;
+    private final IntegerProperty reconnectTimeout = new SimpleIntegerProperty();
 
-    private Integer connectionPoolSize;
+    private final IntegerProperty queryPageSize = new SimpleIntegerProperty();
 
-    private Integer queryPageSize;
+    private final ObjectProperty<Date> createTime = new SimpleObjectProperty<>();
 
     public String getName() {
+        return name.get();
+    }
+
+    public StringProperty nameProperty() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     public String getRedisHost() {
+        return redisHost.get();
+    }
+
+    public StringProperty redisHostProperty() {
         return redisHost;
     }
 
     public void setRedisHost(String redisHost) {
-        this.redisHost = redisHost;
+        this.redisHost.set(redisHost);
     }
 
-    public Integer getRedisPort() {
+    public int getRedisPort() {
+        return redisPort.get();
+    }
+
+    public IntegerProperty redisPortProperty() {
         return redisPort;
     }
 
-    public void setRedisPort(Integer redisPort) {
-        this.redisPort = redisPort;
+    public void setRedisPort(int redisPort) {
+        this.redisPort.set(redisPort);
     }
 
     public String getRedisPassword() {
+        return redisPassword.get();
+    }
+
+    public StringProperty redisPasswordProperty() {
         return redisPassword;
     }
 
     public void setRedisPassword(String redisPassword) {
-        this.redisPassword = redisPassword;
+        this.redisPassword.set(redisPassword);
     }
 
-    public Boolean getUseSSL() {
+    public boolean getIsUseSSL() {
+        return isUseSSL.get();
+    }
+
+    public BooleanProperty isUseSSLProperty() {
         return isUseSSL;
     }
 
-    public void setUseSSL(Boolean useSSL) {
-        isUseSSL = useSSL;
+    public void setIsUseSSL(boolean isUseSSL) {
+        this.isUseSSL.set(isUseSSL);
     }
 
-    public Boolean getUseSSH() {
+    public boolean getIsUseSSH() {
+        return isUseSSH.get();
+    }
+
+    public BooleanProperty isUseSSHProperty() {
         return isUseSSH;
     }
 
-    public void setUseSSH(Boolean useSSH) {
-        isUseSSH = useSSH;
+    public void setIsUseSSH(boolean isUseSSH) {
+        this.isUseSSH.set(isUseSSH);
     }
 
-    public Integer getConnectTimeout() {
-        return connectTimeout;
+    public int getTimeout() {
+        return timeout.get();
     }
 
-    public Integer getTimeout() {
+    public IntegerProperty timeoutProperty() {
         return timeout;
     }
 
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
+    public void setTimeout(int timeout) {
+        this.timeout.set(timeout);
     }
 
-    public void setConnectTimeout(Integer connectTimeout) {
-        this.connectTimeout = connectTimeout;
+    public int getConnectTimeout() {
+        return connectTimeout.get();
     }
 
-    public Integer getReconnectTimeout() {
+    public IntegerProperty connectTimeoutProperty() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout.set(connectTimeout);
+    }
+
+    public int getReconnectTimeout() {
+        return reconnectTimeout.get();
+    }
+
+    public IntegerProperty reconnectTimeoutProperty() {
         return reconnectTimeout;
     }
 
-    public void setReconnectTimeout(Integer reconnectTimeout) {
-        this.reconnectTimeout = reconnectTimeout;
+    public void setReconnectTimeout(int reconnectTimeout) {
+        this.reconnectTimeout.set(reconnectTimeout);
     }
 
-    public Integer getConnectionPoolSize() {
-        return connectionPoolSize;
+    public int getQueryPageSize() {
+        return queryPageSize.get();
     }
 
-    public void setConnectionPoolSize(Integer connectionPoolSize) {
-        this.connectionPoolSize = connectionPoolSize;
-    }
-
-    public Integer getQueryPageSize() {
+    public IntegerProperty queryPageSizeProperty() {
         return queryPageSize;
     }
 
-    public void setQueryPageSize(Integer queryPageSize) {
-        this.queryPageSize = queryPageSize;
+    public void setQueryPageSize(int queryPageSize) {
+        this.queryPageSize.set(queryPageSize);
+    }
+
+    public Date getCreateTime() {
+        return createTime.get();
+    }
+
+    public ObjectProperty<Date> createTimeProperty() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime.set(createTime);
     }
 }

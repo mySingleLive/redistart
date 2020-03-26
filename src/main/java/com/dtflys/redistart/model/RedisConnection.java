@@ -2,6 +2,10 @@ package com.dtflys.redistart.model;
 
 import com.dtflys.redistart.event.RSEventHandlerList;
 import com.dtflys.redistart.model.command.RSCommandRecord;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import org.apache.commons.collections4.MapUtils;
 import org.redisson.client.RedisClient;
 import org.redisson.client.RedisClientConfig;
@@ -136,6 +140,7 @@ public class RedisConnection {
     }
 
     public String ping() {
+
         String response = redisConnection.sync(new StringCodec(), RedisCommands.PING);
         return response;
     }
@@ -179,5 +184,16 @@ public class RedisConnection {
 
     public boolean isConnecting() {
         return status == RedisConnectionStatus.CONNECTING;
+    }
+
+    public StringProperty nameProperty() {
+        StringProperty nameProperty = new SimpleStringProperty(connectionConfig.getName());
+        nameProperty.addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                nameProperty.setValue(s);
+            }
+        });
+        return nameProperty;
     }
 }
