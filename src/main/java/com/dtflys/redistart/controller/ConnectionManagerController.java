@@ -141,7 +141,7 @@ public class ConnectionManagerController implements Initializable {
     }
 
     public void onAddNewConnectionClick(MouseEvent mouseEvent) {
-        connectionSettingView.showStage(Modality.WINDOW_MODAL, Map.of(
+        connectionSettingView.showBorderlessStage(Modality.WINDOW_MODAL, Map.of(
                 "modify", false,
                 "connectionService", connectionService));
     }

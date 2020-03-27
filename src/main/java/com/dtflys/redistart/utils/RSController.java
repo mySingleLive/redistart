@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface RSController {
 
-    void init(Map<String, Object> args);
+    void receiveArguments(Map<String, Object> args);
 }

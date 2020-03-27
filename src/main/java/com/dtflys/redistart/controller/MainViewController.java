@@ -82,14 +82,14 @@ public class MainViewController extends RSBorderlessController implements Initia
         maximizeRestoreImage = new Image( "/image/icons_max_restore_32px.png");
         connManagerBox.toFront();
 
-        Parent keysContentRoot = keysContentView.loadAsParent(Map.of());
-        stackPane.getChildren().add(keysContentRoot);
-        keysContentRoot.toFront();
+//        Parent keysContentRoot = keysContentView.loadAsParent(Map.of());
+//        stackPane.getChildren().add(keysContentRoot);
+//        keysContentRoot.toFront();
     }
 
 
     public void onAddConnectionItemAction(ActionEvent actionEvent) {
-        connectionSettingView.showStage(Modality.WINDOW_MODAL, Map.of(
+        connectionSettingView.showBorderlessStage(Modality.WINDOW_MODAL, Map.of(
                 "modify", false,
                 "connectionService", connectionService));
     }

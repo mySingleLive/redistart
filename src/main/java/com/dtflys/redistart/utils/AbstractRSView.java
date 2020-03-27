@@ -1,7 +1,7 @@
 package com.dtflys.redistart.utils;
 
-import com.dtflys.redistart.App;
 import com.dtflys.redistart.controller.NavigationController;
+import com.dtflys.redistart.controls.pane.RSBorderlessPane;
 import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.FXMLView;
 import de.felixroske.jfxsupport.GUIState;
@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -24,13 +23,9 @@ import org.springframework.context.ApplicationContext;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class AbstractRSView extends AbstractFxmlView {
 
@@ -112,7 +107,7 @@ public class AbstractRSView extends AbstractFxmlView {
             }
         }
         if (controller instanceof RSController) {
-            ((RSController) controller).init(args);
+            ((RSController) controller).receiveArguments(args);
         }
     }
 
@@ -121,21 +116,7 @@ public class AbstractRSView extends AbstractFxmlView {
                                 Map<String, Object> args, ApplicationContext applicationContext) {
         Parent root = load(path, args, applicationContext);
         if (useShadow != null && useShadow) {
-            DropShadow dropshadow = new DropShadow();// 阴影向外
-            dropshadow.setRadius(10);// 颜色蔓延的距离
-            dropshadow.setOffsetX(0);// 水平方向，0则向左右两侧，正则向右，负则向左
-            dropshadow.setOffsetY(0);// 垂直方向，0则向上下两侧，正则向下，负则向上
-            dropshadow.setSpread(0.1);// 颜色变淡的程度
-            dropshadow.setColor(Color.BLACK);// 设置颜色
-            root.setEffect(dropshadow);// 绑定指定窗口控件
-
-            HBox parentBox = new HBox();// 创建最底层的面板
-            parentBox.setAlignment(Pos.CENTER);// 设置对齐方式为居中
-            parentBox.setPadding(new Insets(dropshadow.getRadius()));// 设置要显示的阴影宽度为根控件与底层容器的四边距离
-            parentBox.getChildren().add(root);// 添加根控件到底层容器中
-            parentBox.getStylesheets().add("/css/global.css");
-            parentBox.getStyleClass().add("dialog-parent");
-            root = parentBox;
+            root = new RSBorderlessPane(root, useShadow, false);
         }
         Scene scene = null;
         scene = new Scene(root, winColor);
@@ -148,10 +129,26 @@ public class AbstractRSView extends AbstractFxmlView {
         newStage.showAndWait();
     }
 
+
+    public static void showBorderlessView(String path, String title, StageStyle style,
+                                final Modality mode, Color winColor,
+                                Map<String, Object> args, ApplicationContext applicationContext) {
+        Parent root = load(path, args, applicationContext);
+        root = new RSBorderlessPane(root, true, true);
+        Scene scene = new Scene(root, winColor);
+        Stage newStage = new Stage();
+        newStage.setScene(scene);
+        newStage.initModality(mode);
+        newStage.initOwner(GUIState.getStage());
+        newStage.setTitle(title);
+        newStage.initStyle(style);
+        newStage.showAndWait();
+    }
+
+
     public Parent loadAsParent() {
         return loadAsParent(new HashMap<>());
     }
-
 
 
     public Parent loadAsParent(Map<String, Object> args) {
@@ -181,6 +178,17 @@ public class AbstractRSView extends AbstractFxmlView {
         showView(path, title, stageStyle, Modality.NONE, winColor, useShadow, args, applicationContext);
     }
 
+
+    public void showBorderlessStage(Color winColor, Map<String, Object> args) {
+        FXMLView fxmlView = getClass().getAnnotation(FXMLView.class);
+        String path = fxmlView.value();
+        String title = fxmlView.title();
+        String style = fxmlView.stageStyle();
+        StageStyle stageStyle = StageStyle.valueOf(style.toUpperCase());
+        showBorderlessView(path, title, stageStyle, Modality.NONE, winColor, args, applicationContext);
+    }
+
+
     public void showStage(final Modality mode, Map<String, Object> args) {
         FXMLView fxmlView = getClass().getAnnotation(FXMLView.class);
         String path = fxmlView.value();
@@ -190,6 +198,15 @@ public class AbstractRSView extends AbstractFxmlView {
         showView(path, title, stageStyle, mode, null, null, args, applicationContext);
     }
 
+
+    public void showBorderlessStage(final Modality mode, Map<String, Object> args) {
+        FXMLView fxmlView = getClass().getAnnotation(FXMLView.class);
+        String path = fxmlView.value();
+        String title = fxmlView.title();
+        String style = fxmlView.stageStyle();
+        StageStyle stageStyle = StageStyle.valueOf(style.toUpperCase());
+        showBorderlessView(path, title, stageStyle, mode, null, args, applicationContext);
+    }
 
     public void showStage(Map<String, Object> args) {
         showStage(Modality.NONE, args);

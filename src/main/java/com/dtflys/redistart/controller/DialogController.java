@@ -1,6 +1,5 @@
 package com.dtflys.redistart.controller;
 
-import com.dtflys.redistart.utils.RSController;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,12 +11,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class DialogController extends RSBorderlessController implements Initializable, RSController {
+public class DialogController extends RSBorderlessController implements Initializable {
 
     @FXML
     private BorderPane mainPane;
@@ -86,10 +84,6 @@ public class DialogController extends RSBorderlessController implements Initiali
         }
     }
 
-
-    @Override
-    public void init(Map<String, Object> args) {
-    }
 
 
     public BorderPane getMainPane() {

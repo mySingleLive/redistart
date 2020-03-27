@@ -107,7 +107,7 @@ public class ConnectionSettingController implements Initializable, RSController 
     }
 
     @Override
-    public void init(Map<String, Object> args) {
+    public void receiveArguments(Map<String, Object> args) {
     }
 
     private void hideAuthText() {

@@ -73,6 +73,11 @@
     -fx-background-color: #ed2620;
 }
 
+.dialog-title-bar {
+    -fx-pref-height: 35;
+    -fx-background-color: -rs-app-title-bar-color;
+}
+
 .table-view {
     -fx-background-color: #313131;
     -fx-text-fill: -rs-common-text-fill;
