@@ -1,14 +1,19 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.service.ConnectionService;
+import com.dtflys.redistart.service.RediStartService;
+import com.dtflys.redistart.utils.DialogUtils;
 import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
+import com.dtflys.redistart.view.KeysContentView;
 import de.felixroske.jfxsupport.FXMLController;
 import de.felixroske.jfxsupport.GUIState;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
@@ -29,6 +34,8 @@ import java.util.ResourceBundle;
 @FXMLController
 public class MainViewController extends RSBorderlessController implements Initializable {
 
+    @Resource
+    private RediStartService rediStartService;
 
     @Resource
     private ConnectionService connectionService;
@@ -48,11 +55,6 @@ public class MainViewController extends RSBorderlessController implements Initia
     @FXML
     private StackPane stackPane;
 
-    @FXML
-    private SplitPane mainSplitPane;
-
-    @FXML
-    private VBox leftBox;
 
     @FXML
     private HBox appMaximizeBox;
@@ -68,16 +70,21 @@ public class MainViewController extends RSBorderlessController implements Initia
     @Resource
     private ConnectionSettingView connectionSettingView;
 
+    @Resource
+    private KeysContentView keysContentView;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.movable(appTitleBarBox);
         ResizeUtils.addResizeListener(GUIState.getStage(), mainPane);
-        SplitPane.setResizableWithParent(leftBox, Boolean.FALSE);
         maximizeImage = imgvMaximize.getImage();
         maximizeRestoreImage = new Image( "/image/icons_max_restore_32px.png");
         connManagerBox.toFront();
+
+        Parent keysContentRoot = keysContentView.loadAsParent(Map.of());
+        stackPane.getChildren().add(keysContentRoot);
+        keysContentRoot.toFront();
     }
 
 
@@ -99,6 +106,10 @@ public class MainViewController extends RSBorderlessController implements Initia
         }
     }
 
+    public void openConnection(RedisConnection connection) {
+        System.out.println("打开连接: " + connection.getConnectionConfig().getName());
+    }
+
     public void onAppCloseClicked(MouseEvent mouseEvent) {
         Platform.exit();
     }
@@ -115,5 +126,21 @@ public class MainViewController extends RSBorderlessController implements Initia
         if (mouseEvent.getClickCount() == 2) {
             toggleMaximizeWindow();
         }
+    }
+
+    public void onSelectConnectionTab(MouseEvent mouseEvent) {
+        connManagerBox.toFront();
+    }
+
+    public void onSelectKeysTab(MouseEvent mouseEvent) {
+
+    }
+
+    public void onSelectCollectionTab(MouseEvent mouseEvent) {
+
+    }
+
+    public void onSelectSettingsTab(MouseEvent mouseEvent) {
+
     }
 }

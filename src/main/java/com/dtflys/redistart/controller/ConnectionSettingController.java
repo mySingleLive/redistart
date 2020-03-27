@@ -10,6 +10,7 @@ import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -21,11 +22,13 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.BeanUtils;
 
+import java.net.URL;
 import java.util.Date;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class ConnectionSettingController implements RSController {
+public class ConnectionSettingController implements Initializable, RSController {
 
     private final static String LITERAL_PWD_VISIBLE = "icm-eye";
 
@@ -82,9 +85,8 @@ public class ConnectionSettingController implements RSController {
 
     private DialogView dialogView;
 
-
     @Override
-    public void init(Map<String, Object> args) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         ControlUtils.numberField(txRedisPort);
         ControlUtils.numberField(txSSHPort);
         ControlUtils.numberField(txQueryPageSize);
@@ -102,6 +104,10 @@ public class ConnectionSettingController implements RSController {
             cbUseSSL.setSelected(connectionConfig.getIsUseSSL());
             cbUseSSH.setSelected(connectionConfig.getIsUseSSH());
         }
+    }
+
+    @Override
+    public void init(Map<String, Object> args) {
     }
 
     private void hideAuthText() {
@@ -237,4 +243,5 @@ public class ConnectionSettingController implements RSController {
                 }
         ));
     }
+
 }

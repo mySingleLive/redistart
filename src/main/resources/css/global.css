@@ -13,7 +13,7 @@
 
     /* icons color */
     -rs-icon-color: #838383;
-    -rs-icon-hover-color: #b4b4b4;
+    -rs-icon-hover-color: #c4c4c4;
     -rs-icon-selected-color: #e1e1e1;
 
     /* app window */
@@ -155,8 +155,16 @@
 }
 
 .left-side-tab:hover {
-    -fx-background-color: -rs-group-color4;
+    /*-fx-background-color: -rs-group-color4;*/
+    -fx-cursor: HAND;
 }
+
+
+.left-side-tab:hover .ikonli-font-icon {
+    -fx-icon-color: -rs-icon-hover-color;
+}
+
+
 
 /*
 .left-side-tab:hover .ikonli-font-icon {

@@ -20,7 +20,7 @@ public class DialogUtils {
         Color winColor = Color.TRANSPARENT;
         args = new HashMap<>(args);
         args.put("title", title);
-        AbstractRSView.showView("/fxml/Dialog.fxml", title, stageStyle, modality, winColor, true, args);
+        AbstractRSView.showView("/fxml/Dialog.fxml", title, stageStyle, modality, winColor, true, args, null);
     }
 
     public static void showModalDialog(Map<String, Object> args) {

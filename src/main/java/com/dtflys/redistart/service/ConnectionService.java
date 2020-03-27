@@ -1,5 +1,6 @@
 package com.dtflys.redistart.service;
 
+import com.dtflys.redistart.event.RSEventHandlerList;
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import javafx.collections.FXCollections;
@@ -18,6 +19,8 @@ public class ConnectionService {
     private Map<RedisConnectionConfig, RedisConnection> connectionConfigMap = new HashMap<>();
 
     private Consumer<RedisConnection> onAfterAddConnection;
+
+    private RSEventHandlerList<RedisConnection> onAfterOpenConnection = new RSEventHandlerList<>();
 
     public RedisConnection addConnection(RedisConnectionConfig connectionConfig) {
         RedisConnection connection = new RedisConnection(connectionConfig);
@@ -46,6 +49,10 @@ public class ConnectionService {
                 onTestEnd.accept(result);
             }
         }).start();
+    }
+
+    public RSEventHandlerList<RedisConnection> getOnAfterOpenConnection() {
+        return onAfterOpenConnection;
     }
 
     public ObservableList<RedisConnection> getConnections() {

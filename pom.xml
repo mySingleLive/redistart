@@ -187,33 +187,35 @@
             <version>${ikonli.version}</version>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-commons</artifactId>
-            <version>11.0</version>
-        </dependency>
 
 
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-controls</artifactId>
-            <version>11.0</version>
-        </dependency>
+        <!--
+                <dependency>
+                    <groupId>de.jensd</groupId>
+                    <artifactId>fontawesomefx-commons</artifactId>
+                    <version>11.0</version>
+                </dependency>
 
 
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-fontawesome</artifactId>
-            <version>4.7.0-5</version>
-        </dependency>
+                <dependency>
+                    <groupId>de.jensd</groupId>
+                    <artifactId>fontawesomefx-controls</artifactId>
+                    <version>11.0</version>
+                </dependency>
 
-        <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-emojione</artifactId>
-            <version>2.2.7-2</version>
-        </dependency>
--->
+
+                <dependency>
+                    <groupId>de.jensd</groupId>
+                    <artifactId>fontawesomefx-fontawesome</artifactId>
+                    <version>4.7.0-5</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>de.jensd</groupId>
+                    <artifactId>fontawesomefx-emojione</artifactId>
+                    <version>2.2.7-2</version>
+                </dependency>
+        -->
 
 
 

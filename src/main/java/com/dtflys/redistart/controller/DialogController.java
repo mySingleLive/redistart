@@ -4,17 +4,20 @@ import com.dtflys.redistart.utils.RSController;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class DialogController extends RSBorderlessController implements RSController {
+public class DialogController extends RSBorderlessController implements Initializable, RSController {
 
     @FXML
     private BorderPane mainPane;
@@ -58,7 +61,7 @@ public class DialogController extends RSBorderlessController implements RSContro
     private Consumer<DialogController> onInit;
 
     @Override
-    public void init(Map<String, Object> args) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         super.movable(mainPane);
         lbTitle.setText(Optional.of(title).get());
         lbContent.setText(Optional.of(content).get());
@@ -81,6 +84,11 @@ public class DialogController extends RSBorderlessController implements RSContro
         if (onInit != null) {
             onInit.accept(this);
         }
+    }
+
+
+    @Override
+    public void init(Map<String, Object> args) {
     }
 
 

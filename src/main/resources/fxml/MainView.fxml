@@ -6,11 +6,9 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -22,16 +20,8 @@
 
 <BorderPane fx:id="mainPane" prefHeight="760.0" prefWidth="1200.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
    <center>
-      <StackPane fx:id="stackPane" styleClass="backPane" BorderPane.alignment="CENTER">
+      <StackPane fx:id="stackPane" styleClass="backPane">
          <children>
-            <SplitPane fx:id="mainSplitPane" dividerPositions="0.24021526418786693">
-              <items>
-                  <VBox fx:id="leftBox" minWidth="60.0">
-                      <fx:include source="NavigationView.fxml" VBox.vgrow="ALWAYS" />
-                  </VBox>
-                <AnchorPane fx:id="rightBox" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-              </items>
-            </SplitPane>
              <VBox fx:id="connManagerBox" alignment="CENTER" styleClass="backPane">
                  <fx:include source="ConnectionManager.fxml" />
              </VBox>
@@ -157,7 +147,7 @@
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox prefHeight="50.0" prefWidth="50.0" styleClass="left-side-tab">
+            <HBox onMouseClicked="#onSelectConnectionTab" prefHeight="50.0" prefWidth="50.0" styleClass="left-side-tab">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="dashicons-admin-plugins" iconSize="26">
                      <HBox.margin>
@@ -166,7 +156,7 @@
                   </FontIcon>
                </children>
             </HBox>
-            <HBox prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="1">
+            <HBox onMouseClicked="#onSelectKeysTab" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="1">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="icm-key" iconSize="20">
                      <HBox.margin>
@@ -176,7 +166,7 @@
                </children></HBox>
             <HBox prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
                <children>
-                  <FontIcon iconColor="#838383" iconLiteral="icm-folder" iconSize="20">
+                  <FontIcon iconColor="#838383" iconLiteral="icm-folder" iconSize="20" onMouseClicked="#onSelectCollectionTab">
                      <HBox.margin>
                         <Insets left="15.0" top="15.0" />
                      </HBox.margin>
@@ -184,7 +174,7 @@
                </children></HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" styleClass="left-side-tab" GridPane.rowIndex="4">
                <children>
-                  <FontIcon iconColor="#e1e1e1" iconLiteral="dashicons-admin-generic" iconSize="26">
+                  <FontIcon iconColor="#e1e1e1" iconLiteral="dashicons-admin-generic" iconSize="26" onMouseClicked="#onSelectSettingsTab">
                      <HBox.margin>
                         <Insets left="12.0" top="12.0" />
                      </HBox.margin>
