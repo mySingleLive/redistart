@@ -20,6 +20,8 @@ public class ConnectionService {
 
     private Consumer<RedisConnection> onAfterAddConnection;
 
+    private RSEventHandlerList<RedisConnection> onOpenConnectionFailed = new RSEventHandlerList<>();
+
     private RSEventHandlerList<RedisConnection> onAfterOpenConnection = new RSEventHandlerList<>();
 
     public RedisConnection addConnection(RedisConnectionConfig connectionConfig) {
@@ -28,6 +30,11 @@ public class ConnectionService {
         connectionConfigMap.put(connectionConfig, connection);
         afterAddConnection(connection);
         return connection;
+    }
+
+    public void deleteConnection(RedisConnection connection) {
+        connectionConfigMap.remove(connection.getConnectionConfig());
+        connections.remove(connection);
     }
 
     public void setOnAfterAddConnection(Consumer<RedisConnection> onAfterAddConnection) {
@@ -53,6 +60,10 @@ public class ConnectionService {
 
     public RSEventHandlerList<RedisConnection> getOnAfterOpenConnection() {
         return onAfterOpenConnection;
+    }
+
+    public RSEventHandlerList<RedisConnection> getOnOpenConnectionFailed() {
+        return onOpenConnectionFailed;
     }
 
     public ObservableList<RedisConnection> getConnections() {

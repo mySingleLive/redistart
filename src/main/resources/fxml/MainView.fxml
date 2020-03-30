@@ -24,6 +24,9 @@
          <children>
              <VBox fx:id="connManagerBox" alignment="CENTER" styleClass="backPane">
                  <fx:include source="ConnectionManager.fxml" />
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
              </VBox>
          </children>
       </StackPane>

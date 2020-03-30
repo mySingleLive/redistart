@@ -18,7 +18,8 @@
 
     /* app window */
     -rs-app-title-color: #978b86;
-    -rs-app-title-bar-color: #3f3a38;
+    -rs-app-title-bar-color: #5a5350;
+    -rs-dialog-title-bar-color: #5a5350;
     -rs-app-status-bar-color: #47413f;
     -rs-app-left-side-bar-color: #34302e;
 
@@ -74,8 +75,8 @@
 }
 
 .dialog-title-bar {
-    -fx-pref-height: 35;
-    -fx-background-color: -rs-app-title-bar-color;
+    -fx-pref-height: 30;
+    -fx-background-color: -rs-dialog-title-bar-color;
 }
 
 .table-view {
@@ -83,7 +84,7 @@
     -fx-text-fill: -rs-common-text-fill;
 }
 
-.table-view:focused{
+.table-view:focused {
     -fx-background-insets: 0, 0, 0;
     -fx-focus-traversable: transparent;
 }
@@ -211,13 +212,15 @@
 }
 
 .dialog-close-button {
-    -fx-icon-color: -rs-group-color2;
 }
 
-.dialog-close-button:hover {
+.dialog-close-button .ikonli-font-icon {
+    -fx-icon-color: #a5a5a5;
+}
+
+.dialog-close-button:hover .ikonli-font-icon {
     -fx-icon-color: #ebebeb;
 }
-
 
 .groupPane {
     -fx-background-color: -rs-group-color1;

@@ -1,10 +1,10 @@
-package com.dtflys.redistart.controller;
+package com.dtflys.redistart.controls;
 
 import com.dtflys.redistart.utils.ResizeUtils;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
-public abstract class RSBorderlessController {
+public class RSMovableListener {
 
     private Parent movable;
 
@@ -14,7 +14,14 @@ public abstract class RSBorderlessController {
 
     private double yOffset = 0;
 
-    protected void movable(Parent root) {
+    public RSMovableListener() {
+    }
+
+    public RSMovableListener(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void movable(Parent root) {
         this.movable = root;
 
         root.setOnMousePressed(event -> {
@@ -29,7 +36,7 @@ public abstract class RSBorderlessController {
         });
     }
 
-    protected void resizable(Parent root) {
+    public void resizable(Parent root) {
         ResizeUtils.addResizeListener(getStage(), root);
     }
 

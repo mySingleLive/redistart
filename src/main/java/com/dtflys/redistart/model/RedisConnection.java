@@ -28,6 +28,8 @@ public class RedisConnection {
 
     private RSEventHandlerList<RedisConnection> onAfterOpenConnection = new RSEventHandlerList<>();
 
+    private RSEventHandlerList<RedisConnection> onOpenConnectionFailed = new RSEventHandlerList<>();
+
     private RSEventHandlerList<RedisDatabase> onBeforeOpenDatabase = new RSEventHandlerList<>();
 
     private RSEventHandlerList<RedisDatabase> onAfterOpenDatabase = new RSEventHandlerList<>();
@@ -43,11 +45,15 @@ public class RedisConnection {
         return connectionConfig;
     }
 
+    private String redisClientName() {
+        return connectionConfig.getRedisHost() + ":" + connectionConfig.getRedisPort();
+    }
+
 
     private RedisClientConfig createRedisConnectionConfig() {
         RedisClientConfig config = new RedisClientConfig();
         config.setAddress(connectionConfig.getRedisHost(), connectionConfig.getRedisPort())
-        .setClientName(connectionConfig.getName())
+        .setClientName(redisClientName())
         .setPassword(connectionConfig.getRedisPassword())
         .setDatabase(0);
         return config;
@@ -69,6 +75,7 @@ public class RedisConnection {
                 closeConnection();
             }
             if (!success) {
+                onOpenConnectionFailed.handle(this);
                 return;
             }
             databaseList = loadDatabases();
@@ -172,6 +179,10 @@ public class RedisConnection {
 
     public RSEventHandlerList<RedisDatabase> getOnAfterOpenDatabase() {
         return onAfterOpenDatabase;
+    }
+
+    public RSEventHandlerList<RedisConnection> getOnOpenConnectionFailed() {
+        return onOpenConnectionFailed;
     }
 
     public RedisConnectionStatus getStatus() {

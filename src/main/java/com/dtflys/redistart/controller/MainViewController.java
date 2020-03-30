@@ -1,9 +1,9 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.controls.RSMovableListener;
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
-import com.dtflys.redistart.utils.DialogUtils;
 import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
 import com.dtflys.redistart.view.KeysContentView;
@@ -13,9 +13,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -32,7 +30,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 @FXMLController
-public class MainViewController extends RSBorderlessController implements Initializable {
+public class MainViewController extends RSMovableListener implements Initializable {
 
     @Resource
     private RediStartService rediStartService;

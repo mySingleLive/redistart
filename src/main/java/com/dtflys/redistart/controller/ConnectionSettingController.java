@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class ConnectionSettingController implements Initializable, RSController 
 
     private boolean modify = false;
 
-
+    @Autowired
     private ConnectionService connectionService;
 
     private RedisConnectionConfig connectionConfig;

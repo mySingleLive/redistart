@@ -6,12 +6,8 @@ import de.felixroske.jfxsupport.AbstractFxmlView;
 import de.felixroske.jfxsupport.FXMLView;
 import de.felixroske.jfxsupport.GUIState;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -114,13 +110,13 @@ public class AbstractRSView extends AbstractFxmlView {
     public static void showView(String path, String title, StageStyle style,
                                 final Modality mode, Color winColor, Boolean useShadow,
                                 Map<String, Object> args, ApplicationContext applicationContext) {
+        Stage newStage = new Stage();
         Parent root = load(path, args, applicationContext);
         if (useShadow != null && useShadow) {
-            root = new RSBorderlessPane(root, useShadow, false);
+            root = new RSBorderlessPane(newStage, root, useShadow, false);
         }
         Scene scene = null;
         scene = new Scene(root, winColor);
-        Stage newStage = new Stage();
         newStage.setScene(scene);
         newStage.initModality(mode);
         newStage.initOwner(GUIState.getStage());
@@ -133,10 +129,10 @@ public class AbstractRSView extends AbstractFxmlView {
     public static void showBorderlessView(String path, String title, StageStyle style,
                                 final Modality mode, Color winColor,
                                 Map<String, Object> args, ApplicationContext applicationContext) {
-        Parent root = load(path, args, applicationContext);
-        root = new RSBorderlessPane(root, true, true);
-        Scene scene = new Scene(root, winColor);
         Stage newStage = new Stage();
+        Parent root = load(path, args, applicationContext);
+        root = new RSBorderlessPane(newStage, root, true, true);
+        Scene scene = new Scene(root, winColor);
         newStage.setScene(scene);
         newStage.initModality(mode);
         newStage.initOwner(GUIState.getStage());

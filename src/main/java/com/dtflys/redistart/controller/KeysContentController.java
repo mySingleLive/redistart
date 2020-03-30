@@ -1,6 +1,5 @@
 package com.dtflys.redistart.controller;
 
-import com.dtflys.redistart.utils.RSController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;

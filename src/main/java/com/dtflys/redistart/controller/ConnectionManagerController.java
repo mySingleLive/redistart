@@ -3,18 +3,24 @@ package com.dtflys.redistart.controller;
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
+import com.dtflys.redistart.utils.ConfirmResult;
+import com.dtflys.redistart.utils.DialogUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSpinner;
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.util.Callback;
 
@@ -24,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 @FXMLController
 public class ConnectionManagerController implements Initializable {
@@ -57,7 +64,6 @@ public class ConnectionManagerController implements Initializable {
 
     @FXML
     private TableColumn<RedisConnection, Date> colConnCreateTime;
-
 
     @Resource
     private ConnectionService connectionService;
@@ -110,7 +116,70 @@ public class ConnectionManagerController implements Initializable {
                 cellData.getValue().getConnectionConfig().createTimeProperty());
         colConnCreateTime.setCellFactory(dateColumnCallback);
 
-        connTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+//        connTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        DialogController dialogControllers[] = new DialogController[1];
+        Region leftRegion = new Region();
+        leftRegion.setPrefWidth(35);
+        JFXSpinner spinner = new JFXSpinner();
+        spinner.setPrefWidth(35);
+        spinner.setPrefHeight(35);
+        HBox.setMargin(spinner, new Insets(20, 0, 0, 0));
+        Label label = new Label();
+        label.setAlignment(Pos.CENTER_LEFT);
+        HBox.setMargin(label, new Insets(42, 0, 0, 30));
+
+        connectionService.setOnAfterAddConnection(connection -> {
+            connection.getOnOpenConnectionFailed().addHandler(handler -> {
+                Platform.runLater(() -> {
+                    spinner.setOpacity(0);
+                    label.setText("连接失败");
+                });
+            });
+
+            connection.getOnAfterOpenConnection().addHandler(handler -> {
+                Platform.runLater(() -> {
+                    synchronized (dialogControllers) {
+                        if (dialogControllers[0] != null) {
+                            dialogControllers[0].close();
+                        }
+                    }
+                });
+            });
+        });
+
+        connTableView.setRowFactory(tbl -> {
+            TableRow<RedisConnection> row = new TableRow<>();
+            row.setOnMouseClicked(eventHandler -> {
+                if (eventHandler.getClickCount() == 2 && !row.isEmpty()) {
+                    RedisConnection connection = row.getItem();
+                    System.out.println("-- " + connection.getConnectionConfig().getName());
+                    DialogUtils.showModalDialog(Map.of(
+                            "content", "",
+                            "width", 270,
+                            "height", 150,
+                            "showOkButton", false,
+                            "showCancelButton", false,
+                            "onInit", (Consumer<DialogController>) dController -> {
+                                HBox contentBox = dController.getContentBox();
+                                contentBox.getChildren().clear();
+                                spinner.setOpacity(1);
+                                label.setText("正在连接...");
+                                contentBox.setAlignment(Pos.CENTER_LEFT);
+                                HBox.setHgrow(label, Priority.ALWAYS);
+                                HBox.setMargin(label, new Insets(0, 0,  2, 5));
+                                contentBox.getChildren().addAll(leftRegion, spinner, label);
+                                synchronized (dialogControllers) {
+                                    dialogControllers[0] = dController;
+                                }
+                                connection.openConnection();
+                            }
+                    ));
+
+                }
+            });
+            return row;
+        });
 
         RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
         connectionConfig.setName("Test 1");
@@ -130,6 +199,7 @@ public class ConnectionManagerController implements Initializable {
         connectionService.addConnection(connectionConfig2);
 
         connTableView.setItems(connectionService.getConnections());
+
     }
 
     private void onAfterAddNewConnection(RedisConnection connection) {
@@ -148,15 +218,22 @@ public class ConnectionManagerController implements Initializable {
 
     public void onEditConnectionClick(MouseEvent mouseEvent) {
         RedisConnection connection = connTableView.getSelectionModel().getSelectedItem();
-        connectionSettingView.showStage(Modality.WINDOW_MODAL, Map.of(
+        connectionSettingView.showBorderlessStage(Modality.WINDOW_MODAL, Map.of(
                 "modify", true,
-                "connectionConfig", connection.getConnectionConfig(),
-                "connectionService", connectionService));
+                "connectionConfig", connection.getConnectionConfig()));
 
     }
 
     public void onDeleteConnectionClick(MouseEvent mouseEvent) {
-
+        DialogUtils.showModalDialog(Map.of(
+                "title", "Redistart",
+                "content", "是否删除?",
+                "onConfirm", (Consumer<ConfirmResult>) result -> {
+                    if (ConfirmResult.OK == result) {
+                        RedisConnection connection = connTableView.getSelectionModel().getSelectedItem();
+                        connectionService.deleteConnection(connection);
+                    }
+                }));
     }
 
     public void onImportConnectionClick(MouseEvent mouseEvent) {

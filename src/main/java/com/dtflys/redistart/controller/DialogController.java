@@ -1,5 +1,8 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.controls.RSMovableListener;
+import com.dtflys.redistart.utils.ConfirmResult;
+import com.dtflys.redistart.utils.RSController;
 import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,11 +14,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class DialogController extends RSBorderlessController implements Initializable {
+public class DialogController extends RSMovableListener implements Initializable, RSController {
 
     @FXML
     private BorderPane mainPane;
@@ -40,10 +44,6 @@ public class DialogController extends RSBorderlessController implements Initiali
 
     private Stage stage;
 
-    private double xOffset = 0;
-
-    private double yOffset = 0;
-
     private Boolean showOkButton = true;
 
     private Boolean showCancelButton = true;
@@ -57,6 +57,8 @@ public class DialogController extends RSBorderlessController implements Initiali
     private Integer height;
 
     private Consumer<DialogController> onInit;
+
+    private Consumer<ConfirmResult> onConfirm;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -78,13 +80,28 @@ public class DialogController extends RSBorderlessController implements Initiali
             buttonsBox.getChildren().remove(cancelButton);
         }
 
+        if (showOkButton != null && !showOkButton && showCancelButton != null && !showCancelButton) {
+            mainPane.setBottom(null);
+        }
 
         if (onInit != null) {
             onInit.accept(this);
         }
     }
 
+    private void doOnConfirm(ConfirmResult result) {
+        if (onConfirm != null) {
+            onConfirm.accept(result);
+        }
+    }
 
+    @Override
+    public void receiveArguments(Map<String, Object> args) {
+        Object onConfirmFunc = args.get("onConfirm");
+        if (onConfirmFunc != null) {
+            onConfirm = (Consumer<ConfirmResult>) onConfirmFunc;
+        }
+    }
 
     public BorderPane getMainPane() {
         return mainPane;
@@ -106,16 +123,31 @@ public class DialogController extends RSBorderlessController implements Initiali
         return cancelButton;
     }
 
+    public void triggerOk() {
+        okButton.fire();
+    }
+
+    public void triggerCancel() {
+        cancelButton.fire();
+    }
+
+    public void close() {
+        getStage().close();
+    }
+
     public void onCloseAction(MouseEvent mouseEvent) {
+        doOnConfirm(ConfirmResult.CLOSE);
         getStage().close();
     }
 
 
     public void onCancelAction(ActionEvent actionEvent) {
+        doOnConfirm(ConfirmResult.CANCEL);
         getStage().close();
     }
 
-    public void onOkAtion(ActionEvent actionEvent) {
+    public void onOkAction(ActionEvent actionEvent) {
+        doOnConfirm(ConfirmResult.OK);
         getStage().close();
     }
 

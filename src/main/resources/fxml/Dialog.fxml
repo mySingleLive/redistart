@@ -9,12 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
 <BorderPane fx:id="mainPane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="164.0" prefWidth="431.0" styleClass="dialog-box" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.DialogController">
    <bottom>
       <HBox fx:id="buttonsBox" alignment="CENTER_RIGHT" prefHeight="60.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="okButton" onAction="#onOkAtion" text="确定" />
+            <JFXButton fx:id="okButton" onAction="#onOkAction" text="确定" />
             <JFXButton fx:id="cancelButton" onAction="#onCancelAction" text="取消">
                <HBox.margin>
                   <Insets left="20.0" />
@@ -30,7 +29,7 @@
    <right>
       <VBox prefWidth="40.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+            <HBox styleClass="dialog-close-button">
                <VBox.margin>
                   <Insets left="18.0" />
                </VBox.margin>

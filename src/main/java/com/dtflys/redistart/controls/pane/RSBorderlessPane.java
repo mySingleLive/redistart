@@ -1,5 +1,6 @@
 package com.dtflys.redistart.controls.pane;
 
+import com.dtflys.redistart.controls.RSMovableListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -7,12 +8,17 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class RSBorderlessPane extends HBox {
 
+    private final Stage stage;
+
     private final Parent root;
 
-    public RSBorderlessPane(Parent root, boolean useShadow, boolean hasTitleBar) {
+
+    public RSBorderlessPane(Stage stage, Parent root, boolean useShadow, boolean hasTitleBar) {
+        this.stage = stage;
         this.root = root;
         if (useShadow) {
             DropShadow dropshadow = new DropShadow();// 阴影向外
@@ -27,7 +33,7 @@ public class RSBorderlessPane extends HBox {
             this.getChildren().add(borderPane);
 
             if (hasTitleBar) {
-                RSBorderlessTitleBar titleBar = new RSBorderlessTitleBar();
+                RSBorderlessTitleBar titleBar = new RSBorderlessTitleBar(stage);
                 borderPane.setTop(titleBar);
             }
             borderPane.setCenter(root);
