@@ -2,6 +2,7 @@ package com.dtflys.redistart.model;
 
 import com.dtflys.redistart.event.RSEventHandlerList;
 import com.dtflys.redistart.model.command.RSCommandRecord;
+import com.dtflys.redistart.service.ConnectionService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -15,6 +16,8 @@ import org.redisson.client.protocol.RedisCommands;
 import java.util.*;
 
 public class RedisConnection {
+
+    private final ConnectionService connectionService;
 
     private RedisConnectionConfig connectionConfig;
 
@@ -36,7 +39,8 @@ public class RedisConnection {
 
     private RedisConnectionStatus status;
 
-    public RedisConnection(RedisConnectionConfig connectionConfig) {
+    public RedisConnection(ConnectionService connectionService, RedisConnectionConfig connectionConfig) {
+        this.connectionService = connectionService;
         this.connectionConfig = connectionConfig;
         this.status = RedisConnectionStatus.CLOSED;
     }
@@ -67,20 +71,25 @@ public class RedisConnection {
         status = RedisConnectionStatus.CONNECTING;
         onBeforeOpenConnection.handle(this);
         new Thread(() -> {
-            boolean success = false;
-            try {
-                doOpenConnection();
-                success = true;
-            } catch (Throwable th) {
-                closeConnection();
+            boolean hasOpened = connectionService.getOpenedConnections().contains(this);
+            if (!hasOpened) {
+                boolean success = false;
+                try {
+                    doOpenConnection();
+                    success = true;
+                } catch (Throwable th) {
+                    closeConnection();
+                }
+                if (!success) {
+                    onOpenConnectionFailed.handle(this);
+                    return;
+                }
+                databaseList = loadDatabases();
+                status = RedisConnectionStatus.OPENED;
+                connectionService.getOpenedConnections().add(this);
             }
-            if (!success) {
-                onOpenConnectionFailed.handle(this);
-                return;
-            }
-            databaseList = loadDatabases();
-            status = RedisConnectionStatus.OPENED;
             onAfterOpenConnection.handle(this);
+            connectionService.setSelectedConnection(this);
         }).start();
     }
 
@@ -207,4 +216,6 @@ public class RedisConnection {
         });
         return nameProperty;
     }
+
+
 }

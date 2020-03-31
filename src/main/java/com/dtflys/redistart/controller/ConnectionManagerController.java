@@ -124,10 +124,8 @@ public class ConnectionManagerController implements Initializable {
         JFXSpinner spinner = new JFXSpinner();
         spinner.setPrefWidth(35);
         spinner.setPrefHeight(35);
-        HBox.setMargin(spinner, new Insets(20, 0, 0, 0));
         Label label = new Label();
-        label.setAlignment(Pos.CENTER_LEFT);
-        HBox.setMargin(label, new Insets(42, 0, 0, 30));
+        HBox.setMargin(label, new Insets(0, 0, 0, 25));
 
         connectionService.setOnAfterAddConnection(connection -> {
             connection.getOnOpenConnectionFailed().addHandler(handler -> {
@@ -156,18 +154,16 @@ public class ConnectionManagerController implements Initializable {
                     System.out.println("-- " + connection.getConnectionConfig().getName());
                     DialogUtils.showModalDialog(Map.of(
                             "content", "",
-                            "width", 270,
-                            "height", 150,
+                            "width", 260,
+                            "height", 130,
                             "showOkButton", false,
                             "showCancelButton", false,
                             "onInit", (Consumer<DialogController>) dController -> {
                                 HBox contentBox = dController.getContentBox();
                                 contentBox.getChildren().clear();
+                                contentBox.setAlignment(Pos.CENTER_LEFT);
                                 spinner.setOpacity(1);
                                 label.setText("正在连接...");
-                                contentBox.setAlignment(Pos.CENTER_LEFT);
-                                HBox.setHgrow(label, Priority.ALWAYS);
-                                HBox.setMargin(label, new Insets(0, 0,  2, 5));
                                 contentBox.getChildren().addAll(leftRegion, spinner, label);
                                 synchronized (dialogControllers) {
                                     dialogControllers[0] = dController;
@@ -175,7 +171,6 @@ public class ConnectionManagerController implements Initializable {
                                 connection.openConnection();
                             }
                     ));
-
                 }
             });
             return row;

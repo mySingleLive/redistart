@@ -170,6 +170,17 @@
     -fx-icon-color: -rs-icon-hover-color;
 }
 
+.left-side-tab-selected {
+}
+
+.left-side-tab-selected .ikonli-font-icon {
+    -fx-icon-color: -rs-icon-selected-color;
+}
+
+.left-side-tab-selected:hover .ikonli-font-icon {
+    -fx-icon-color: -rs-icon-selected-color;
+}
+
 
 
 /*

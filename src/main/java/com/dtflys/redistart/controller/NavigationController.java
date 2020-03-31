@@ -14,9 +14,11 @@ import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
+import org.controlsfx.control.BreadCrumbBar;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class NavigationController implements Initializable {
 
     @FXML
     private CustomTextField txSearchField;
+
+    @FXML
+    private BreadCrumbBar<Label> crumbBar;
 
     @FXML
     private JFXTreeView treeView;

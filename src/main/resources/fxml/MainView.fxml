@@ -150,7 +150,7 @@
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox onMouseClicked="#onSelectConnectionTab" prefHeight="50.0" prefWidth="50.0" styleClass="left-side-tab">
+            <HBox fx:id="sideBtnConnection" onMouseClicked="#onSelectConnectionTab" prefHeight="50.0" prefWidth="50.0" styleClass="left-side-tab">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="dashicons-admin-plugins" iconSize="26">
                      <HBox.margin>
@@ -159,7 +159,7 @@
                   </FontIcon>
                </children>
             </HBox>
-            <HBox onMouseClicked="#onSelectKeysTab" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="1">
+            <HBox fx:id="sideBtnKeys" onMouseClicked="#onSelectKeysTab" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="1">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="icm-key" iconSize="20">
                      <HBox.margin>
@@ -167,7 +167,7 @@
                      </HBox.margin>
                   </FontIcon>
                </children></HBox>
-            <HBox prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
+            <HBox fx:id="sideBtnCollection" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="icm-folder" iconSize="20" onMouseClicked="#onSelectCollectionTab">
                      <HBox.margin>
