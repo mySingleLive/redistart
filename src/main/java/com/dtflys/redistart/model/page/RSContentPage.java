@@ -2,7 +2,7 @@ package com.dtflys.redistart.model.page;
 
 import java.util.function.Consumer;
 
-public class RSContentPage<T> {
+public abstract class RSContentPage<T> {
 
     public static final int CONNECTION_MANAGER_PAGE = 0;
 
@@ -12,12 +12,19 @@ public class RSContentPage<T> {
 
     private final int pageType;
 
+    private final boolean showSelectionItem;
+
     private Consumer<RSContentPage<T>> onInit;
 
     private Consumer<RSContentPage<T>> onSelect;
 
-    public RSContentPage(int pageType) {
+    public RSContentPage(int pageType, boolean showSelectionItem) {
         this.pageType = pageType;
+        this.showSelectionItem = showSelectionItem;
+    }
+
+    public boolean isShowSelectionItem() {
+        return showSelectionItem;
     }
 
     public int getPageType() {

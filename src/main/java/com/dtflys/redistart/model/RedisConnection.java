@@ -3,8 +3,8 @@ package com.dtflys.redistart.model;
 import com.dtflys.redistart.event.RSEventHandlerList;
 import com.dtflys.redistart.model.command.RSCommandRecord;
 import com.dtflys.redistart.service.ConnectionService;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.application.Platform;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import org.apache.commons.collections4.MapUtils;
@@ -37,12 +37,12 @@ public class RedisConnection {
 
     private RSEventHandlerList<RedisDatabase> onAfterOpenDatabase = new RSEventHandlerList<>();
 
-    private RedisConnectionStatus status;
+    private ObjectPropertyBase<RedisConnectionStatus> status = new SimpleObjectProperty<>();
 
     public RedisConnection(ConnectionService connectionService, RedisConnectionConfig connectionConfig) {
         this.connectionService = connectionService;
         this.connectionConfig = connectionConfig;
-        this.status = RedisConnectionStatus.CLOSED;
+        setStatus(RedisConnectionStatus.CLOSED);
     }
 
     public RedisConnectionConfig getConnectionConfig() {
@@ -68,13 +68,14 @@ public class RedisConnection {
     }
 
     public void openConnection() {
-        status = RedisConnectionStatus.CONNECTING;
+
         onBeforeOpenConnection.handle(this);
         new Thread(() -> {
             boolean hasOpened = connectionService.getOpenedConnections().contains(this);
             if (!hasOpened) {
                 boolean success = false;
                 try {
+                    setStatus(RedisConnectionStatus.CONNECTING);
                     doOpenConnection();
                     success = true;
                 } catch (Throwable th) {
@@ -85,10 +86,11 @@ public class RedisConnection {
                     return;
                 }
                 databaseList = loadDatabases();
-                status = RedisConnectionStatus.OPENED;
+                setStatus(RedisConnectionStatus.OPENED);
                 connectionService.getOpenedConnections().add(this);
             }
             onAfterOpenConnection.handle(this);
+            connectionService.afterOpenConnection(this);
             connectionService.setSelectedConnection(this);
         }).start();
     }
@@ -195,15 +197,15 @@ public class RedisConnection {
     }
 
     public RedisConnectionStatus getStatus() {
+        return status.get();
+    }
+
+    public ObjectPropertyBase<RedisConnectionStatus> statusProperty() {
         return status;
     }
 
-    public boolean isClosed() {
-        return status == RedisConnectionStatus.CLOSED;
-    }
-
-    public boolean isConnecting() {
-        return status == RedisConnectionStatus.CONNECTING;
+    public void setStatus(RedisConnectionStatus status) {
+        this.status.set(status);
     }
 
     public StringProperty nameProperty() {
@@ -217,5 +219,8 @@ public class RedisConnection {
         return nameProperty;
     }
 
-
+    @Override
+    public String toString() {
+        return getConnectionConfig().getName();
+    }
 }

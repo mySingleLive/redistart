@@ -37,6 +37,8 @@ public class ConnectionService {
 
     private Map<RedisConnectionConfig, RedisConnection> connectionConfigMap = new HashMap<>();
 
+    private Consumer<RedisConnection> onAfterOpenConnection;
+
     private Consumer<RedisConnection> onAfterAddConnection;
 
     private Consumer<RedisConnection> onSelectOpenedConnection;
@@ -78,8 +80,22 @@ public class ConnectionService {
                 connections.stream().map(conn -> conn.getConnectionConfig()).collect(Collectors.toList()));
     }
 
+    public Consumer<RedisConnection> getOnAfterOpenConnection() {
+        return onAfterOpenConnection;
+    }
+
+    public void setOnAfterOpenConnection(Consumer<RedisConnection> onAfterOpenConnection) {
+        this.onAfterOpenConnection = onAfterOpenConnection;
+    }
+
     public void setOnAfterAddConnection(Consumer<RedisConnection> onAfterAddConnection) {
         this.onAfterAddConnection = onAfterAddConnection;
+    }
+
+    public void afterOpenConnection(RedisConnection connection) {
+        if (onAfterOpenConnection != null) {
+            onAfterOpenConnection.accept(connection);
+        }
     }
 
     private void afterAddConnection(RedisConnection connection) {
@@ -87,6 +103,7 @@ public class ConnectionService {
             onAfterAddConnection.accept(connection);
         }
     }
+
 
     public void startTestConnection(RedisConnectionConfig connectionConfig, Consumer<Boolean> onTestEnd) {
         RedisConnection connection = new RedisConnection(this, connectionConfig);
@@ -159,6 +176,5 @@ public class ConnectionService {
 
     public void setSelectedConnection(RedisConnection selectedConnection) {
         this.selectedConnection.set(selectedConnection);
-        rediStartService.setSelectedKeysContentPage(selectedConnection);
     }
 }

@@ -37,7 +37,7 @@
             <GridPane prefHeight="30.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="34.0" minWidth="10.0" prefWidth="34.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="10.0" prefWidth="105.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="90.0" />
                   <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="50.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="10.0" prefWidth="50.0" />
@@ -78,12 +78,25 @@
                         <Insets bottom="2.0" top="2.0" />
                      </padding>
                   </MenuBar>
-                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                  <HBox fx:id="titleBox" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                      <children>
-                        <Label fx:id="appTitle" alignment="CENTER" text="RediStart" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                        <HBox fx:id="selectedConnBox" alignment="CENTER_LEFT" prefHeight="30.0">
+                           <children>
+                              <FontIcon fx:id="selectedConnIcon" iconColor="#aea6a6" iconLiteral="mdi-checkbox-blank-circle" iconSize="6" />
+                              <Label fx:id="lbSelectedConn" text="没有打开的链接">
+                                 <padding>
+                                    <Insets left="3.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="lbAppTitle" alignment="CENTER" text="RediStart" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                            <padding>
                               <Insets top="6.0" />
                            </padding>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
@@ -161,7 +174,7 @@
             </HBox>
             <HBox fx:id="sideBtnKeys" onMouseClicked="#onSelectKeysTab" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="1">
                <children>
-                  <FontIcon iconColor="#838383" iconLiteral="icm-key" iconSize="20">
+                  <FontIcon iconColor="#838383" iconLiteral="fas-list-alt" iconSize="21">
                      <HBox.margin>
                         <Insets left="15.0" top="15.0" />
                      </HBox.margin>

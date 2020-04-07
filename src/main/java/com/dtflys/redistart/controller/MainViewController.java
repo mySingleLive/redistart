@@ -1,6 +1,8 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.controls.RSColors;
 import com.dtflys.redistart.controls.RSMovableListener;
+import com.dtflys.redistart.controls.RSConnectionMenuItem;
 import com.dtflys.redistart.model.RedisConnection;
 import com.dtflys.redistart.model.page.RSConnectionManagerPage;
 import com.dtflys.redistart.model.page.RSContentPage;
@@ -10,26 +12,20 @@ import com.dtflys.redistart.service.RediStartService;
 import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
 import com.dtflys.redistart.view.KeysContentView;
-import com.jfoenix.controls.JFXComboBox;
 import de.felixroske.jfxsupport.FXMLController;
 import de.felixroske.jfxsupport.GUIState;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,6 +35,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -55,9 +52,11 @@ public class MainViewController extends RSMovableListener implements Initializab
     @Resource
     private ConnectionService connectionService;
 
-
     @FXML
     private VBox appTitleBarBox;
+
+    @FXML
+    private Label lbAppTitle;
 
     @FXML
     private HBox sideBtnConnection;
@@ -67,6 +66,18 @@ public class MainViewController extends RSMovableListener implements Initializab
 
     @FXML
     private HBox sideBtnCollection;
+
+    @FXML
+    private Label lbSelectedConn;
+
+    @FXML
+    private FontIcon selectedConnIcon;
+
+    @FXML
+    private HBox selectedConnBox;
+
+    @FXML
+    private HBox titleBox;
 
 //    @FXML
 //    private MenuButton mbConnections;
@@ -114,6 +125,36 @@ public class MainViewController extends RSMovableListener implements Initializab
 
         sideButtonsGroup.addAll(sideBtnConnection, sideBtnKeys, sideBtnCollection);
 
+
+        connectionService.selectedConnectionProperty().addListener((observableValue, connection, newConnection) -> {
+            Platform.runLater(() -> {
+                if (newConnection == null) {
+                    lbSelectedConn.setText("没有打开的连接");
+                }
+                RSContentPage page = rediStartService.getSelectedPage();
+                if (page instanceof RSKeysContentPage) {
+                    selectKeysContentPage(newConnection);
+                }
+                lbSelectedConn.setText(newConnection.getConnectionConfig().getName());
+                selectedConnIcon.iconColorProperty().unbind();
+                selectedConnIcon.iconColorProperty().bind(
+                        RSColors.connectionStatusColorBinding(connectionService.getSelectedConnection()));
+            });
+        });
+
+        selectedConnIcon.iconColorProperty().bind(
+                RSColors.connectionStatusColorBinding(connectionService.getSelectedConnection()));
+
+        connectionService.setOnAfterOpenConnection(connection -> {
+            Platform.runLater(() -> {
+                selectKeysContentPage(connection);
+            });
+        });
+
+//        connectionService.selectedConnectionProperty().addListener((observableValue, connection, newConnection) -> {
+//            cbConnections.getSelectionModel().select(newConnection);
+//        });
+
 /*
         mbConnections.opacityProperty().bind(Bindings.createDoubleBinding(() -> {
             if (connectionService.getOpenedConnections().size() == 0) {
@@ -152,6 +193,12 @@ public class MainViewController extends RSMovableListener implements Initializab
             if (selectedSideButton != null) {
                 selectedSideButton.getStyleClass().add(LEFT_SIDE_BAR_BUTTON_SELECTED_STYLE_CLASS);
             }
+
+            titleBox.getChildren().clear();
+            if (newPage.isShowSelectionItem()) {
+                titleBox.getChildren().add(selectedConnBox);
+            }
+            titleBox.getChildren().add(lbAppTitle);
         });
 
         // 初始化连接管理页面
@@ -165,13 +212,6 @@ public class MainViewController extends RSMovableListener implements Initializab
         // 设置当前主内容页面为链接管理页面
         rediStartService.setSelectedPage(connectionManagerPage);
 
-        // 监听选择某一连接时发生的事件
-        // 添加或切换主内容页面
-        connectionService.selectedConnectionProperty().addListener((observableValue, oldConn, newConn) -> Platform.runLater(() -> {
-            if (newConn != null) {
-                selectKeysContentPage(newConn);
-            }
-        }));
 
         // 当有新打开的连接时，更新侧边数据键按钮上的侧边菜单
         connectionService.getOpenedConnections().addListener((ListChangeListener<RedisConnection>) change -> {
@@ -181,10 +221,9 @@ public class MainViewController extends RSMovableListener implements Initializab
                         connectionContextMenu.getItems().clear();
                         ObservableList<RedisConnection> connections = connectionService.getOpenedConnections();
                         for (RedisConnection connection : connections) {
-                            MenuItem item = new MenuItem();
-                            item.textProperty().bind(connection.getConnectionConfig().nameProperty());
+                            RSConnectionMenuItem item = new RSConnectionMenuItem(connection);
                             item.setOnAction(event -> {
-                                selectKeysContentPage(connection);
+                                connectionService.setSelectedConnection(connection);
                             });
                             connectionContextMenu.getItems().add(item);
                         }
@@ -194,12 +233,13 @@ public class MainViewController extends RSMovableListener implements Initializab
         });
 
         // 监听鼠标移入侧边数据键按钮上时的事件
-        sideBtnKeys.setOnMouseEntered(event -> {
+        selectedConnBox.setOnMouseClicked(event -> {
             if (!connectionContextMenu.isShowing()) {
-                connectionContextMenu.show(sideBtnKeys, Side.RIGHT, 0, 2);
+                connectionContextMenu.show(selectedConnBox, Side.BOTTOM, 0, 2);
             }
         });
 
+/*
         sideBtnConnection.setOnMouseEntered(event -> {
             if (connectionContextMenu.isShowing()) {
                 connectionContextMenu.hide();
@@ -217,6 +257,7 @@ public class MainViewController extends RSMovableListener implements Initializab
                 connectionContextMenu.hide();
             }
         });
+*/
 
 
 
@@ -298,6 +339,7 @@ public class MainViewController extends RSMovableListener implements Initializab
             if (page == null) {
                 page = createKeysContentPage(connection);
             }
+            connectionService.setSelectedConnection(connection);
             rediStartService.setSelectedPage(page);
         }
     }

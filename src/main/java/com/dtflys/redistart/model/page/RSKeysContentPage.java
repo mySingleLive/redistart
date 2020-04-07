@@ -7,7 +7,7 @@ public class RSKeysContentPage extends RSContentPage<RedisConnection> {
     private final RedisConnection connection;
 
     public RSKeysContentPage(RedisConnection connection) {
-        super(KEYS_CONTENT_PAGE);
+        super(KEYS_CONTENT_PAGE, true);
         this.connection = connection;
     }
 
