@@ -94,6 +94,7 @@ public class ConnectionManagerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        connTableView.setPlaceholder(new Label("没有连接"));
         TableView.TableViewSelectionModel selectionModel =
                 connTableView.getSelectionModel();
         ReadOnlyObjectProperty selectItemProperty = selectionModel.selectedItemProperty();
@@ -176,6 +177,7 @@ public class ConnectionManagerController implements Initializable {
             return row;
         });
 
+/*
         RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
         connectionConfig.setName("Test 1");
         connectionConfig.setRedisHost("127.0.0.1");
@@ -192,6 +194,8 @@ public class ConnectionManagerController implements Initializable {
 
         connectionService.addConnection(connectionConfig);
         connectionService.addConnection(connectionConfig2);
+*/
+        connectionService.loadConnections();
 
         connTableView.setItems(connectionService.getConnections());
 

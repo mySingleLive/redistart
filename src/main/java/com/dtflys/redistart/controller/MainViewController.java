@@ -10,9 +10,12 @@ import com.dtflys.redistart.service.RediStartService;
 import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
 import com.dtflys.redistart.view.KeysContentView;
+import com.jfoenix.controls.JFXComboBox;
 import de.felixroske.jfxsupport.FXMLController;
 import de.felixroske.jfxsupport.GUIState;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,6 +28,7 @@ import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -63,6 +67,9 @@ public class MainViewController extends RSMovableListener implements Initializab
 
     @FXML
     private HBox sideBtnCollection;
+
+//    @FXML
+//    private MenuButton mbConnections;
 
     private ObservableList<HBox> sideButtonsGroup = FXCollections.observableList(new LinkedList<>());
 
@@ -107,6 +114,21 @@ public class MainViewController extends RSMovableListener implements Initializab
 
         sideButtonsGroup.addAll(sideBtnConnection, sideBtnKeys, sideBtnCollection);
 
+/*
+        mbConnections.opacityProperty().bind(Bindings.createDoubleBinding(() -> {
+            if (connectionService.getOpenedConnections().size() == 0) {
+                return 0.0D;
+            }
+            return 1.0D;
+        }, connectionService.getOpenedConnections()));
+
+        mbConnections.disableProperty().bind(Bindings.createBooleanBinding(() -> {
+            if (connectionService.getOpenedConnections().size() == 0) {
+                return true;
+            }
+            return false;
+        }, connectionService.getOpenedConnections()));
+*/
 
         // 监听切换主内容页面事件
         // 设置侧边栏按钮选中时的颜色
@@ -159,7 +181,8 @@ public class MainViewController extends RSMovableListener implements Initializab
                         connectionContextMenu.getItems().clear();
                         ObservableList<RedisConnection> connections = connectionService.getOpenedConnections();
                         for (RedisConnection connection : connections) {
-                            MenuItem item = new MenuItem(connection.getConnectionConfig().getName());
+                            MenuItem item = new MenuItem();
+                            item.textProperty().bind(connection.getConnectionConfig().nameProperty());
                             item.setOnAction(event -> {
                                 selectKeysContentPage(connection);
                             });
@@ -176,6 +199,26 @@ public class MainViewController extends RSMovableListener implements Initializab
                 connectionContextMenu.show(sideBtnKeys, Side.RIGHT, 0, 2);
             }
         });
+
+        sideBtnConnection.setOnMouseEntered(event -> {
+            if (connectionContextMenu.isShowing()) {
+                connectionContextMenu.hide();
+            }
+        });
+
+        sideBtnCollection.setOnMouseEntered(event -> {
+            if (connectionContextMenu.isShowing()) {
+                connectionContextMenu.hide();
+            }
+        });
+
+        stackPane.setOnMouseEntered(event -> {
+            if (connectionContextMenu.isShowing()) {
+                connectionContextMenu.hide();
+            }
+        });
+
+
 
         // 监听鼠标移出侧边数据键按钮上时的事件
 /*

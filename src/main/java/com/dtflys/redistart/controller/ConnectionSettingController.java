@@ -4,6 +4,7 @@ import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ControlUtils;
 import com.dtflys.redistart.utils.DialogUtils;
+import com.dtflys.redistart.utils.IdGenerator;
 import com.dtflys.redistart.utils.RSController;
 import com.dtflys.redistart.view.DialogView;
 import com.jfoenix.controls.*;
@@ -142,6 +143,7 @@ public class ConnectionSettingController implements Initializable, RSController 
         RedisConnectionConfig newConfig = getConnectionConfig();
         if (modify) {
             BeanUtils.copyProperties(newConfig, connectionConfig);
+            connectionService.updateAllConnections();
         } else {
             connectionService.addConnection(newConfig);
         }
@@ -186,6 +188,13 @@ public class ConnectionSettingController implements Initializable, RSController 
         RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
         if (StringUtils.isBlank(name)) {
             name = redisHost + ":" + redisPort;
+        }
+        name = connectionService.getFixedConnectionName(name, modify);
+        if (!modify) {
+            Long id = IdGenerator.generateId();
+            connectionConfig.setId(id + "");
+        } else {
+            connectionConfig.setId(this.connectionConfig.getId());
         }
         String queryPageSizeText = txQueryPageSize.getText().trim();
         Integer queryPageSize = null;

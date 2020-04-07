@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class RedisConnectionConfig {
 
+    private String id;
+
     /* Connection Settings */
 
     private final StringProperty name = new SimpleStringProperty();
@@ -35,6 +37,14 @@ public class RedisConnectionConfig {
     private final IntegerProperty queryPageSize = new SimpleIntegerProperty();
 
     private final ObjectProperty<Date> createTime = new SimpleObjectProperty<>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name.get();
