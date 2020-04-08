@@ -1,6 +1,6 @@
 package com.dtflys.redistart.controls;
 
-import com.dtflys.redistart.model.RedisConnection;
+import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionStatus;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;

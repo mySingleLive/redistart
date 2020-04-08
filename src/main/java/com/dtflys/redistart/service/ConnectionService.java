@@ -1,6 +1,6 @@
 package com.dtflys.redistart.service;
 
-import com.dtflys.redistart.model.RedisConnection;
+import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.storage.RedisConnectionConfigStorage;
 import com.google.common.collect.Lists;
@@ -177,4 +177,5 @@ public class ConnectionService {
     public void setSelectedConnection(RedisConnection selectedConnection) {
         this.selectedConnection.set(selectedConnection);
     }
+
 }

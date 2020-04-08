@@ -1,12 +1,10 @@
 package com.dtflys.redistart.controller;
 
-import com.dtflys.redistart.model.RedisConnection;
-import com.dtflys.redistart.model.RedisConnectionConfig;
+import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ConfirmResult;
 import com.dtflys.redistart.utils.DialogUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSpinner;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
@@ -19,7 +17,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.util.Callback;

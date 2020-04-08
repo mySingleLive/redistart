@@ -209,6 +209,23 @@
     -fx-icon-size: #b52525;
 }
 
+.navigation-view {}
+
+.navigation-view .jfx-list-view {
+    -fx-background-color: #626262;
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+}
+
+.navigation-view .status-bar {
+    -fx-border-width: 0;
+    -fx-background-color: #817d78;
+}
+
+.navigation-view .status-bar .right-items {
+    -fx-text-alignment: center-right;
+}
+
 
 /*
 .left-side-tab:hover .ikonli-font-icon {

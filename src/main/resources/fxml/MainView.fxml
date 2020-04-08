@@ -83,12 +83,25 @@
                         <HBox fx:id="selectedConnBox" alignment="CENTER_LEFT" prefHeight="30.0">
                            <children>
                               <FontIcon fx:id="selectedConnIcon" iconColor="#aea6a6" iconLiteral="mdi-checkbox-blank-circle" iconSize="6" />
-                              <Label fx:id="lbSelectedConn" text="没有打开的链接">
+                              <Label fx:id="lbSelectedConn" maxWidth="80.0" text="没有打开的链接" textOverrun="CENTER_WORD_ELLIPSIS">
                                  <padding>
                                     <Insets left="3.0" />
                                  </padding>
                               </Label>
                            </children>
+                        </HBox>
+                        <HBox fx:id="selectedDBBox" alignment="CENTER_LEFT" prefHeight="30.0">
+                           <children>
+                              <FontIcon iconColor="#d0c0c0" iconLiteral="mdi-database" iconSize="14" />
+                              <Label fx:id="lbSelectedDB" maxWidth="80.0" text="No DB">
+                                 <HBox.margin>
+                                    <Insets left="3.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
                         </HBox>
                         <Label fx:id="lbAppTitle" alignment="CENTER" text="RediStart" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                            <padding>
@@ -159,6 +172,7 @@
           <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -180,19 +194,28 @@
                      </HBox.margin>
                   </FontIcon>
                </children></HBox>
-            <HBox fx:id="sideBtnCollection" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
+            <HBox fx:id="sideBtnAnalyse" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="3">
                <children>
-                  <FontIcon iconColor="#838383" iconLiteral="icm-folder" iconSize="20" onMouseClicked="#onSelectCollectionTab">
+                  <FontIcon iconColor="#838383" iconLiteral="fas-chart-bar" iconSize="22" onMouseClicked="#onSelectCollectionTab">
                      <HBox.margin>
                         <Insets left="15.0" top="15.0" />
                      </HBox.margin>
                   </FontIcon>
                </children></HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="left-side-tab" GridPane.rowIndex="4">
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="left-side-tab" GridPane.rowIndex="5">
                <children>
                   <FontIcon iconColor="#e1e1e1" iconLiteral="dashicons-admin-generic" iconSize="26" onMouseClicked="#onSelectSettingsTab">
                      <HBox.margin>
                         <Insets left="12.0" top="12.0" />
+                     </HBox.margin>
+                  </FontIcon>
+               </children>
+            </HBox>
+            <HBox fx:id="sideBtnDashboard" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
+               <children>
+                  <FontIcon iconColor="#838383" iconLiteral="fas-chart-pie" iconSize="21">
+                     <HBox.margin>
+                        <Insets left="15.0" top="15.0" />
                      </HBox.margin>
                   </FontIcon>
                </children>

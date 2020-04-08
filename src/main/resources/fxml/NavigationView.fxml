@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTreeView?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.StatusBar?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="481.0" prefWidth="297.0" style="-fx-background-color: #ffffff;" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.NavigationController">
+<?import javafx.scene.control.Label?>
+<VBox prefHeight="481.0" prefWidth="297.0" style="-fx-background-color: #ffffff;" styleClass="navigation-view" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.NavigationController">
    <children>
       <GridPane styleClass="searchPane">
          <columnConstraints>
@@ -48,10 +52,20 @@
             <Insets bottom="2.0" left="5.0" right="5.0" top="2.0" />
          </padding>
       </GridPane>
-      <JFXTreeView fx:id="treeView" showRoot="false" VBox.vgrow="ALWAYS">
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </JFXTreeView>
+      <SplitPane dividerPositions="0.8314606741573034" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" VBox.vgrow="ALWAYS">
+        <items>
+            <VBox>
+               <children>
+                  <JFXListView fx:id="keyListView" />
+                  <StatusBar fx:id="keyStatusBar" minHeight="25.0" prefHeight="25.0" text="" >
+                     <rightItems>
+                        <Label>OK</Label>
+                     </rightItems>
+                  </StatusBar>
+               </children>
+            </VBox>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+        </items>
+      </SplitPane>
    </children>
 </VBox>

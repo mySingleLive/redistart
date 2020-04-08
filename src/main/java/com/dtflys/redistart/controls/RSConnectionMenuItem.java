@@ -1,10 +1,7 @@
 package com.dtflys.redistart.controls;
 
-import com.dtflys.redistart.model.RedisConnection;
-import com.dtflys.redistart.model.RedisConnectionStatus;
-import javafx.beans.binding.Bindings;
+import com.dtflys.redistart.model.connection.RedisConnection;
 import javafx.scene.control.MenuItem;
-import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 

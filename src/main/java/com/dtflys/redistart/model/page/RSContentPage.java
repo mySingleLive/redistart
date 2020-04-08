@@ -8,7 +8,9 @@ public abstract class RSContentPage<T> {
 
     public static final int KEYS_CONTENT_PAGE = 1;
 
-    public static final int COLLECTION_PAGE = 2;
+    public static final int DASHBOARD_PAGE = 2;
+
+    public static final int ANALYSE_PAGE = 3;
 
     private final int pageType;
 

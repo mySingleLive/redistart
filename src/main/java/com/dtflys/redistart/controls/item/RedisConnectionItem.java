@@ -1,6 +1,6 @@
 package com.dtflys.redistart.controls.item;
 
-import com.dtflys.redistart.model.RedisConnection;
+import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.RedisConnectionStatus;
 import javafx.scene.control.TreeView;
 

@@ -1,37 +1,29 @@
-package com.dtflys.redistart.model;
+package com.dtflys.redistart.model.connection;
 
 import com.dtflys.redistart.event.RSEventHandlerList;
-import com.dtflys.redistart.model.command.RSCommandRecord;
+import com.dtflys.redistart.model.RedisConnectionConfig;
+import com.dtflys.redistart.model.RedisConnectionStatus;
+import com.dtflys.redistart.model.database.RedisDatabase;
 import com.dtflys.redistart.service.ConnectionService;
-import javafx.application.Platform;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import org.apache.commons.collections4.MapUtils;
-import org.redisson.client.RedisClient;
 import org.redisson.client.RedisClientConfig;
 import org.redisson.client.codec.StringCodec;
 import org.redisson.client.protocol.RedisCommands;
 
 import java.util.*;
 
-public class RedisConnection {
+public class RedisConnection extends BasicRedisConnection {
 
     private final ConnectionService connectionService;
 
-    private RedisConnectionConfig connectionConfig;
-
-    private RedisClient redisClient;
-
-    private org.redisson.client.RedisConnection redisConnection;
+    private ObjectPropertyBase<RedisDatabase> selectedDatabase = new SimpleObjectProperty<>();
 
     private List<RedisDatabase> databaseList = new ArrayList<>();
 
     private RSEventHandlerList<RedisConnection> onBeforeOpenConnection = new RSEventHandlerList<>();
 
     private RSEventHandlerList<RedisConnection> onAfterOpenConnection = new RSEventHandlerList<>();
-
-    private RSEventHandlerList<RedisConnection> onOpenConnectionFailed = new RSEventHandlerList<>();
 
     private RSEventHandlerList<RedisDatabase> onBeforeOpenDatabase = new RSEventHandlerList<>();
 
@@ -40,14 +32,15 @@ public class RedisConnection {
     private ObjectPropertyBase<RedisConnectionStatus> status = new SimpleObjectProperty<>();
 
     public RedisConnection(ConnectionService connectionService, RedisConnectionConfig connectionConfig) {
+        super(connectionConfig);
         this.connectionService = connectionService;
-        this.connectionConfig = connectionConfig;
         setStatus(RedisConnectionStatus.CLOSED);
+
+        selectedDatabase.addListener((observableValue, oldDatabase, newDatabase) -> {
+            newDatabase.openDatabase();
+        });
     }
 
-    public RedisConnectionConfig getConnectionConfig() {
-        return connectionConfig;
-    }
 
     private String redisClientName() {
         return connectionConfig.getRedisHost() + ":" + connectionConfig.getRedisPort();
@@ -63,12 +56,8 @@ public class RedisConnection {
         return config;
     }
 
-    public void asyc(RSCommandRecord record) {
-        redisConnection.async(connectionConfig.getTimeout(), record.getRedisCommand(), record.getArguments());
-    }
 
     public void openConnection() {
-
         onBeforeOpenConnection.handle(this);
         new Thread(() -> {
             boolean hasOpened = connectionService.getOpenedConnections().contains(this);
@@ -76,13 +65,13 @@ public class RedisConnection {
                 boolean success = false;
                 try {
                     setStatus(RedisConnectionStatus.CONNECTING);
-                    doOpenConnection();
+                    doOpenConnection(0);
                     success = true;
                 } catch (Throwable th) {
                     closeConnection();
                 }
                 if (!success) {
-                    onOpenConnectionFailed.handle(this);
+                    getOnOpenConnectionFailed().handle(this);
                     return;
                 }
                 databaseList = loadDatabases();
@@ -95,11 +84,6 @@ public class RedisConnection {
         }).start();
     }
 
-    private void doOpenConnection() {
-        RedisClientConfig config = createRedisConnectionConfig();
-        redisClient = RedisClient.create(config);
-        redisConnection = redisClient.connect();
-    }
 
     private Map<String, Object> parseInfoKeysapceResult(String db) {
         String[] dbProps = db.split(",");
@@ -143,12 +127,16 @@ public class RedisConnection {
             databaseList.add(database);
         }
         databaseList.sort(Comparator.comparing(RedisDatabase::getIndex));
+        if (!databaseList.isEmpty() && getSelectedDatabase() == null) {
+            // Select first database as default
+            setSelectedDatabase(databaseList.get(0));
+        }
         return databaseList;
     }
 
     public boolean testConnect() {
         try {
-            doOpenConnection();
+            doOpenConnection(0);
             return true;
         } catch (Throwable th) {
             return false;
@@ -157,19 +145,16 @@ public class RedisConnection {
         }
     }
 
+/*
     public String ping() {
-
         String response = redisConnection.sync(new StringCodec(), RedisCommands.PING);
         return response;
     }
+*/
 
-    public void closeConnection() {
-        if (redisClient != null) {
-            try {
-                redisClient.shutdown();
-            } catch (Throwable th) {
-            }
-        }
+    @Override
+    protected void afterCloseConnection() {
+        setStatus(RedisConnectionStatus.CLOSED);
     }
 
     public List<RedisDatabase> getDatabaseList() {
@@ -192,9 +177,6 @@ public class RedisConnection {
         return onAfterOpenDatabase;
     }
 
-    public RSEventHandlerList<RedisConnection> getOnOpenConnectionFailed() {
-        return onOpenConnectionFailed;
-    }
 
     public RedisConnectionStatus getStatus() {
         return status.get();
@@ -210,17 +192,24 @@ public class RedisConnection {
 
     public StringProperty nameProperty() {
         StringProperty nameProperty = new SimpleStringProperty(connectionConfig.getName());
-        nameProperty.addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                nameProperty.setValue(s);
-            }
-        });
+        nameProperty.addListener((observableValue, s, t1) -> nameProperty.setValue(s));
         return nameProperty;
+    }
+
+    public RedisDatabase getSelectedDatabase() {
+        return selectedDatabase.get();
+    }
+
+    public ObjectPropertyBase<RedisDatabase> selectedDatabaseProperty() {
+        return selectedDatabase;
+    }
+
+    public void setSelectedDatabase(RedisDatabase selectedDatabase) {
+        this.selectedDatabase.set(selectedDatabase);
     }
 
     @Override
     public String toString() {
-        return getConnectionConfig().getName();
+        return connectionConfig.getName();
     }
 }

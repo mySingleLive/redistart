@@ -1,6 +1,6 @@
 package com.dtflys.redistart.model.page;
 
-import com.dtflys.redistart.model.RedisConnection;
+import com.dtflys.redistart.model.connection.RedisConnection;
 
 public class RSKeysContentPage extends RSContentPage<RedisConnection> {
 

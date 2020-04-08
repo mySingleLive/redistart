@@ -1,6 +1,6 @@
 package com.dtflys.redistart.model.key;
 
-import com.dtflys.redistart.model.RedisDatabase;
+import com.dtflys.redistart.model.database.RedisDatabase;
 
 public class RSKey {
 

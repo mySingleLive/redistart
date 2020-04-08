@@ -8,4 +8,10 @@ public enum RSKeyType {
     SET,
     ZSET
 
+    ;
+
+    public RSKeyType findByName(String name) {
+        return RSKeyType.valueOf(name.toUpperCase());
+    }
+
 }

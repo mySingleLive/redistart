@@ -6,5 +6,7 @@ public enum RedisConnectionStatus {
 
     CONNECTING,
 
-    OPENED
+    OPENED,
+
+    BREAK,
 }

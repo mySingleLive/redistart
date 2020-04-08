@@ -1,8 +1,6 @@
 package com.dtflys.redistart.controls.item;
 
-import com.dtflys.redistart.model.RedisConnection;
-import com.dtflys.redistart.model.RedisConnectionStatus;
-import com.dtflys.redistart.model.RedisDatabase;
+import com.dtflys.redistart.model.database.RedisDatabase;
 import javafx.scene.control.TreeView;
 
 public class RedisDatabaseItem extends RSBaseTreeItem {
