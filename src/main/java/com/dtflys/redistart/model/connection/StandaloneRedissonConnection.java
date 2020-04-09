@@ -14,6 +14,8 @@ public class StandaloneRedissonConnection extends Conntable {
 
     private RedissonClient redisson;
 
+    private SingleServerConfig singleServerConfig;
+
     protected StandaloneRedissonConnection(RedisConnectionConfig connectionConfig) {
         super(connectionConfig);
     }
@@ -22,7 +24,7 @@ public class StandaloneRedissonConnection extends Conntable {
         Config config = new Config();
         config.setCodec(new StringCodec());
         String address = "redis://" + connectionConfig.getRedisHost() + ":" + connectionConfig.getRedisPort();
-        SingleServerConfig singleServerConfig = config.useSingleServer();
+        singleServerConfig = config.useSingleServer();
         singleServerConfig.setAddress(address);
         singleServerConfig.setConnectionPoolSize(100);
         singleServerConfig.setConnectTimeout(connectionConfig.getConnectTimeout());
@@ -44,5 +46,10 @@ public class StandaloneRedissonConnection extends Conntable {
     @Override
     public void closeConnection() {
         redisson.shutdown();
+    }
+
+    @Override
+    public void selectDatabase(int dbIndex) {
+        singleServerConfig.setDatabase(dbIndex);
     }
 }

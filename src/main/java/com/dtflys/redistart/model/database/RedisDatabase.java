@@ -3,9 +3,9 @@ package com.dtflys.redistart.model.database;
 import com.dtflys.redistart.model.connection.BasicRedisConnection;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.key.RSKeySet;
+import com.dtflys.redistart.service.CommandService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import org.redisson.client.RedisClient;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,10 +13,6 @@ import java.math.RoundingMode;
 public class RedisDatabase extends BasicRedisConnection {
 
     private final RedisConnection connection;
-
-    private RedisClient redisClient;
-
-    private org.redisson.client.RedisConnection redisConnection;
 
     private BooleanProperty opened = new SimpleBooleanProperty(false);
 
@@ -32,10 +28,10 @@ public class RedisDatabase extends BasicRedisConnection {
 
     private RSKeySet keySet;
 
-    public RedisDatabase(RedisConnection connection) {
-        super(connection.getConnectionConfig());
+    public RedisDatabase(RedisConnection connection, CommandService commandService) {
+        super(connection.getConnectionConfig(), commandService);
         this.connection = connection;
-        keySet = new RSKeySet(this);
+        keySet = new RSKeySet(this, commandService);
     }
 
     public void openDatabase() {
@@ -58,8 +54,6 @@ public class RedisDatabase extends BasicRedisConnection {
                 connection.getOnAfterOpenDatabase().handle(this);
             }
         }).start();
-
-
     }
 
     public void clear() {
@@ -122,6 +116,10 @@ public class RedisDatabase extends BasicRedisConnection {
 
     public void setExpires(Integer expires) {
         this.expires = expires;
+    }
+
+    public RSKeySet getKeySet() {
+        return keySet;
     }
 
     public boolean isOpened() {

@@ -1,13 +1,11 @@
 package com.dtflys.redistart.model.key;
 
 public enum RSKeyType {
-
-    STRING,
-    LIST,
-    HASH,
-    SET,
-    ZSET
-
+    string,
+    list,
+    hash,
+    set,
+    zset
     ;
 
     public RSKeyType findByName(String name) {

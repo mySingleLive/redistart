@@ -4,11 +4,15 @@ import com.dtflys.redistart.event.RSEventHandlerList;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.model.RedisConnectionStatus;
 import com.dtflys.redistart.model.database.RedisDatabase;
+import com.dtflys.redistart.service.CommandService;
 import com.dtflys.redistart.service.ConnectionService;
+import com.google.common.collect.Lists;
 import javafx.beans.property.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.redisson.client.RedisClientConfig;
+import org.apache.commons.lang3.ArrayUtils;
 import org.redisson.client.codec.StringCodec;
+import org.redisson.client.protocol.RedisCommand;
 import org.redisson.client.protocol.RedisCommands;
 
 import java.util.*;
@@ -31,31 +35,16 @@ public class RedisConnection extends BasicRedisConnection {
 
     private ObjectPropertyBase<RedisConnectionStatus> status = new SimpleObjectProperty<>();
 
-    public RedisConnection(ConnectionService connectionService, RedisConnectionConfig connectionConfig) {
-        super(connectionConfig);
+    public RedisConnection(ConnectionService connectionService, RedisConnectionConfig connectionConfig, CommandService commandService) {
+        super(connectionConfig, commandService);
         this.connectionService = connectionService;
         setStatus(RedisConnectionStatus.CLOSED);
 
         selectedDatabase.addListener((observableValue, oldDatabase, newDatabase) -> {
+            selectDatabase(newDatabase.getIndex());
             newDatabase.openDatabase();
         });
     }
-
-
-    private String redisClientName() {
-        return connectionConfig.getRedisHost() + ":" + connectionConfig.getRedisPort();
-    }
-
-
-    private RedisClientConfig createRedisConnectionConfig() {
-        RedisClientConfig config = new RedisClientConfig();
-        config.setAddress(connectionConfig.getRedisHost(), connectionConfig.getRedisPort())
-        .setClientName(redisClientName())
-        .setPassword(connectionConfig.getRedisPassword())
-        .setDatabase(0);
-        return config;
-    }
-
 
     public void openConnection() {
         onBeforeOpenConnection.handle(this);
@@ -112,7 +101,7 @@ public class RedisConnection extends BasicRedisConnection {
         List<String> dbNameList = new ArrayList<>(dbMap.keySet());
         var databaseList = new ArrayList<RedisDatabase>();
         for (String dbName : dbNameList) {
-            RedisDatabase database = new RedisDatabase(this);
+            RedisDatabase database = new RedisDatabase(this, commandService);
             String db = MapUtils.getString(dbMap, dbName);
             Map<String, Object> dbValues = parseInfoKeysapceResult(db);
             Integer index = Integer.parseInt(dbName.substring(2));
@@ -132,6 +121,62 @@ public class RedisConnection extends BasicRedisConnection {
             setSelectedDatabase(databaseList.get(0));
         }
         return databaseList;
+    }
+
+    private RedisCommand getEvalCommandByClass(Class resultType) {
+        if (void.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_VOID;
+        }
+        if (CharSequence.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_STRING_DATA;
+        }
+        if (Boolean.class.isAssignableFrom(resultType) ||
+                boolean.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_BOOLEAN;
+        }
+        if (Integer.class.isAssignableFrom(resultType) ||
+                int.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_INTEGER;
+        }
+        if (Long.class.isAssignableFrom(resultType) ||
+                long.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_LONG;
+        }
+        if (Double.class.isAssignableFrom(resultType) ||
+                double.class.isAssignableFrom(resultType) ||
+                Float.class.isAssignableFrom(resultType) ||
+                float.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_DOUBLE;
+        }
+        if (List.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_LIST;
+        }
+        if (Map.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_MAP;
+        }
+        if (Set.class.isAssignableFrom(resultType)) {
+            return RedisCommands.EVAL_SET;
+        }
+        return RedisCommands.EVAL_OBJECT;
+    }
+
+    public <T> T eval(String script, Class<T> resultType, String keys[], Object values[]) {
+        RedisCommand evalCommand = getEvalCommandByClass(resultType);
+        int keyLength = 0;
+        if (keys != null) {
+            keyLength = keys.length;
+        }
+        List<Object> argList = Lists.newArrayList(script, keyLength);
+        for (String key: keys) {
+            argList.add(key);
+        }
+        if (ArrayUtils.isNotEmpty(values)) {
+            for (Object val : values) {
+                argList.add(val);
+            }
+        }
+        T result = (T) redisConnection.sync(evalCommand, argList.toArray());
+        return result;
     }
 
     public boolean testConnect() {

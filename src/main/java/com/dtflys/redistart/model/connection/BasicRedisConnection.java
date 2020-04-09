@@ -3,25 +3,25 @@ package com.dtflys.redistart.model.connection;
 import com.dtflys.redistart.event.RSEventHandlerList;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.model.command.RSCommandRecord;
+import com.dtflys.redistart.service.CommandService;
 import org.redisson.api.RBatch;
 import org.redisson.client.RedisClient;
 import org.redisson.client.RedisClientConfig;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public abstract class BasicRedisConnection extends Conntable {
 
     protected RedisClient redisClient;
 
+    protected final CommandService commandService;
+
     protected org.redisson.client.RedisConnection redisConnection;
 
     private RSEventHandlerList<BasicRedisConnection> onOpenConnectionFailed = new RSEventHandlerList<>();
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(50);
-
-    protected BasicRedisConnection(RedisConnectionConfig connectionConfig) {
+    protected BasicRedisConnection(RedisConnectionConfig connectionConfig, CommandService commandService) {
         super(connectionConfig);
+        this.commandService = commandService;
     }
 
     protected RedisClientConfig createRedisConnectionConfig(int dbIndex) {
@@ -53,6 +53,10 @@ public abstract class BasicRedisConnection extends Conntable {
         }
     }
 
+    @Override
+    public void selectDatabase(int dbIndex) {
+        redisClient.getConfig().setDatabase(dbIndex);
+    }
 
     public <T> T sync(RSCommandRecord record) {
         T ret = (T) redisConnection.sync(record.getRedisCommand(), record.getArguments());
@@ -60,12 +64,6 @@ public abstract class BasicRedisConnection extends Conntable {
         return ret;
     }
 
-
-    public void execute(RSCommandRecord record) {
-        executorService.submit(() -> {
-            sync(record);
-        });
-    }
 
     public RSEventHandlerList<BasicRedisConnection> getOnOpenConnectionFailed() {
         return onOpenConnectionFailed;

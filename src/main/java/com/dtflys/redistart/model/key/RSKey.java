@@ -4,27 +4,51 @@ import com.dtflys.redistart.model.database.RedisDatabase;
 
 public class RSKey {
 
-    private final RedisDatabase database;
+    private RedisDatabase database;
 
-    private final String key;
+    private String key;
 
-    private final RSKeyType type;
+    private RSKeyType type;
 
-    public RSKey(RedisDatabase database, String key, RSKeyType type) {
-        this.database = database;
-        this.key = key;
-        this.type = type;
+    private Long ttl;
+
+    public RSKey() {
     }
 
     public RedisDatabase getDatabase() {
         return database;
     }
 
+    public void setDatabase(RedisDatabase database) {
+        this.database = database;
+    }
+
     public String getKey() {
         return key;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public RSKeyType getType() {
         return type;
+    }
+
+    public void setType(RSKeyType type) {
+        this.type = type;
+    }
+
+    public Long getTtl() {
+        return ttl;
+    }
+
+    public void setTtl(Long ttl) {
+        this.ttl = ttl;
+    }
+
+    @Override
+    public String toString() {
+        return getKey();
     }
 }

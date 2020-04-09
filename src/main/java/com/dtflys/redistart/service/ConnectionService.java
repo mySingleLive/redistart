@@ -29,6 +29,9 @@ public class ConnectionService {
     @Resource
     private RedisConnectionConfigStorage redisConnectionConfigStorage;
 
+    @Resource
+    private CommandService commandService;
+
     private ObservableList<RedisConnection> connections = FXCollections.observableArrayList();
 
     private ObservableList<RedisConnection> openedConnections = FXCollections.observableArrayList();
@@ -62,7 +65,7 @@ public class ConnectionService {
     }
 
     private RedisConnection createConnection(RedisConnectionConfig connectionConfig) {
-        RedisConnection connection = new RedisConnection(this, connectionConfig);
+        RedisConnection connection = new RedisConnection(this, connectionConfig, commandService);
         connections.add(connection);
         connectionConfigMap.put(connectionConfig, connection);
         afterAddConnection(connection);
@@ -106,7 +109,7 @@ public class ConnectionService {
 
 
     public void startTestConnection(RedisConnectionConfig connectionConfig, Consumer<Boolean> onTestEnd) {
-        RedisConnection connection = new RedisConnection(this, connectionConfig);
+        RedisConnection connection = new RedisConnection(this, connectionConfig, commandService);
         new Thread(() -> {
             Boolean result = connection.testConnect();
             if (onTestEnd != null) {

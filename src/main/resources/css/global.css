@@ -212,10 +212,24 @@
 .navigation-view {}
 
 .navigation-view .jfx-list-view {
-    -fx-background-color: #626262;
+    -fx-background-color: #606060;
     -fx-border-width: 0;
     -fx-focus-color: transparent;
 }
+
+
+.navigation-view .jfx-list-view .jfx-list-cell {
+    -fx-text-fill: -rs-common-text-fill;
+}
+
+.navigation-view .jfx-list-view:selected .jfx-list-cell {
+    -fx-background-color: #365991;
+}
+
+.navigation-view .jfx-list-view .jfx-list-cell .jfx-rippler {
+    -jfx-rippler-fill: #5792d6;
+}
+
 
 .navigation-view .status-bar {
     -fx-border-width: 0;

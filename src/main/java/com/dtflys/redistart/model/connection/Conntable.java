@@ -17,4 +17,6 @@ public abstract class Conntable {
     protected abstract void doOpenConnection(int dbIndex);
 
     public abstract void closeConnection();
+
+    public abstract void selectDatabase(int dbIndex);
 }

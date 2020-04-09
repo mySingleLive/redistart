@@ -1,7 +1,6 @@
 package com.dtflys.redistart.model.command;
 
 import org.redisson.client.protocol.RedisCommand;
-import org.redisson.client.protocol.decoder.ListScanResult;
 
 import java.util.function.Consumer;
 
@@ -36,5 +35,6 @@ public class RSCommandRecord<T> {
             onResult.accept(obj);
         }
     }
+
 
 }
