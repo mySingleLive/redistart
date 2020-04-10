@@ -3,22 +3,19 @@ package com.dtflys.redistart.model.key;
 import com.dtflys.redistart.model.command.RSLuaRecord;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
-import com.dtflys.redistart.model.command.RSCommandRecord;
 import com.dtflys.redistart.service.CommandService;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.redisson.client.protocol.RedisCommands;
-import org.redisson.client.protocol.decoder.ListScanResult;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class RSKeySet {
-    private ObjectPropertyBase<RSKeyFindStatus> staus = new SimpleObjectProperty<>();
+    private ObjectPropertyBase<RSKeyFindStatus> status = new SimpleObjectProperty<>();
     private final RedisConnection connection;
     private final RedisDatabase database;
     private volatile long startIndex = 0;
@@ -31,20 +28,20 @@ public class RSKeySet {
         this.database = database;
         connection = database.getConnection();
         this.commandService = commandService;
-        setStaus(RSKeyFindStatus.INIT);
+        setStatus(RSKeyFindStatus.INIT);
     }
 
     public void findNextPage() {
         int pageSize = connection.getConnectionConfig().getQueryPageSize();
         List<String> keys = new LinkedList<>();
-        setStaus(RSKeyFindStatus.LOADING);
+        setStatus(RSKeyFindStatus.LOADING);
         new RSLuaRecord<>("findNextKeys.lua", RSKeyFindResult.class, endIndex, pageSize)
                 .onResult(keyFindResult -> {
                     Platform.runLater(() -> {
                         lock.lock();
                         try {
                             keyList.addAll(keyFindResult.getKeys());
-                            setStaus(RSKeyFindStatus.COMPLETED);
+                            setStatus(RSKeyFindStatus.COMPLETED);
                         } finally {
                             lock.unlock();
                         }
@@ -73,20 +70,22 @@ public class RSKeySet {
     }
 
     public void clear() {
-        keyList.clear();
-        startIndex = 0;
-        endIndex = 0;
+        Platform.runLater(() -> {
+            keyList.clear();
+            startIndex = 0;
+            endIndex = 0;
+        });
     }
 
-    public RSKeyFindStatus getStaus() {
-        return staus.get();
+    public RSKeyFindStatus getStatus() {
+        return status.get();
     }
 
-    public ObjectPropertyBase<RSKeyFindStatus> stausProperty() {
-        return staus;
+    public ObjectPropertyBase<RSKeyFindStatus> statusProperty() {
+        return status;
     }
 
-    public void setStaus(RSKeyFindStatus staus) {
-        this.staus.set(staus);
+    public void setStatus(RSKeyFindStatus status) {
+        this.status.set(status);
     }
 }

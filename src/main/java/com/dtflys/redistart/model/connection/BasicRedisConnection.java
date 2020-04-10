@@ -7,6 +7,7 @@ import com.dtflys.redistart.service.CommandService;
 import org.redisson.api.RBatch;
 import org.redisson.client.RedisClient;
 import org.redisson.client.RedisClientConfig;
+import org.redisson.client.protocol.RedisCommands;
 
 
 public abstract class BasicRedisConnection extends Conntable {
@@ -56,6 +57,7 @@ public abstract class BasicRedisConnection extends Conntable {
     @Override
     public void selectDatabase(int dbIndex) {
         redisClient.getConfig().setDatabase(dbIndex);
+        sync(new RSCommandRecord(RedisCommands.SELECT, dbIndex));
     }
 
     public <T> T sync(RSCommandRecord record) {

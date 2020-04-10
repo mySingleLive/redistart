@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class RedisDatabase extends BasicRedisConnection {
+public class RedisDatabase {
 
     private final RedisConnection connection;
 
@@ -29,7 +29,7 @@ public class RedisDatabase extends BasicRedisConnection {
     private RSKeySet keySet;
 
     public RedisDatabase(RedisConnection connection, CommandService commandService) {
-        super(connection.getConnectionConfig(), commandService);
+//        super(connection.getConnectionConfig(), commandService);
         this.connection = connection;
         keySet = new RSKeySet(this, commandService);
     }
@@ -38,18 +38,9 @@ public class RedisDatabase extends BasicRedisConnection {
         connection.getOnBeforeOpenDatabase().handle(this);
         new Thread(() -> {
             if (!isOpened()) {
-                boolean success = false;
-                try {
-                    doOpenConnection(index);
-                    success = true;
-                } catch (Throwable th) {
-                    closeConnection();
-                }
-                if (!success) {
-                    getOnOpenConnectionFailed().handle(this);
-                    return;
-                }
+//                connection.selectDatabase(index);
                 System.out.println("------ Open Database Completed ------");
+                keySet.clear();
                 keySet.findNextPage();
                 connection.getOnAfterOpenDatabase().handle(this);
             }
@@ -142,8 +133,8 @@ public class RedisDatabase extends BasicRedisConnection {
         this.averageTTL = averageTTL;
     }
 
-    @Override
-    protected void afterCloseConnection() {
-        setOpened(false);
-    }
+//    @Override
+//    protected void afterCloseConnection() {
+//        setOpened(false);
+//    }
 }

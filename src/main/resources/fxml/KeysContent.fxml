@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<SplitPane fx:id="mainSplitPane" dividerPositions="0.24021526418786693" prefHeight="483.0" prefWidth="533.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.KeysContentController">
+<SplitPane fx:id="mainSplitPane" dividerPositions="0.5" prefHeight="483.0" prefWidth="533.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.KeysContentController">
    <items>
-      <VBox fx:id="leftBox" minWidth="60.0">
+      <VBox fx:id="leftBox" alignment="CENTER" minWidth="60.0">
          <children>
-            <fx:include source="NavigationView.fxml" />
+            <fx:include source="NavigationView.fxml" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
-      <AnchorPane fx:id="rightBox" minHeight="0.0" minWidth="0.0" prefHeight="481.0" prefWidth="463.0" />
+      <VBox />
    </items>
 </SplitPane>

@@ -219,21 +219,24 @@
 
 
 .navigation-view .jfx-list-view .jfx-list-cell {
+    -fx-font-weight: BOLD;
+    -fx-font-size: 12;
     -fx-text-fill: -rs-common-text-fill;
 }
 
-.navigation-view .jfx-list-view:selected .jfx-list-cell {
-    -fx-background-color: #365991;
-}
 
 .navigation-view .jfx-list-view .jfx-list-cell .jfx-rippler {
+    -fx-background-color: #4d4845;
+}
+
+.navigation-view .jfx-list-view .jfx-list-cell:selected .jfx-rippler {
+    -fx-background-color: #5792d6;
     -jfx-rippler-fill: #5792d6;
 }
 
-
 .navigation-view .status-bar {
     -fx-border-width: 0;
-    -fx-background-color: #817d78;
+    -fx-background-color: #3c3836;
 }
 
 .navigation-view .status-bar .right-items {
