@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 public class RSKeySet {
     private ObjectPropertyBase<RSKeyFindStatus> status = new SimpleObjectProperty<>();
@@ -23,6 +24,8 @@ public class RSKeySet {
     private final Lock lock = new ReentrantLock();
     private ObservableList<RSKey> keyList = FXCollections.observableArrayList();
     private final CommandService commandService;
+    private Consumer<RSKeyFindResult> onBeforeAddResults;
+    private Consumer<RSKeyFindResult> onLoadCompleted;
 
     public RSKeySet(RedisDatabase database, CommandService commandService) {
         this.database = database;
@@ -40,8 +43,15 @@ public class RSKeySet {
                     Platform.runLater(() -> {
                         lock.lock();
                         try {
+                            if (onBeforeAddResults != null) {
+                                onBeforeAddResults.accept(keyFindResult);
+                            }
                             keyList.addAll(keyFindResult.getKeys());
                             setStatus(RSKeyFindStatus.COMPLETED);
+                            if (onLoadCompleted != null) {
+                                onLoadCompleted.accept(keyFindResult);
+                            }
+                            endIndex = keyFindResult.getPos();
                         } finally {
                             lock.unlock();
                         }
@@ -63,6 +73,15 @@ public class RSKeySet {
         });
         database.sync(record);
         */
+    }
+
+
+    public void setOnBeforeAddResults(Consumer<RSKeyFindResult> onBeforeAddResults) {
+        this.onBeforeAddResults = onBeforeAddResults;
+    }
+
+    public void setOnLoadCompleted(Consumer<RSKeyFindResult> onLoadCompleted) {
+        this.onLoadCompleted = onLoadCompleted;
     }
 
     public ObservableList<RSKey> getKeyList() {

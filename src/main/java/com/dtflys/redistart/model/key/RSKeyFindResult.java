@@ -16,6 +16,11 @@ public class RSKeyFindResult {
         this.pos = pos;
     }
 
+    public boolean hasMoreKeys() {
+        if (pos == null) return false;
+        return pos.compareTo(0L) > 0;
+    }
+
     public List<RSKey> getKeys() {
         return keys;
     }

@@ -209,14 +209,27 @@
     -fx-icon-size: #b52525;
 }
 
-.navigation-view {}
-
-.navigation-view .jfx-list-view {
+.navigation-view {
     -fx-background-color: #606060;
     -fx-border-width: 0;
+    -fx-padding: 0;
+    -fx-focus-traversable: transparent;
+}
+
+.navigation-view:focused {
+    -fx-focus-traversable: transparent;
+}
+
+.navigation-view .jfx-list-view {
+    -fx-background-color: #4d4845;
+    -fx-border-width: 0;
+    -fx-focus-traversable: transparent;
     -fx-focus-color: transparent;
 }
 
+.navigation-view .jfx-list-view:focused {
+    -fx-focus-traversable: transparent;
+}
 
 .navigation-view .jfx-list-view .jfx-list-cell {
     -fx-font-weight: BOLD;
@@ -234,6 +247,23 @@
     -jfx-rippler-fill: #5792d6;
 }
 
+.load-more-cell-rippler{
+    -fx-background-color: RED;
+}
+
+.load-more-box {
+    -fx-alignment: center;
+    -fx-cursor: HAND;
+}
+
+.load-more-box .label {
+    -fx-text-fill: -rs-common-text-fill;
+}
+
+.load-more-box:hover .label {
+    -fx-text-fill: WHITE;
+}
+
 .navigation-view .status-bar {
     -fx-border-width: 0;
     -fx-background-color: #3c3836;
@@ -241,6 +271,40 @@
 
 .navigation-view .status-bar .right-items {
     -fx-text-alignment: center-right;
+}
+
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 8;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 8;
+}
+
+.scroll-bar:horizontal .track, .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal:hover .track, .scroll-bar:vertical:hover .track {
+    -fx-background-color: #57514f;
+}
+
+
+.scroll-bar:horizontal .thumb, .scroll-bar:vertical .thumb {
+    -fx-background-color: #606060;
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal .thumb:hover, .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #737373;
 }
 
 
@@ -268,7 +332,7 @@
 
 .conn-manager-button:hover {
     -fx-background-color: #7a7a7a;
-    -fx-cursor: hand;
+    -fx-cursor: HAND;
 }
 
 .conn-manager-button:hover .label {
@@ -522,7 +586,7 @@
 }
 
 .searchField .searchCancel {
-    -fx-cursor: pointer;
+    -fx-cursor: HAND;
 }
 
 #leftBox {
