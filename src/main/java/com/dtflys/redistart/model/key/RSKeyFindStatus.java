@@ -3,5 +3,7 @@ package com.dtflys.redistart.model.key;
 public enum RSKeyFindStatus {
     INIT,
     LOADING,
-    COMPLETED,
+    SEARCHING,
+    LOAD_PAGE_COMPLETED,
+    SEARCH_PAGE_COMPLETED
 }

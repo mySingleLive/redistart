@@ -18,6 +18,7 @@ public class KeysContentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        leftBox.setPrefWidth(150);
         SplitPane.setResizableWithParent(leftBox, Boolean.FALSE);
     }
 }

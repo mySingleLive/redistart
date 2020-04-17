@@ -11,6 +11,7 @@ import javafx.beans.property.ObjectPropertyBase;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 
 public class RSKeyListCell extends JFXListCell<RSKey> {
 
@@ -24,6 +25,8 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
 
     private Label loadMoreLabel = new Label();
 
+    private Region leftSpace = new Region();
+
     public RSKeyListCell() {
         typeIconView.setFitWidth(20);
         typeIconView.setFitHeight(20 * 0.75);
@@ -31,13 +34,15 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
         loadMoreBox.setPrefWidth(USE_COMPUTED_SIZE);
         loadMoreBox.setPrefHeight(USE_COMPUTED_SIZE);
 
-        spinner.setPrefWidth(60);
+        spinner.setPrefWidth(40);
         spinner.setPrefHeight(20);
+
+        leftSpace.setPrefWidth(120);
         loadMoreLabel.setPrefHeight(20);
         loadMoreLabel.setText("Load More");
         loadMoreLabel.getStyleClass().add("load-more-label");
         loadMoreBox.getStyleClass().add("load-more-box");
-        loadMoreBox.getChildren().addAll(spinner, loadMoreLabel);
+        loadMoreBox.getChildren().addAll(leftSpace, loadMoreLabel);
     }
 
     @Override
@@ -55,15 +60,48 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
                     return 0;
                 }, statusObjectProperty));
                 setMouseTransparent(false);
-
                 loadMoreBox.mouseTransparentProperty().bind(Bindings.createBooleanBinding(
                         () -> statusObjectProperty.get() == RSKeyFindStatus.LOADING,
                         statusObjectProperty));
-                loadMoreBox.setOnMouseClicked(event -> {
-                    keySet.findNextPage();
-                });
+                getStyleClass().add("load-more-cell");
+
+
+//                loadMoreBox.setOnMouseClicked(event -> {
+//                });
+                loadMoreLabel.textProperty().unbind();
+                loadMoreLabel.textProperty().bind(Bindings.createStringBinding(() -> {
+                    switch (keySet.getStatus()) {
+                        case SEARCHING:
+                            return "Searching (cursor: " + keySet.getLastIndex() + ")";
+                        case LOADING:
+                            return "Loading...";
+                        case SEARCH_PAGE_COMPLETED:
+                            return "Search More";
+                        default:
+                            return "Load More";
+                    }
+                }, keySet.statusProperty()));
+
+                switch (keySet.getStatus()) {
+                    case SEARCHING:
+//                        loadMoreLabel.setText("Searching (cursor: " + keySet.getLastIndex() + ")");
+                        leftSpace.setPrefWidth(60);
+                        break;
+                    case LOADING:
+                    case SEARCH_PAGE_COMPLETED:
+//                        loadMoreLabel.setText("Search More");
+                        leftSpace.setPrefWidth(110);
+                        break;
+                    default:
+//                        loadMoreLabel.setText("Load More");
+                        leftSpace.setPrefWidth(120);
+                        break;
+                }
+
+
                 setText("");
             } else {
+                getStyleClass().remove("load-more-cell");
                 cellRippler.getStyleClass().remove("load-more-cell-rippler");
                 cellRippler.setStyle("");
                 if (item.getType() != null) {
@@ -80,7 +118,7 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
 
     private boolean initBeforeSuper(RSKey item, boolean empty) {
         if (item instanceof RSLoadMore) {
-            return true;
+            return empty;
         }
         return empty;
     }

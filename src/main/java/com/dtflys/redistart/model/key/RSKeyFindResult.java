@@ -6,6 +6,8 @@ public class RSKeyFindResult {
 
     private Long pos;
 
+    private Boolean search;
+
     private List<RSKey> keys;
 
     public Long getPos() {
@@ -14,6 +16,14 @@ public class RSKeyFindResult {
 
     public void setPos(Long pos) {
         this.pos = pos;
+    }
+
+    public Boolean getSearch() {
+        return search;
+    }
+
+    public void setSearch(Boolean search) {
+        this.search = search;
     }
 
     public boolean hasMoreKeys() {

@@ -235,6 +235,7 @@
     -fx-font-weight: BOLD;
     -fx-font-size: 12;
     -fx-text-fill: -rs-common-text-fill;
+    -fx-pref-height: 40;
 }
 
 
@@ -247,16 +248,26 @@
     -jfx-rippler-fill: #5792d6;
 }
 
+.navigation-view .jfx-list-view .load-more-cell .jfx-rippler {
+    -fx-background-color: #4d4845;
+}
+
+.navigation-view .jfx-list-view .load-more-cell:selected .jfx-rippler {
+    -fx-background-color: #4d4845;
+}
+
+
 .load-more-cell-rippler{
     -fx-background-color: RED;
 }
 
 .load-more-box {
-    -fx-alignment: center;
+    -fx-alignment: CENTER-LEFT;
     -fx-cursor: HAND;
 }
 
 .load-more-box .label {
+    -fx-background-insets: 0 0 0 50;
     -fx-text-fill: -rs-common-text-fill;
 }
 
@@ -264,7 +275,7 @@
     -fx-text-fill: WHITE;
 }
 
-.navigation-view .status-bar {
+.navigation-view .key-status-bar {
     -fx-border-width: 0;
     -fx-background-color: #3c3836;
 }
