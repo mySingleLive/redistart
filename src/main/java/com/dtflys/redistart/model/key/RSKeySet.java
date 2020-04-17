@@ -29,6 +29,7 @@ public class RSKeySet {
     private final CommandService commandService;
     private Consumer<RSKeyFindResult> onBeforeAddResults;
     private Consumer<RSKeyFindResult> onLoadCompleted;
+    private int maxScanCount = 200;
 
     public RSKeySet(RedisDatabase database, CommandService commandService) {
         this.database = database;
@@ -53,10 +54,10 @@ public class RSKeySet {
     public void findNextPage() {
         int pageSize = connection.getConnectionConfig().getQueryPageSize();
         finished = false;
-        findNextPage(pageSize, pageSize);
+        findNextPage(pageSize, pageSize, 0);
     }
 
-    public void findNextPage(int pageSize, int onePageSize) {
+    public void findNextPage(int pageSize, int onePageSize, int scanCount) {
         if (getSearchInfo().isSearchMode()) {
             setStatus(RSKeyFindStatus.SEARCHING);
         } else {
@@ -81,7 +82,7 @@ public class RSKeySet {
                                 }
                             }
                             if (keyFindResult.getSearch()) {
-                                if (keyList.size() < onePageSize - 5) {
+                                if (keyList.size() < onePageSize - 5 && scanCount < maxScanCount) {
                                     setStatus(RSKeyFindStatus.SEARCHING);
                                     autoSearchNextPage = true;
                                 } else {
@@ -99,7 +100,7 @@ public class RSKeySet {
                             lock.unlock();
                             if (keyFindResult.hasMoreKeys() && autoSearchNextPage) {
                                 int newPageSize = onePageSize - keyList.size();
-                                findNextPage(newPageSize, onePageSize);
+                                findNextPage(newPageSize, onePageSize, scanCount + 1);
                             }
                         }
                     });
