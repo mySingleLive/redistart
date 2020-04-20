@@ -8,6 +8,7 @@ import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.key.RSKeySet;
 import com.dtflys.redistart.model.key.RSLoadMore;
 import com.dtflys.redistart.service.ConnectionService;
+import com.dtflys.redistart.service.RediStartService;
 import com.dtflys.redistart.utils.ControlUtils;
 import com.jfoenix.controls.JFXListView;
 import de.felixroske.jfxsupport.FXMLController;
@@ -21,6 +22,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.StatusBar;
@@ -37,6 +39,9 @@ public class NavigationController implements Initializable {
     @Resource
     private ConnectionService connectionService;
 
+    @Resource
+    private RediStartService rediStartService;
+
     @FXML
     private CustomTextField txSearchField;
 
@@ -50,6 +55,8 @@ public class NavigationController implements Initializable {
     private Label lbKeyStatus;
 
     private Map<RedisConnection, RedisConnectionItem> connectionItemMap = new HashMap<>();
+
+    private final int KEY_LIST_CELL_HEIGHT = 36;
 
 
     @Override
@@ -87,7 +94,6 @@ public class NavigationController implements Initializable {
                 RSKey lastItem = items.get(items.size() - 1);
                 if (lastItem instanceof RSLoadMore) {
                     items.remove(items.size() - 1);
-                    keyListView.refresh();
                 }
                 lastIndex.set(items.size());
             } else {
@@ -100,21 +106,26 @@ public class NavigationController implements Initializable {
                 items.add(loadMore);
             }
             int index = lastIndex.get();
-            int count = (int) Math.floor(keyListView.getHeight() / 40);
+            int count = (int) Math.floor(keyListView.getHeight() / KEY_LIST_CELL_HEIGHT);
             if (index > count) {
                 keyListView.scrollTo(index - count);
             }
         });
+        lbKeyStatus.textProperty().unbind();
         lbKeyStatus.textProperty().bind(createKeyStatusBinding(keySet, database));
 
-        ChangeListener changeListener = (observableValue, oldItem, newItem) -> {
-            if (newItem instanceof RSLoadMore) {
+        MultipleSelectionModel selectionModel = keyListView.getSelectionModel();
 
+        ChangeListener<RSKey> changeListener = (observableValue, oldItem, newItem) -> {
+            if (newItem instanceof RSLoadMore) {
                 keySet.findNextPage();
+            } else {
+                rediStartService.setSelectedKey(newItem);
             }
+
         };
-        keyListView.getSelectionModel().selectedItemProperty().removeListener(changeListener);
-        keyListView.getSelectionModel().selectedItemProperty().addListener(changeListener);
+        selectionModel.selectedItemProperty().removeListener(changeListener);
+        selectionModel.selectedItemProperty().addListener(changeListener);
 
     }
 

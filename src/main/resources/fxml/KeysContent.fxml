@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.VBox?>
 
-<SplitPane fx:id="mainSplitPane" dividerPositions="0.28" prefHeight="483.0" prefWidth="533.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.KeysContentController">
+<SplitPane fx:id="mainSplitPane" dividerPositions="0.28" prefHeight="483.0" prefWidth="533.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.KeysContentController">
    <items>
       <VBox fx:id="leftBox" alignment="CENTER" minWidth="60.0" prefWidth="100.0">
          <children>
             <fx:include source="NavigationView.fxml" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
-      <VBox />
+      <VBox>
+         <children>
+            <JFXTabPane fx:id="valueTabPane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
+         </children></VBox>
    </items>
 </SplitPane>

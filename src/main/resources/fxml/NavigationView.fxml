@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.textfield.*?>
-<?import org.kordamp.ikonli.javafx.*?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox prefHeight="481.0" prefWidth="297.0" style="-fx-background-color: #ffffff;" styleClass="navigation-view" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.NavigationController">
+<VBox prefHeight="481.0" prefWidth="297.0" style="-fx-background-color: #ffffff;" styleClass="navigation-view" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.NavigationController">
    <children>
       <GridPane styleClass="searchPane">
          <columnConstraints>
@@ -49,7 +53,10 @@
          <children>
             <JFXListView fx:id="keyListView" VBox.vgrow="ALWAYS" />
             <HBox fx:id="keyStatusBar" alignment="CENTER_RIGHT" minHeight="25.0" prefHeight="25.0" styleClass="key-status-bar">
-                  <Label fx:id="lbKeyStatus" alignment="CENTER_RIGHT">OK</Label>
+                  <Label fx:id="lbKeyStatus" alignment="CENTER_RIGHT">
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></Label>
             </HBox>
          </children>
       </VBox>

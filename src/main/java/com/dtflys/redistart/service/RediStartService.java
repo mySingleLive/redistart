@@ -1,6 +1,7 @@
 package com.dtflys.redistart.service;
 
 import com.dtflys.redistart.model.connection.RedisConnection;
+import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.page.RSContentPage;
 import com.dtflys.redistart.model.page.RSKeysContentPage;
 import javafx.beans.property.ObjectPropertyBase;
@@ -19,6 +20,7 @@ public class RediStartService {
     private final List<RSContentPage> pages = FXCollections.observableArrayList();
     private final ObjectPropertyBase<RSContentPage> selectedPage = new SimpleObjectProperty<>();
     private final Map<RedisConnection, RSKeysContentPage> keysContentPageMap = new HashMap<>();
+    private final ObjectPropertyBase<RSKey> selectedKey = new SimpleObjectProperty<>();
 
     public RediStartService() {
         selectedPage.addListener((observableValue, oldPage, newPage) -> {
@@ -63,4 +65,18 @@ public class RediStartService {
             setSelectedPage(keysContentPage);
         }
     }
+
+    public RSKey getSelectedKey() {
+        return selectedKey.get();
+    }
+
+    public ObjectPropertyBase<RSKey> selectedKeyProperty() {
+        return selectedKey;
+    }
+
+    public void setSelectedKey(RSKey selectedKey) {
+        this.selectedKey.set(selectedKey);
+    }
 }
+
+

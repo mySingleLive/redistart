@@ -37,7 +37,9 @@ public class RSKeySet {
         this.commandService = commandService;
         setStatus(RSKeyFindStatus.INIT);
         searchInfo.patternProperty().addListener((observableValue, oldValue, newValue) -> {
-            refreshData();
+            if (oldValue != null) {
+                refreshData();
+            }
         });
     }
 
@@ -46,8 +48,8 @@ public class RSKeySet {
             lock.lock();
             startIndex = lastIndex = 0;
             keyList.clear();
-            lock.unlock();
             findNextPage();
+            lock.unlock();
         });
     }
 
@@ -78,6 +80,7 @@ public class RSKeySet {
                             }
                             for (RSKey key : keyFindResult.getKeys()) {
                                 if (key.getKey() != null) {
+                                    key.setDatabase(database);
                                     keyList.add(key);
                                 }
                             }
