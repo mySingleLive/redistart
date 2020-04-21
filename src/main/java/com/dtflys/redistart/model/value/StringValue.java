@@ -1,7 +1,6 @@
 package com.dtflys.redistart.model.value;
 
 import com.dtflys.redistart.model.key.RSKeyType;
-import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

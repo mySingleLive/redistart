@@ -1,5 +1,9 @@
 package com.dtflys.redistart.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.dtflys.redistart.controls.editor.JSONEditor;
 import com.dtflys.redistart.model.command.RSLuaRecord;
 import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.value.AbstractKeyValue;
@@ -12,6 +16,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,6 +30,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import org.yaml.snakeyaml.serializer.Serializer;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -45,6 +53,9 @@ public class StringValueViewController implements Initializable {
     private CommandService commandService;
 
     @FXML
+    private StackPane stackPane;
+
+    @FXML
     private JFXTextArea textArea;
 
     @FXML
@@ -54,6 +65,10 @@ public class StringValueViewController implements Initializable {
     private HBox valueModeBox;
 
     private ContextMenu valueModeMenu = new ContextMenu();
+
+    private JSONEditor jsonEditor = new JSONEditor();
+
+    private StringProperty jsonText = new SimpleStringProperty();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,19 +80,53 @@ public class StringValueViewController implements Initializable {
                     valueModeMenu.getItems().add(item);
                 });
 
+        jsonEditor.init();
+        stackPane.getChildren().add(jsonEditor);
+        jsonEditor.toFront();
+        jsonEditor.setEditable(true);
+        jsonEditor.setWrapText(false);
+        jsonEditor.setAutoScrollOnDragDesired(true);
+        jsonEditor.getStyleClass().setAll("string-value-json-text");
+        jsonEditor.setStyle("-fx-font-size: 14");
+
         rediStartService.selectedKeyProperty().addListener((observableValue, oldKey, newKey) -> {
             if (newKey != null) {
                 textArea.textProperty().unbind();
+                jsonEditor.replaceText("");
                 newKey.valueProperty().addListener((observableValue1, oldValue, newValue) -> {
                     if (newValue != null) {
                         if (newValue instanceof StringValue) {
                             textArea.textProperty().bind(((StringValue) newValue).valueProperty());
+                            formatJSONText(((StringValue) newValue).valueProperty().get());
+                            jsonEditor.replaceText(jsonText.get());
                         }
                     }
                 });
                 newKey.get(commandService);
             }
         });
+    }
+
+    public void formatJSONText(String text) {
+        JSON json = null;
+        try {
+            json = JSON.parseObject(text);
+        } catch (Throwable th) {
+        }
+        if (json == null) {
+            try {
+                json = JSON.parseArray(text);
+            } catch (Throwable th) {
+            }
+        }
+        if (json != null) {
+            String output = JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
+            output = output.replaceAll(":", ": ");
+            output = output.replaceAll("\t", "    ");
+            jsonText.set(output);
+        } else {
+            jsonText.set(text);
+        }
     }
 
     public void onValueModeClick(MouseEvent mouseEvent) {

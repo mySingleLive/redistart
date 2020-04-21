@@ -5,11 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.StringValueViewController">
+<VBox alignment="TOP_CENTER" stylesheets="@../css/json.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.StringValueViewController">
    <children>
-      <JFXTextArea fx:id="textArea" styleClass="string-value-plain-text" VBox.vgrow="ALWAYS" />
+      <StackPane fx:id="stackPane" VBox.vgrow="ALWAYS">
+         <children>
+            <JFXTextArea fx:id="textArea" styleClass="string-value-plain-text" />
+         </children>
+      </StackPane>
       <HBox fx:id="keyStatusBar" alignment="CENTER_RIGHT" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" styleClass="string-key-status-bar">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
