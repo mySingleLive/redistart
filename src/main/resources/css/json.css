@@ -1,54 +1,89 @@
 
 .string-value-json-text {
-    -fx-fill: #d9d9d9;
     -fx-background-color: #404040;
     -fx-cursor: TEXT;
 }
 
-.json-default {
+.string-value-json-text .paragraph-box {
+    -fx-background-color: #404040;
+}
+
+.string-value-json-text .paragraph-text {
+    -fx-line-spacing: 1.2;
+}
+
+
+.string-value-json-text .lineno {
+    -fx-background-color: #404040;
+    -fx-font-size: 12;
+    -fx-font-weight: normal;
+    -fx-font-family: Arial;
+    -fx-pref-width: 40;
+    -fx-padding: 0 15 0 0;
+}
+
+.string-value-json-text .caret {
+    -fx-stroke: #ede6e6;
+    -fx-stroke-width: 2;
+}
+
+
+.string-value-json-text .main-selection {
+    -fx-fill: #214f8e;
+}
+
+.string-value-json-text .text {
+    -fx-font-weight: bold;
+    -fx-fill: #cac4c4;
+    -rtfx-border-stroke-width: 2;
+}
+
+.string-value-json-text .json-default {
     -fx-fill: #cac4c4;
 }
 
-.json-identity {
-    -fx-font-weight: bold;
-    -fx-fill: #499cea;
+.string-value-json-text .json-null {
+    -fx-fill: #848080;
 }
 
-.json-string {
+.string-value-json-text .json-boolean {
+    -fx-font-weight: bold;
+    -fx-fill: #ff973e;
+}
+
+
+.string-value-json-text .json-error {
+    -fx-fill: #cac4c4;
+    -rtfx-underline-color: #ec5634;
+    -rtfx-underline-width: 2;
+}
+
+.string-value-json-text .json-string {
     -fx-fill: #86cb75;
-    -fx-font-weight: bold;
 }
 
-.json-key {
-    -fx-font-weight: bold;
+.string-value-json-text .json-key {
     -fx-fill: #e89fea;
 }
 
-
-.json-number {
-    -fx-fill: #499cea;
+.string-value-json-text .json-number {
+    -fx-fill: #62b4ea;
 }
 
-.json-bracket {
-    -fx-font-weight: bold;
+.string-value-json-text .json-bracket {
+    -fx-fill: #92dded;
+}
+
+.string-value-json-text .json-brace {
     -fx-fill: #92dded;
 }
 
 
-.json-brace {
-    -fx-font-weight: bold;
+.string-value-json-text .json-colon {
     -fx-fill: #92dded;
 }
 
 
-.json-colon {
-    -fx-font-weight: bold;
-    -fx-fill: #92dded;
-    -fx-background-insets: 0 10 0 0;
-}
-
-
-.json-comma {
-    -fx-font-weight: bold;
+.string-value-json-text .json-comma {
     -fx-fill: #92dded;
 }

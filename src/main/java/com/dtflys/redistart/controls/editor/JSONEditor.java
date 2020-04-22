@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
 
 public class JSONEditor extends CodeArea {
 
+    private static final String KEYWORD_NULL_PATTERN = "null";
+
+    private static final String KEYWORD_BOOLEAN_PATTERN = "(true|false)";
+
     private static final String IDENTITY_PARENT = "([a-z]|[A-Z]|\\_|\\$)([a-z]|[A-Z]|[0-9]|\\_|\\$)*";
 
     private static final String STRING_PATTERN_SINGLE_QUOTE = "\'([^\'\\\\]|\\\\.)*\'";
@@ -31,7 +35,9 @@ public class JSONEditor extends CodeArea {
     private static final String COMMA_PATTERN = ",";
 
     private static final Pattern PATTERN = Pattern.compile(
-                    "(?<IDENTITY>" + IDENTITY_PARENT + ")"
+                "(?<NULL>" + KEYWORD_NULL_PATTERN + ")"
+                    + "|(?<BOOLEAN>" + KEYWORD_BOOLEAN_PATTERN + ")"
+                    + "|(?<IDENTITY>" + IDENTITY_PARENT + ")"
                     + "|(?<BRACKET>" + BRACKET_PATTERN + ")"
                     + "|(?<BRACE>" + BRACE_PATTERN + ")"
                     + "|(?<NUMBER>" + NUMBER_PATTERN + ")"
@@ -68,9 +74,12 @@ public class JSONEditor extends CodeArea {
         List<RSSpan<Collection<String>>> spans = new ArrayList<>();
         while(matcher.find()) {
             String styleClass = null;
-            String id = null;
-            if ((id = matcher.group("IDENTITY")) != null) {
-                styleClass = "json-identity";
+            if ((matcher.group("NULL")) != null) {
+                styleClass = "json-null";
+            } else if ((matcher.group("BOOLEAN")) != null) {
+                styleClass = "json-boolean";
+            }  else if ((matcher.group("IDENTITY")) != null) {
+                styleClass = "json-error";
             } else if (matcher.group("STRINGDQ") != null) {
                 styleClass = "json-string";
             } else if (matcher.group("STRINGSQ") != null) {
@@ -86,7 +95,7 @@ public class JSONEditor extends CodeArea {
             } else if (matcher.group("COMMA") != null) {
                 styleClass = "json-comma";
             } else {
-                styleClass = "json-default";
+                styleClass = "json-error";
             }
             spans.add(new RSSpan(Collections.emptyList(), matcher.start() - lastKwEnd));
             Set<String> styles = new HashSet<>();

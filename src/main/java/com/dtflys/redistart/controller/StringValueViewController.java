@@ -87,7 +87,7 @@ public class StringValueViewController implements Initializable {
         jsonEditor.setWrapText(false);
         jsonEditor.setAutoScrollOnDragDesired(true);
         jsonEditor.getStyleClass().setAll("string-value-json-text");
-        jsonEditor.setStyle("-fx-font-size: 14");
+        jsonEditor.setStyle("-fx-font-size: 13");
 
         rediStartService.selectedKeyProperty().addListener((observableValue, oldKey, newKey) -> {
             if (newKey != null) {
@@ -121,7 +121,7 @@ public class StringValueViewController implements Initializable {
         }
         if (json != null) {
             String output = JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
-            output = output.replaceAll(":", ": ");
+//            output = output.replaceAll(":", ": ");
             output = output.replaceAll("\t", "    ");
             jsonText.set(output);
         } else {
