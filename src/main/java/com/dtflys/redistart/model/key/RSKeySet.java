@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.util.concurrent.locks.Lock;
@@ -38,6 +39,12 @@ public class RSKeySet {
         setStatus(RSKeyFindStatus.INIT);
         searchInfo.patternProperty().addListener((observableValue, oldValue, newValue) -> {
             if (oldValue != null) {
+                refreshData();
+            }
+        });
+        searchInfo.getTypes().addListener((ListChangeListener<String>) change -> {
+            if (getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
+                    || getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED) {
                 refreshData();
             }
         });

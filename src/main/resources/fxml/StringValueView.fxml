@@ -10,6 +10,7 @@
 
 <VBox alignment="TOP_CENTER" stylesheets="@../css/json.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.StringValueViewController">
    <children>
+      <HBox fx:id="stringValueToolbar" prefHeight="30.0" />
       <StackPane fx:id="stackPane" VBox.vgrow="ALWAYS">
          <children>
             <JFXTextArea fx:id="textArea" styleClass="string-value-plain-text" />

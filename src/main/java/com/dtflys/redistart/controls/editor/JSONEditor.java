@@ -124,7 +124,21 @@ public class JSONEditor extends CodeArea {
                             continue;
                         }
                     }
-                }
+                } /*else if (styles.contains("json-comma")) {
+                    for (int j = i + 1; j < spans.size(); j++) {
+                        RSSpan after = spans.get(j);
+                        Collection<String> afterStyle = (Collection<String>) after.getStyle();
+                        if (!afterStyle.isEmpty()) {
+                            if (afterStyle.contains("json-bracket")
+                                    || afterStyle.contains("json-brace")
+                                    || afterStyle.contains("json-comma")) {
+                                styles.clear();
+                                styles.add("json-error");
+                            }
+                            break;
+                        }
+                    }
+                }*/
             }
         }
 

@@ -2,11 +2,17 @@ package com.dtflys.redistart.model.search;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RSSearchInfo {
 
     private StringProperty pattern = new SimpleStringProperty();
+    private ObservableList<String> types = FXCollections.observableArrayList();
 
     public String getPattern() {
         String str = pattern.get();
@@ -30,5 +36,13 @@ public class RSSearchInfo {
 
     public void setPattern(String pattern) {
         this.pattern.set(pattern);
+    }
+
+    public ObservableList<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(ObservableList<String> types) {
+        this.types = types;
     }
 }

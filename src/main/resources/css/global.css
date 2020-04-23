@@ -246,8 +246,8 @@
 }
 
 .navigation-view .jfx-list-view .jfx-list-cell:selected .jfx-rippler {
-    -fx-background-color: #5792d6;
-    -jfx-rippler-fill: #5792d6;
+    -fx-background-color: #3c6594;
+    -jfx-rippler-fill: #3c6594;
 }
 
 .navigation-view .jfx-list-view .load-more-cell .jfx-rippler {
@@ -319,6 +319,16 @@
 .scroll-bar:horizontal .thumb:hover, .scroll-bar:vertical .thumb:hover {
     -fx-background-color: #737373;
 }
+
+.string-value-scroll-pane {
+    -fx-background-color: #404040;
+}
+
+/*
+.string-value-scroll-pane .scroll-bar:horizontal, .string-value-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #404040;
+}
+*/
 
 
 /*
@@ -587,6 +597,7 @@
     -fx-background-color: #44403e;
 }
 
+
 .searchField {
     -fx-background-color: #44403e;
     -fx-border-width: 0;
@@ -599,8 +610,25 @@
     -fx-background-color: #44403e;
 }
 
+.searchField .option {
+    -fx-cursor: HAND;
+}
+
 .searchField .searchCancel {
     -fx-cursor: HAND;
+}
+
+.search-advanced-conditions {
+    -fx-background-color: #44403e;
+}
+
+.search-advanced-conditions .type-box {
+    -fx-cursor: HAND;
+}
+
+.search-advanced-conditions .type-box:hover {
+    -fx-background-color: #585350;
+    -fx-background-radius: 2.5;
 }
 
 #leftBox {
@@ -688,6 +716,24 @@
 #sshSettingTabView .tab-header-area .jfx-rippler {
     -jfx-rippler-fill: #5792d6;
 }
+
+.rs-tool-bar {
+    -fx-background-color: -rs-app-title-bar-color;
+    -fx-focus-traversable: transparent;
+}
+
+.rs-tool-bar .jfx-button {
+    -fx-background-color: -rs-app-title-bar-color;
+}
+
+.rs-tool-bar .jfx-button:hover {
+    -fx-background-color: #6d6561;
+}
+
+.rs-tool-bar .jfx-button .ikonli-font-icon {
+    -fx-icon-color: -rs-icon-hover-color;
+}
+
 
 
 .string-value-plain-text {

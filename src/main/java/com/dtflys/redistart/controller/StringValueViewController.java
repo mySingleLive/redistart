@@ -24,13 +24,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.yaml.snakeyaml.serializer.Serializer;
 
 import javax.annotation.Resource;
@@ -53,6 +55,9 @@ public class StringValueViewController implements Initializable {
     private CommandService commandService;
 
     @FXML
+    private HBox stringValueToolbar;
+
+    @FXML
     private StackPane stackPane;
 
     @FXML
@@ -68,6 +73,8 @@ public class StringValueViewController implements Initializable {
 
     private JSONEditor jsonEditor = new JSONEditor();
 
+    private VirtualizedScrollPane editorScrollPane;
+
     private StringProperty jsonText = new SimpleStringProperty();
 
     @Override
@@ -81,13 +88,18 @@ public class StringValueViewController implements Initializable {
                 });
 
         jsonEditor.init();
-        stackPane.getChildren().add(jsonEditor);
-        jsonEditor.toFront();
+
         jsonEditor.setEditable(true);
-        jsonEditor.setWrapText(false);
         jsonEditor.setAutoScrollOnDragDesired(true);
         jsonEditor.getStyleClass().setAll("string-value-json-text");
         jsonEditor.setStyle("-fx-font-size: 13");
+
+        editorScrollPane = new VirtualizedScrollPane(jsonEditor);
+        editorScrollPane.getStyleClass().add("string-value-scroll-pane");
+        stackPane.getChildren().add(editorScrollPane);
+        editorScrollPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        editorScrollPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        editorScrollPane.toFront();
 
         rediStartService.selectedKeyProperty().addListener((observableValue, oldKey, newKey) -> {
             if (newKey != null) {

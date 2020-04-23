@@ -2,6 +2,8 @@ package com.dtflys.redistart.model.key;
 
 import javafx.scene.image.Image;
 
+import java.util.List;
+
 public enum RSKeyType {
     string("/image/list-icon-str.png"),
     list("/image/list-icon-list.png"),
@@ -22,8 +24,12 @@ public enum RSKeyType {
         return listIconImage;
     }
 
-    public RSKeyType findByName(String name) {
+    public static RSKeyType findByName(String name) {
         return RSKeyType.valueOf(name.toUpperCase());
+    }
+
+    public static List<RSKeyType> toList() {
+        return List.of(RSKeyType.values());
     }
 
 }
