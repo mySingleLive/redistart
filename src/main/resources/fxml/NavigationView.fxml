@@ -125,6 +125,11 @@
                               <FontIcon iconColor="#dac8c8" iconLiteral="fa-repeat" />
                            </graphic>
                         </JFXButton>
+                        <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" onAction="#onTerminalAction" prefHeight="26.0" prefWidth="26.0">
+                           <graphic>
+                              <FontIcon iconColor="#dac8c8" iconLiteral="di-terminal" iconSize="17" />
+                           </graphic>
+                        </JFXButton>
                         <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
                            <graphic>
                               <FontIcon iconColor="#dac8c8" iconLiteral="dashicons-plus-light" iconSize="17" />

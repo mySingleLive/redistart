@@ -26,7 +26,8 @@ public class StringValue extends AbstractKeyValue {
         this.value.set(value);
     }
 
-    public int getBytesSize() {
-        return 0;
+
+    public long getBytesSize() {
+        return value.get().getBytes().length;
     }
 }

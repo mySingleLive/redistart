@@ -1,4 +1,4 @@
-package com.dtflys.redistart.view;
+package com.dtflys.redistart.view.values;
 
 import com.dtflys.redistart.utils.AbstractRSView;
 import de.felixroske.jfxsupport.FXMLView;

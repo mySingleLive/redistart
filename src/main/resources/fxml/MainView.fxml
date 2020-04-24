@@ -173,6 +173,7 @@
           <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -202,7 +203,7 @@
                      </HBox.margin>
                   </FontIcon>
                </children></HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="left-side-tab" GridPane.rowIndex="5">
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="left-side-tab" GridPane.rowIndex="6">
                <children>
                   <FontIcon iconColor="#e1e1e1" iconLiteral="dashicons-admin-generic" iconSize="26" onMouseClicked="#onSelectSettingsTab">
                      <HBox.margin>
@@ -214,6 +215,15 @@
             <HBox fx:id="sideBtnDashboard" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="fas-chart-pie" iconSize="21">
+                     <HBox.margin>
+                        <Insets left="15.0" top="15.0" />
+                     </HBox.margin>
+                  </FontIcon>
+               </children>
+            </HBox>
+            <HBox fx:id="sideBtnClients" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="4">
+               <children>
+                  <FontIcon iconColor="#838383" iconLiteral="gmi-phonelink" iconSize="23" onMouseClicked="#onSelectCollectionTab">
                      <HBox.margin>
                         <Insets left="15.0" top="15.0" />
                      </HBox.margin>

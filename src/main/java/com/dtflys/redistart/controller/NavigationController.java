@@ -263,4 +263,8 @@ public class NavigationController implements Initializable {
     public void onSelectedTypesClick(MouseEvent mouseEvent) {
         typesMenu.show(typesBox, Side.BOTTOM, 0, 0);
     }
+
+    public void onTerminalAction(ActionEvent actionEvent) {
+
+    }
 }

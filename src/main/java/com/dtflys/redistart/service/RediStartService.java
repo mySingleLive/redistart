@@ -4,8 +4,11 @@ import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.page.RSContentPage;
 import com.dtflys.redistart.model.page.RSKeysContentPage;
+import com.dtflys.redistart.model.value.RSStringValueMode;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +24,9 @@ public class RediStartService {
     private final ObjectPropertyBase<RSContentPage> selectedPage = new SimpleObjectProperty<>();
     private final Map<RedisConnection, RSKeysContentPage> keysContentPageMap = new HashMap<>();
     private final ObjectPropertyBase<RSKey> selectedKey = new SimpleObjectProperty<>();
+    private final StringProperty valueStatusText = new SimpleStringProperty("");
+    private final ObjectPropertyBase<RSStringValueMode> stringValueMode = new SimpleObjectProperty<>(RSStringValueMode.PLAIN_TEXT);
+
 
     public RediStartService() {
         selectedPage.addListener((observableValue, oldPage, newPage) -> {
@@ -76,6 +82,30 @@ public class RediStartService {
 
     public void setSelectedKey(RSKey selectedKey) {
         this.selectedKey.set(selectedKey);
+    }
+
+    public String getValueStatusText() {
+        return valueStatusText.get();
+    }
+
+    public StringProperty valueStatusTextProperty() {
+        return valueStatusText;
+    }
+
+    public void setValueStatusText(String valueStatusText) {
+        this.valueStatusText.set(valueStatusText);
+    }
+
+    public RSStringValueMode getStringValueMode() {
+        return stringValueMode.get();
+    }
+
+    public ObjectPropertyBase<RSStringValueMode> stringValueModeProperty() {
+        return stringValueMode;
+    }
+
+    public void setStringValueMode(RSStringValueMode stringValueMode) {
+        this.stringValueMode.set(stringValueMode);
     }
 }
 

@@ -1,47 +1,32 @@
-package com.dtflys.redistart.controller;
+package com.dtflys.redistart.controller.values;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dtflys.redistart.controls.editor.JSONEditor;
-import com.dtflys.redistart.model.command.RSLuaRecord;
-import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.value.AbstractKeyValue;
-import com.dtflys.redistart.model.value.RSValueGetResult;
 import com.dtflys.redistart.model.value.StringValue;
 import com.dtflys.redistart.service.CommandService;
-import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import de.felixroske.jfxsupport.FXMLController;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
-import org.yaml.snakeyaml.serializer.Serializer;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 @FXMLController
-public class StringValueViewController implements Initializable {
+public class StringValueController implements Initializable {
 
     @Resource
     private RediStartService rediStartService;
@@ -63,11 +48,7 @@ public class StringValueViewController implements Initializable {
     @FXML
     private JFXTextArea textArea;
 
-    @FXML
-    private Label lbStatus;
 
-    @FXML
-    private HBox valueModeBox;
 
     private ContextMenu valueModeMenu = new ContextMenu();
 
@@ -113,10 +94,32 @@ public class StringValueViewController implements Initializable {
                             jsonEditor.replaceText(jsonText.get());
                         }
                     }
+                    setValueStatusText(newValue);
                 });
                 newKey.get(commandService);
             }
         });
+    }
+
+    public void setValueStatusText(AbstractKeyValue value) {
+        if (value instanceof StringValue) {
+            long byteSize = ((StringValue) value).getBytesSize();
+            BigDecimal decimal = new BigDecimal(byteSize + "");
+            String unit = "";
+            if (byteSize >= 1024) {
+                decimal = decimal.divide(new BigDecimal(1024), 2, RoundingMode.HALF_UP);
+                if (byteSize >= 1024 * 1024) {
+                    decimal = decimal.divide(new BigDecimal(1024), 2, RoundingMode.HALF_UP);
+                    unit = "MB";
+                } else {
+                    decimal.setScale(2);
+                    unit = "KB";
+                }
+            } else {
+                unit = "B";
+            }
+            rediStartService.setValueStatusText("Value Size: " + decimal.toString() + unit);
+        }
     }
 
     public void formatJSONText(String text) {
@@ -141,7 +144,4 @@ public class StringValueViewController implements Initializable {
         }
     }
 
-    public void onValueModeClick(MouseEvent mouseEvent) {
-        valueModeMenu.show(valueModeBox, Side.TOP, 0, 0);
-    }
 }

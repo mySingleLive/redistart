@@ -4,6 +4,10 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Region?>
 <SplitPane fx:id="mainSplitPane" dividerPositions="0.28" prefHeight="483.0" prefWidth="533.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.KeysContentController">
    <items>
       <VBox fx:id="leftBox" alignment="CENTER" minWidth="60.0" prefWidth="100.0">
@@ -14,6 +18,28 @@
       <VBox>
          <children>
             <JFXTabPane fx:id="valueTabPane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
-         </children></VBox>
+         </children>
+         <HBox fx:id="keyStatusBar" alignment="CENTER_RIGHT" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" styleClass="string-key-status-bar">
+            <children>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <children>
+                     <Label fx:id="lbStatus" text="OK" />
+                  </children>
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin>
+               </HBox>
+               <HBox fx:id="valueModeBox" alignment="CENTER" styleClass="flat-button-box" onMouseClicked="#onValueModeClick">
+                  <children>
+                     <Label fx:id="lbValueModeText" text="Plain Text" />
+                  </children>
+                  <padding>
+                     <Insets left="5.0" right="5.0" />
+                  </padding>
+               </HBox>
+               <Region prefWidth="10.0" />
+            </children>
+         </HBox>
+      </VBox>
    </items>
 </SplitPane>
