@@ -26,7 +26,7 @@
                   <Insets left="10.0" />
                </HBox.margin>
             </HBox>
-            <HBox fx:id="valueModeBox" alignment="CENTER" onMouseClicked="#onValueModeClick">
+            <HBox fx:id="valueModeBox" alignment="CENTER" styleClass="flat-button-box" onMouseClicked="#onValueModeClick">
                <children>
                   <Label text="Plain Text" />
                </children>

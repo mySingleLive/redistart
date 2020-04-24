@@ -4,7 +4,6 @@ local count = ARGV[2]
 local searchInfo = cjson.decode(ARGV[3])
 local pattern = searchInfo.pattern
 local types = searchInfo.types
-local isSearch = false
 
 local scanResults = nil
 
@@ -13,6 +12,12 @@ local typesMap = {}
 for i=1,typeLen do
     local tyName = types[i]
     typesMap[tyName] = true
+end
+
+local isSearch = false
+
+if typeLen > 0 then
+    isSearch = true
 end
 
 if pattern ~= nil and pattern ~= '' then

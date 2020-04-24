@@ -1,18 +1,19 @@
 package com.dtflys.redistart.model.search;
 
+import com.dtflys.redistart.model.key.RSKeyType;
+import com.google.common.collect.Lists;
+import javafx.beans.property.ObjectPropertyBase;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class RSSearchInfo {
 
     private StringProperty pattern = new SimpleStringProperty();
-    private ObservableList<String> types = FXCollections.observableArrayList();
+    private ObjectPropertyBase<List<String>> types = new SimpleObjectProperty<>(Lists.newArrayList());
 
     public String getPattern() {
         String str = pattern.get();
@@ -27,7 +28,7 @@ public class RSSearchInfo {
     }
 
     public boolean isSearchMode() {
-        return StringUtils.isNotBlank(getPattern());
+        return StringUtils.isNotBlank(getPattern()) || (!types.get().isEmpty() && types.get().size() < RSKeyType.values().length);
     }
 
     public StringProperty patternProperty() {
@@ -38,11 +39,15 @@ public class RSSearchInfo {
         this.pattern.set(pattern);
     }
 
-    public ObservableList<String> getTypes() {
+    public List<String> getTypes() {
+        return types.get();
+    }
+
+    public ObjectPropertyBase<List<String>> typesProperty() {
         return types;
     }
 
-    public void setTypes(ObservableList<String> types) {
-        this.types = types;
+    public void setTypes(List<String> types) {
+        this.types.set(types);
     }
 }

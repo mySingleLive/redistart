@@ -232,11 +232,17 @@
 }
 
 .navigation-view .jfx-list-view .jfx-list-cell {
-    -fx-font-weight: BOLD;
-    -fx-font-size: 11;
-    -fx-text-fill: -rs-common-text-fill;
+    -fx-font-weight: ITALIC;
+    -fx-font-size: 10;
+    -fx-text-fill: #989898;
     /*-fx-pref-height: 30;*/
     -fx-cell-size: 34;
+}
+
+.navigation-view .jfx-list-view .jfx-list-cell .key-name-text {
+    -fx-font-weight: BOLD;
+    -fx-font-size: 11.5;
+    -fx-text-fill: -rs-common-text-fill;
 }
 
 
@@ -257,7 +263,6 @@
 .navigation-view .jfx-list-view .load-more-cell:selected .jfx-rippler {
     -fx-background-color: #4d4845;
 }
-
 
 .load-more-cell-rippler{
     -fx-background-color: RED;
@@ -745,12 +750,12 @@
     -fx-background-color: #3c3836;
 }
 
-.string-key-status-bar #valueModeBox {
+.flat-button-box {
     -fx-text-fill: -rs-common-text-fill;
     -fx-cursor: HAND;
 }
 
-.string-key-status-bar #valueModeBox:hover {
+.flat-button-box:hover {
     -fx-background-color: #4a4543;
 }
 

@@ -2,7 +2,7 @@ package com.dtflys.redistart.controller;
 
 import com.dtflys.redistart.controls.RSColors;
 import com.dtflys.redistart.controls.RSMovableListener;
-import com.dtflys.redistart.controls.RSConnectionMenuItem;
+import com.dtflys.redistart.controls.menu.RSConnectionMenuItem;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
 import com.dtflys.redistart.model.page.RSConnectionManagerPage;

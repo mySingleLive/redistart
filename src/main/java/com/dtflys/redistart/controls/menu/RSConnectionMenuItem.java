@@ -1,5 +1,6 @@
-package com.dtflys.redistart.controls;
+package com.dtflys.redistart.controls.menu;
 
+import com.dtflys.redistart.controls.RSColors;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import javafx.scene.control.MenuItem;
 import org.kordamp.ikonli.javafx.FontIcon;

@@ -1,16 +1,13 @@
 package com.dtflys.redistart.controller;
 
-import com.dtflys.redistart.controls.RSKeyListCell;
+import com.dtflys.redistart.controls.list.RSKeyListCell;
 import com.dtflys.redistart.controls.item.RedisConnectionItem;
+import com.dtflys.redistart.controls.menu.RSKeyTypeMenuItem;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
-import com.dtflys.redistart.model.key.RSKey;
-import com.dtflys.redistart.model.key.RSKeySet;
-import com.dtflys.redistart.model.key.RSKeyType;
-import com.dtflys.redistart.model.key.RSLoadMore;
+import com.dtflys.redistart.model.key.*;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
-import com.dtflys.redistart.utils.ControlUtils;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListView;
 import de.felixroske.jfxsupport.FXMLController;
@@ -20,31 +17,24 @@ import javafx.beans.binding.StringBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.CheckComboBox;
-import org.controlsfx.control.StatusBar;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import javax.annotation.Resource;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @FXMLController
 public class NavigationController implements Initializable {
@@ -79,6 +69,9 @@ public class NavigationController implements Initializable {
     private HBox keyStatusBar;
 
     @FXML
+    private Label lbKeyTTL;
+
+    @FXML
     private Label lbKeyStatus;
 
     private Map<RedisConnection, RedisConnectionItem> connectionItemMap = new HashMap<>();
@@ -96,7 +89,7 @@ public class NavigationController implements Initializable {
 
         List<RSKeyType> allTypes = RSKeyType.toList();
         allTypes.forEach(type -> {
-            searchOptionTypeMap.put(type, new SimpleBooleanProperty(true));
+            searchOptionTypeMap.put(type, new SimpleBooleanProperty(false));
         });
 
         BooleanProperty[] typeBooleanProperties = new BooleanProperty[allTypes.size()];
@@ -121,23 +114,14 @@ public class NavigationController implements Initializable {
                 typeBooleanProperties));
 
         allTypes.forEach(keyType -> {
-            MenuItem item = new MenuItem();
-            HBox hBox = new HBox();
-            JFXCheckBox checkBox = new JFXCheckBox();
-            checkBox.setPrefWidth(12);
-            checkBox.setPrefHeight(12);
-            checkBox.selectedProperty().bindBidirectional(searchOptionTypeMap.get(keyType));
-
-            HBox.setMargin(checkBox, new Insets(0, 5, 0, 0));
-            ImageView imageView = new ImageView();
-            imageView.setImage(keyType.getListIconImage());
-            imageView.setFitWidth(18);
-            imageView.setFitHeight(14);
-            hBox.getChildren().addAll(checkBox, imageView);
-            item.setGraphic(hBox);
-            item.setText(keyType.name());
+            RSKeyTypeMenuItem item = new RSKeyTypeMenuItem(keyType);
+            JFXCheckBox checkBox = item.getCheckBox();
+            item.setOnAction(event -> {
+                checkBox.setSelected(!checkBox.isSelected());
+            });
             typesMenu.getItems().add(item);
         });
+
 
 
         if (connectionService.getSelectedConnection() != null) {
@@ -155,6 +139,8 @@ public class NavigationController implements Initializable {
 
     }
 
+    private ChangeListener<Boolean> lastTypeChangeListener = null;
+
 
     private void bindData(RSKeySet keySet, RedisDatabase database) {
         RSLoadMore loadMore = new RSLoadMore(keySet);
@@ -163,23 +149,39 @@ public class NavigationController implements Initializable {
         txSearchField.textProperty().unbind();
 
         ChangeListener<Boolean> searchTypesChangeListener = (observableValue, oldVal, newVal) -> {
-            ObservableList<String> types = keySet.getSearchInfo().getTypes();
-            types.clear();
+            keySet.getSearchInfo().getTypes();
+            List<String> changedList = new ArrayList<>();
             for (RSKeyType type : searchOptionTypeMap.keySet()) {
                 BooleanProperty booleanProperty = searchOptionTypeMap.get(type);
                 if (booleanProperty.get()) {
-                    types.add(type.name());
+                    changedList.add(type.name());
                 }
             }
+            keySet.getSearchInfo().setTypes(changedList);
         };
+
+        for (MenuItem item : typesMenu.getItems()) {
+            RSKeyTypeMenuItem keyTypeMenuItem = (RSKeyTypeMenuItem) item;
+            keyTypeMenuItem.unbind();
+        }
 
         for (RSKeyType type : searchOptionTypeMap.keySet()) {
             BooleanProperty booleanProperty = searchOptionTypeMap.get(type);
-            booleanProperty.removeListener(searchTypesChangeListener);
-            booleanProperty.addListener(searchTypesChangeListener);
-            if (searchOptionTypeMap.get(type).get()) {
-                keySet.getSearchInfo().getTypes().add(type.name());
+            if (lastTypeChangeListener != null) {
+                booleanProperty.removeListener(lastTypeChangeListener);
             }
+            booleanProperty.addListener(searchTypesChangeListener);
+            lastTypeChangeListener = searchTypesChangeListener;
+        }
+
+        List<RSKeyType> allTypes = RSKeyType.toList();
+        allTypes.forEach(type -> {
+            searchOptionTypeMap.get(type).set(true);
+        });
+
+        for (MenuItem item : typesMenu.getItems()) {
+            RSKeyTypeMenuItem keyTypeMenuItem = (RSKeyTypeMenuItem) item;
+            keyTypeMenuItem.bind(searchOptionTypeMap.get(keyTypeMenuItem.getKeyType()));
         }
 
         keySet.getSearchInfo().patternProperty().bind(txSearchField.textProperty());
@@ -196,6 +198,8 @@ public class NavigationController implements Initializable {
                 lastIndex.set(-1);
             }
         });
+        MultipleSelectionModel selectionModel = keyListView.getSelectionModel();
+
         keySet.setOnLoadCompleted(keyFindResult -> {
             ObservableList<RSKey> items = keyListView.getItems();
             if (keyFindResult.hasMoreKeys()) {
@@ -203,25 +207,31 @@ public class NavigationController implements Initializable {
             }
             int index = lastIndex.get();
             int count = (int) Math.floor(keyListView.getHeight() / KEY_LIST_CELL_HEIGHT);
-            if (index > count) {
-                keyListView.scrollTo(index - count);
+            if (keySet.getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
+                    || keySet.getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED) {
+                if (index > count) {
+                    keyListView.scrollTo(index - count);
+                }
+                if (selectionModel.getSelectedItem() == null) {
+                    selectionModel.select(0);
+                }
             }
         });
         lbKeyStatus.textProperty().unbind();
         lbKeyStatus.textProperty().bind(createKeyStatusBinding(keySet, database));
 
-        MultipleSelectionModel selectionModel = keyListView.getSelectionModel();
 
-        ChangeListener<RSKey> changeListener = (observableValue, oldItem, newItem) -> {
+
+        ChangeListener<RSKey> selectedKeyChangeListener = (observableValue, oldItem, newItem) -> {
             if (newItem instanceof RSLoadMore) {
                 keySet.findNextPage();
-            } else {
+            } else if (newItem != null) {
                 rediStartService.setSelectedKey(newItem);
+                lbKeyTTL.setText("TTL: " + newItem.getTtl());
             }
-
         };
-        selectionModel.selectedItemProperty().removeListener(changeListener);
-        selectionModel.selectedItemProperty().addListener(changeListener);
+        selectionModel.selectedItemProperty().removeListener(selectedKeyChangeListener);
+        selectionModel.selectedItemProperty().addListener(selectedKeyChangeListener);
 
     }
 

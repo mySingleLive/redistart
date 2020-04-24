@@ -9,10 +9,13 @@ import com.dtflys.redistart.service.CommandService;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -42,9 +45,11 @@ public class RSKeySet {
                 refreshData();
             }
         });
-        searchInfo.getTypes().addListener((ListChangeListener<String>) change -> {
-            if (getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
-                    || getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED) {
+        searchInfo.typesProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (oldValue != null && (
+                    getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED
+                    || getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
+            )) {
                 refreshData();
             }
         });
@@ -55,8 +60,8 @@ public class RSKeySet {
             lock.lock();
             startIndex = lastIndex = 0;
             keyList.clear();
-            findNextPage();
             lock.unlock();
+            findNextPage();
         });
     }
 
@@ -91,8 +96,11 @@ public class RSKeySet {
                                     keyList.add(key);
                                 }
                             }
+                            lastIndex = keyFindResult.getPos();
+                            finished = !keyFindResult.hasMoreKeys();
+
                             if (keyFindResult.getSearch()) {
-                                if (keyList.size() < onePageSize - 5 && scanCount < maxScanCount) {
+                                if (!finished && keyList.size() < onePageSize - 5 && scanCount < maxScanCount) {
                                     setStatus(RSKeyFindStatus.SEARCHING);
                                     autoSearchNextPage = true;
                                 } else {
@@ -104,11 +112,9 @@ public class RSKeySet {
                             if (onLoadCompleted != null) {
                                 onLoadCompleted.accept(keyFindResult);
                             }
-                            lastIndex = keyFindResult.getPos();
-                            finished = !keyFindResult.hasMoreKeys();
                         } finally {
                             lock.unlock();
-                            if (keyFindResult.hasMoreKeys() && autoSearchNextPage) {
+                            if (!finished && autoSearchNextPage) {
                                 int newPageSize = onePageSize - keyList.size();
                                 findNextPage(newPageSize, onePageSize, scanCount + 1);
                             }
