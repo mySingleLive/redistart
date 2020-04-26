@@ -15,7 +15,7 @@
             <fx:include source="NavigationView.fxml" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
-      <VBox>
+      <VBox styleClass="keys-content">
          <children>
             <JFXTabPane fx:id="valueTabPane" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />
          </children>

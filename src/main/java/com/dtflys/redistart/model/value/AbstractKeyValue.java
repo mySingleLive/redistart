@@ -6,13 +6,17 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public abstract class AbstractKeyValue {
+import java.util.function.Consumer;
+
+public abstract class AbstractKeyValue<T> {
 
     private StringProperty key = new SimpleStringProperty();
 
     private RSKeyType type;
 
     private LongProperty ttl = new SimpleLongProperty();
+
+    protected Consumer<T> onValueChange;
 
     public AbstractKeyValue(String key, RSKeyType type, Long ttl) {
         setKey(key);
@@ -50,5 +54,13 @@ public abstract class AbstractKeyValue {
 
     public void setTtl(long ttl) {
         this.ttl.set(ttl);
+    }
+
+    public Consumer<T> getOnValueChange() {
+        return onValueChange;
+    }
+
+    public void setOnValueChange(Consumer<T> onValueChange) {
+        this.onValueChange = onValueChange;
     }
 }

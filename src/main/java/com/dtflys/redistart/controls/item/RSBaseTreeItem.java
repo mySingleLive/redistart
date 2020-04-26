@@ -19,7 +19,6 @@ public abstract class RSBaseTreeItem extends TreeItem<String> {
         super(s);
         this.itemType = itemType;
         leftBox = new HBox();
-        leftBox.getStylesheets().add("left-box");
         icon = new FontIcon();
         icon.setIconLiteral(itemType.getIconLiteral());
         icon.getStyleClass().add(itemType.getIconStyleClass());

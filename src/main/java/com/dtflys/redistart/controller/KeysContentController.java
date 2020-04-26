@@ -2,11 +2,14 @@ package com.dtflys.redistart.controller;
 
 import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.value.RSStringValueMode;
+import com.dtflys.redistart.model.valuemode.StringValueMode;
 import com.dtflys.redistart.service.RediStartService;
 import com.dtflys.redistart.view.values.StringValueView;
 import com.jfoenix.controls.JFXTabPane;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectPropertyBase;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
@@ -17,6 +20,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import jodd.util.ArraysUtil;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
@@ -67,7 +72,8 @@ public class KeysContentController implements Initializable {
             if (key == null) {
                 return "Key";
             }
-            return key.getKey();
+            String title = key.getDatabase().getName() + "/" + key.getKey();
+            return title;
         }, selectedKeyProperty));
         valueTab.setClosable(false);
 
@@ -76,7 +82,18 @@ public class KeysContentController implements Initializable {
 
         valueTabPane.getTabs().add(valueTab);
 
-        for (RSStringValueMode mode : RSStringValueMode.values()) {
+        createValueModeMenu(rediStartService.getStringValueModeList());
+
+        rediStartService.stringValueModeListProperty().addListener((observableValue, oldValueModeList, newValueModeList) -> {
+            createValueModeMenu(newValueModeList);
+        });
+        lbStatus.textProperty().bind(rediStartService.valueStatusTextProperty());
+    }
+
+    private void createValueModeMenu(List<StringValueMode> valueModeList) {
+        if (valueModeList == null) return;
+        valueModeMenu.getItems().clear();
+        for (StringValueMode mode : valueModeList) {
             MenuItem item = new MenuItem();
             item.setText(mode.getText());
             item.setOnAction(event -> {
@@ -84,11 +101,11 @@ public class KeysContentController implements Initializable {
             });
             valueModeMenu.getItems().add(item);
         }
+        rediStartService.setStringValueMode(valueModeList.get(0));
+        lbValueModeText.textProperty().unbind();
         lbValueModeText.textProperty().bind(Bindings.createStringBinding(
                 () -> rediStartService.getStringValueMode().getText(),
                 rediStartService.stringValueModeProperty()));
-        lbStatus.textProperty().bind(rediStartService.valueStatusTextProperty());
-
     }
 
     public void onValueModeClick(MouseEvent mouseEvent) {

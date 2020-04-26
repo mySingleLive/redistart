@@ -10,6 +10,10 @@ import com.dtflys.redistart.service.CommandService;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
+import java.util.function.Consumer;
 
 public class RSKey {
 
@@ -23,7 +27,14 @@ public class RSKey {
 
     private ObjectPropertyBase<AbstractKeyValue> value = new SimpleObjectProperty<>();
 
+    private Consumer<AbstractKeyValue> onValueChange;
+
     public RSKey() {
+        value.addListener((observableValue, oldVal, newValue) -> {
+            if (onValueChange != null) {
+                onValueChange.accept(newValue);
+            }
+        });
     }
 
     public RedisDatabase getDatabase() {
@@ -62,12 +73,16 @@ public class RSKey {
         return value.get();
     }
 
-    public ObjectPropertyBase<AbstractKeyValue> valueProperty() {
-        return value;
-    }
-
     public void setValue(AbstractKeyValue value) {
         this.value.set(value);
+    }
+
+    public Consumer<AbstractKeyValue> getOnValueChange() {
+        return onValueChange;
+    }
+
+    public void setOnValueChange(Consumer<AbstractKeyValue> onValueChange) {
+        this.onValueChange = onValueChange;
     }
 
     @Override

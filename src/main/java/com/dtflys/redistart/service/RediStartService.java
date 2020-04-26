@@ -5,6 +5,8 @@ import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.page.RSContentPage;
 import com.dtflys.redistart.model.page.RSKeysContentPage;
 import com.dtflys.redistart.model.value.RSStringValueMode;
+import com.dtflys.redistart.model.valuemode.StringValueMode;
+import com.google.common.collect.Lists;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,7 +27,8 @@ public class RediStartService {
     private final Map<RedisConnection, RSKeysContentPage> keysContentPageMap = new HashMap<>();
     private final ObjectPropertyBase<RSKey> selectedKey = new SimpleObjectProperty<>();
     private final StringProperty valueStatusText = new SimpleStringProperty("");
-    private final ObjectPropertyBase<RSStringValueMode> stringValueMode = new SimpleObjectProperty<>(RSStringValueMode.PLAIN_TEXT);
+    private final ObjectPropertyBase<StringValueMode> stringValueMode = new SimpleObjectProperty<>(null);
+    private final ObjectPropertyBase<List<StringValueMode>> stringValueModeList = new SimpleObjectProperty<>(Lists.newArrayList());
 
 
     public RediStartService() {
@@ -96,16 +99,28 @@ public class RediStartService {
         this.valueStatusText.set(valueStatusText);
     }
 
-    public RSStringValueMode getStringValueMode() {
+    public StringValueMode getStringValueMode() {
         return stringValueMode.get();
     }
 
-    public ObjectPropertyBase<RSStringValueMode> stringValueModeProperty() {
+    public ObjectPropertyBase<StringValueMode> stringValueModeProperty() {
         return stringValueMode;
     }
 
-    public void setStringValueMode(RSStringValueMode stringValueMode) {
+    public void setStringValueMode(StringValueMode stringValueMode) {
         this.stringValueMode.set(stringValueMode);
+    }
+
+    public List<StringValueMode> getStringValueModeList() {
+        return stringValueModeList.get();
+    }
+
+    public ObjectPropertyBase<List<StringValueMode>> stringValueModeListProperty() {
+        return stringValueModeList;
+    }
+
+    public void setStringValueModeList(List<StringValueMode> stringValueModeList) {
+        this.stringValueModeList.set(stringValueModeList);
     }
 }
 

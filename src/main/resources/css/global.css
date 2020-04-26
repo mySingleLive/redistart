@@ -292,6 +292,55 @@
 }
 
 
+.keys-content {}
+
+.keys-content .tab {
+    -fx-pref-height: 30;
+    -fx-background-color: #2d2a29;
+    -fx-border-width: 0;
+}
+
+.keys-content .tab-header-area {
+    -fx-max-width: 160;
+}
+
+
+.keys-content .tab .tab-label {
+    -fx-font-size: 11;
+    -fx-content-display: top;
+    -fx-text-fill: #aeae99;
+}
+
+
+.keys-content .tab-header-background {
+    -fx-background-color: #4f4b4a;
+}
+
+.keys-content .tab-header-background .jfx-rippler {
+    -fx-background-color: #445957;
+}
+
+
+
+.keys-content .tab:selected {
+    -fx-background-color: #445957;
+}
+
+.keys-content .tab:selected .tab-label {
+    -fx-font-size: 11;
+    -fx-content-display: top;
+    -fx-text-fill: #fbfbdf;
+}
+
+
+#connSettingTabView .tab-header-area .tab-selected-line {
+    -fx-background-color: #60fff7;
+}
+
+#connSettingTabView .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: #60fff7;
+}
+
 .scroll-bar:horizontal, .scroll-bar:vertical {
     -fx-background-color: transparent;
 }

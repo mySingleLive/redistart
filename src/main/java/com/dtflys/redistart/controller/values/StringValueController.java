@@ -1,16 +1,22 @@
 package com.dtflys.redistart.controller.values;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dtflys.redistart.controls.editor.JSONEditor;
+import com.dtflys.redistart.controls.editor.PlainTextEditor;
 import com.dtflys.redistart.model.value.AbstractKeyValue;
 import com.dtflys.redistart.model.value.StringValue;
+import com.dtflys.redistart.model.valuemode.StringValueMode;
 import com.dtflys.redistart.service.CommandService;
 import com.dtflys.redistart.service.RediStartService;
-import com.jfoenix.controls.JFXTextArea;
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.beans.property.ObjectPropertyBase;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ContextMenu;
@@ -31,10 +37,6 @@ public class StringValueController implements Initializable {
     @Resource
     private RediStartService rediStartService;
 
-/*
-    @Resource
-    private ConnectionService connectionService;
-*/
 
     @Resource
     private CommandService commandService;
@@ -45,12 +47,11 @@ public class StringValueController implements Initializable {
     @FXML
     private StackPane stackPane;
 
-    @FXML
-    private JFXTextArea textArea;
+    private ObjectPropertyBase<StringValue> stringValue = new SimpleObjectProperty<>(null);
 
+    private StringProperty plainTextValue = new SimpleStringProperty("");
 
-
-    private ContextMenu valueModeMenu = new ContextMenu();
+    private PlainTextEditor plainTextEditor = new PlainTextEditor();
 
     private JSONEditor jsonEditor = new JSONEditor();
 
@@ -58,43 +59,70 @@ public class StringValueController implements Initializable {
 
     private StringProperty jsonText = new SimpleStringProperty();
 
+    private StringValueMode plainTextMode;
+
+    private StringValueMode jsonMode;
+
+
+    private final ChangeListener<String> plainTextChangeListener = (observableValue, oldText, newText) -> {
+        StringValue val = stringValue.get();
+        if (val != null) {
+            val.setValue(newText);
+        }
+    };
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        List.of("Plain Text", "JSON", "XML", "BIT (Binary)")
-                .forEach(itemName -> {
-                    MenuItem item = new MenuItem();
-                    item.setText(itemName);
-                    valueModeMenu.getItems().add(item);
-                });
+        plainTextEditor.init();
+        plainTextEditor.setStyle("-fx-font-size: 13");
+        plainTextEditor.textProperty().addListener((observableValue, oldVal, newVal) -> {
+            plainTextValue.set(newVal);
+        });
 
         jsonEditor.init();
-
-        jsonEditor.setEditable(true);
-        jsonEditor.setAutoScrollOnDragDesired(true);
-        jsonEditor.getStyleClass().setAll("string-value-json-text");
         jsonEditor.setStyle("-fx-font-size: 13");
 
-        editorScrollPane = new VirtualizedScrollPane(jsonEditor);
-        editorScrollPane.getStyleClass().add("string-value-scroll-pane");
-        stackPane.getChildren().add(editorScrollPane);
-        editorScrollPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
-        editorScrollPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        editorScrollPane.toFront();
+        stackPane.getChildren().addAll(plainTextEditor.getEditorScrollPane(), jsonEditor.getEditorScrollPane());
+
+        plainTextMode = new StringValueMode("Plain Text");
+        plainTextMode.setOnSelect(mode -> {
+            plainTextEditor.toFront();
+        });
+
+        jsonMode = new StringValueMode("JSON");
+        jsonMode.setOnSelect(mode -> {
+            jsonEditor.toFront();
+        });
+
+        rediStartService.setStringValueModeList(List.of(plainTextMode, jsonMode));
+        rediStartService.stringValueModeProperty().addListener((observableValue, oldValueMode, newValueMode) -> {
+            newValueMode.getOnSelect().accept(newValueMode);
+        });
+
+        plainTextValue.addListener((observableValue, oldText, newText) -> {
+            if (newText != null) {
+                formatJSONText(newText);
+                plainTextEditor.setText(newText);
+            }
+        });
+
+        jsonText.addListener((observableValue, oldText, newText) -> {
+            if (newText != null) {
+                jsonEditor.setText(newText);
+            }
+        });
 
         rediStartService.selectedKeyProperty().addListener((observableValue, oldKey, newKey) -> {
             if (newKey != null) {
-                textArea.textProperty().unbind();
-                jsonEditor.replaceText("");
-                newKey.valueProperty().addListener((observableValue1, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        if (newValue instanceof StringValue) {
-                            textArea.textProperty().bind(((StringValue) newValue).valueProperty());
-                            formatJSONText(((StringValue) newValue).valueProperty().get());
-                            jsonEditor.replaceText(jsonText.get());
+                newKey.setOnValueChange((value) -> {
+                    if (value != null) {
+                        if (value instanceof StringValue) {
+                            stringValue.set((StringValue) value);
+                            plainTextValue.setValue(((StringValue) value).getValue());
+                            selectValueMode(((StringValue) value).getValue());
                         }
                     }
-                    setValueStatusText(newValue);
+                    setValueStatusText(value);
                 });
                 newKey.get(commandService);
             }
@@ -122,7 +150,7 @@ public class StringValueController implements Initializable {
         }
     }
 
-    public void formatJSONText(String text) {
+    public boolean formatJSONText(String text) {
         JSON json = null;
         try {
             json = JSON.parseObject(text);
@@ -134,13 +162,25 @@ public class StringValueController implements Initializable {
             } catch (Throwable th) {
             }
         }
+
         if (json != null) {
             String output = JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue);
 //            output = output.replaceAll(":", ": ");
             output = output.replaceAll("\t", "    ");
             jsonText.set(output);
+            return true;
+
         } else {
             jsonText.set(text);
+            return false;
+        }
+    }
+
+    public void selectValueMode(String text) {
+        if (formatJSONText(text)) {
+            rediStartService.setStringValueMode(jsonMode);
+        } else {
+            rediStartService.setStringValueMode(plainTextMode);
         }
     }
 

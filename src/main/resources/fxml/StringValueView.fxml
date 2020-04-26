@@ -5,13 +5,10 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" stylesheets="@../css/json.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.values.StringValueController">
+<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.values.StringValueController">
    <children>
       <HBox fx:id="stringValueToolbar" prefHeight="30.0" />
       <StackPane fx:id="stackPane" VBox.vgrow="ALWAYS">
-         <children>
-            <JFXTextArea fx:id="textArea" styleClass="string-value-plain-text" />
-         </children>
       </StackPane>
    </children>
 </VBox>

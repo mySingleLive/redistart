@@ -4,6 +4,7 @@ import com.dtflys.redistart.model.connection.BasicRedisConnection;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.key.RSKeySet;
 import com.dtflys.redistart.service.CommandService;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -41,8 +42,10 @@ public class RedisDatabase {
 //                connection.selectDatabase(index);
                 System.out.println("------ Open Database Completed ------");
                 keySet.clear();
-                keySet.findNextPage();
-                connection.getOnAfterOpenDatabase().handle(this);
+                Platform.runLater(() -> {
+                    keySet.findNextPage();
+                    connection.getOnAfterOpenDatabase().handle(this);
+                });
             }
         }).start();
     }

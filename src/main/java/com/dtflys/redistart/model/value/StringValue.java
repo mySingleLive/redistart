@@ -4,12 +4,18 @@ import com.dtflys.redistart.model.key.RSKeyType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class StringValue extends AbstractKeyValue {
+public class StringValue extends AbstractKeyValue<String> {
 
     private StringProperty value = new SimpleStringProperty();
 
+
     public StringValue(String key, RSKeyType type, Long ttl, String value) {
         super(key, type, ttl);
+        this.value.addListener((observableValue, oldVal, newVal) -> {
+            if (newVal != null && onValueChange != null) {
+                onValueChange.accept(newVal);
+            }
+        });
         setValue(value);
     }
 
