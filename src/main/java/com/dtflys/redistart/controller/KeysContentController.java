@@ -66,6 +66,7 @@ public class KeysContentController implements Initializable {
         leftBox.setPrefWidth(150);
         SplitPane.setResizableWithParent(leftBox, Boolean.FALSE);
         valueTab = new Tab();
+        valueTab.setClosable(false);
         ObjectPropertyBase<RSKey> selectedKeyProperty = rediStartService.selectedKeyProperty();
         valueTab.textProperty().bind(Bindings.createStringBinding(() -> {
             RSKey key = selectedKeyProperty.get();
@@ -75,7 +76,6 @@ public class KeysContentController implements Initializable {
             String title = key.getDatabase().getName() + "/" + key.getKey();
             return title;
         }, selectedKeyProperty));
-        valueTab.setClosable(false);
 
         Parent stringValueRoot = stringValueView.loadAsParent(Map.of());
         valueTab.setContent(stringValueRoot);
