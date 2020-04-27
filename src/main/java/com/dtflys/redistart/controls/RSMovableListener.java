@@ -30,6 +30,7 @@ public class RSMovableListener {
         });
 
         root.setOnMouseDragged(event -> {
+            event.consume();
             Stage stage = getStage();
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);

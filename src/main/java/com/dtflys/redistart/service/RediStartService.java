@@ -1,5 +1,6 @@
 package com.dtflys.redistart.service;
 
+import com.dtflys.redistart.model.action.RSAction;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.page.RSContentPage;
@@ -7,13 +8,11 @@ import com.dtflys.redistart.model.page.RSKeysContentPage;
 import com.dtflys.redistart.model.value.RSStringValueMode;
 import com.dtflys.redistart.model.valuemode.StringValueMode;
 import com.google.common.collect.Lists;
-import javafx.beans.property.ObjectPropertyBase;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,8 @@ import java.util.function.Consumer;
 
 @Component("rediStartService")
 public class RediStartService {
-
+    @Resource
+    private ActionService actionService;
     private final List<RSContentPage> pages = FXCollections.observableArrayList();
     private final ObjectPropertyBase<RSContentPage> selectedPage = new SimpleObjectProperty<>();
     private final Map<RedisConnection, RSKeysContentPage> keysContentPageMap = new HashMap<>();
@@ -29,6 +29,8 @@ public class RediStartService {
     private final StringProperty valueStatusText = new SimpleStringProperty("");
     private final ObjectPropertyBase<StringValueMode> stringValueMode = new SimpleObjectProperty<>(null);
     private final ObjectPropertyBase<List<StringValueMode>> stringValueModeList = new SimpleObjectProperty<>(Lists.newArrayList());
+
+    private final BooleanProperty wrapText = new SimpleBooleanProperty(false);
 
 
     public RediStartService() {
@@ -121,6 +123,26 @@ public class RediStartService {
 
     public void setStringValueModeList(List<StringValueMode> stringValueModeList) {
         this.stringValueModeList.set(stringValueModeList);
+    }
+
+    public boolean isWrapText() {
+        return wrapText.get();
+    }
+
+    public BooleanProperty wrapTextProperty() {
+        return wrapText;
+    }
+
+    public void setWrapText(boolean wrapText) {
+        this.wrapText.set(wrapText);
+    }
+
+    public void registerAction(RSAction action) {
+        actionService.registerAction(action);
+    }
+
+    public void doAction(String actionName, Object... args) {
+        actionService.doAction(actionName, args);
     }
 }
 

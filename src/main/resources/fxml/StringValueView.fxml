@@ -1,13 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.values.StringValueController">
    <children>
-      <HBox fx:id="stringValueToolbar" prefHeight="30.0" />
+      <HBox fx:id="stringValueToolbar" alignment="CENTER_LEFT" prefHeight="30.0" styleClass="rs-tool-bar">
+         <children>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-content-save" iconSize="18" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-import" iconSize="18" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="2.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-export" iconSize="18" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="2.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="gmi-refresh" iconSize="18" />
+               </graphic>
+            </JFXButton>
+            <HBox maxWidth="10.0" minWidth="10.0" prefWidth="10.0">
+               <children>
+                  <Line endX="-95.0" endY="29.0" startX="-95.0" startY="5.3786797523498535" stroke="#6f6f6f">
+                     <HBox.margin>
+                        <Insets left="4.0" top="3.0" />
+                     </HBox.margin>
+                  </Line>
+               </children>
+            </HBox>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-arrow-left-bold" iconSize="17" />
+               </graphic>
+            </JFXButton>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-arrow-right-bold" iconSize="17" />
+               </graphic>
+            </JFXButton>
+            <HBox maxWidth="10.0" minWidth="10.0" prefWidth="10.0">
+               <children>
+                  <Line endX="-95.0" endY="29.0" startX="-95.0" startY="5.3786797523498535" stroke="#6f6f6f">
+                     <HBox.margin>
+                        <Insets left="4.0" top="3.0" />
+                     </HBox.margin>
+                  </Line>
+               </children>
+            </HBox>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-content-cut" iconSize="17" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="2.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-content-copy" iconSize="17" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="2.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" prefHeight="26.0" prefWidth="26.0">
+               <graphic>
+                  <FontIcon iconColor="#dac8c8" iconLiteral="mdi-content-paste" iconSize="17" />
+               </graphic>
+               <HBox.margin>
+                  <Insets left="2.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
       <StackPane fx:id="stackPane" VBox.vgrow="ALWAYS">
       </StackPane>
    </children>

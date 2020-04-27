@@ -1,27 +1,23 @@
 package com.dtflys.redistart.controller;
 
+import com.dtflys.redistart.controls.RSToggleButton;
+import com.dtflys.redistart.model.action.SelectKeyOnNewTabAction;
 import com.dtflys.redistart.model.key.RSKey;
-import com.dtflys.redistart.model.value.RSStringValueMode;
 import com.dtflys.redistart.model.valuemode.StringValueMode;
 import com.dtflys.redistart.service.RediStartService;
 import com.dtflys.redistart.view.values.StringValueView;
 import com.jfoenix.controls.JFXTabPane;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectPropertyBase;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.scene.LightBase;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import jodd.util.ArraysUtil;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.kordamp.ikonli.javafx.FontIcon;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
@@ -47,6 +43,9 @@ public class KeysContentController implements Initializable {
     @FXML
     private JFXTabPane valueTabPane;
 
+    @FXML
+    private HBox wrapTextBox;
+
     private Tab valueTab;
 
     @FXML
@@ -65,6 +64,19 @@ public class KeysContentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         leftBox.setPrefWidth(150);
         SplitPane.setResizableWithParent(leftBox, Boolean.FALSE);
+
+        RSToggleButton wrapTextButton = new RSToggleButton();
+        FontIcon icon = new FontIcon();
+        icon.setIconLiteral("mdi-wrap");
+        icon.setIconSize(17);
+        wrapTextButton.setGraphic(icon);
+        wrapTextBox.getChildren().add(wrapTextButton);
+        wrapTextButton.setChecked(rediStartService.isWrapText());
+        rediStartService.wrapTextProperty().bindBidirectional(wrapTextButton.checkedProperty());
+
+        SelectKeyOnNewTabAction selectKeyOnNewTabAction = new SelectKeyOnNewTabAction(stringValueView, valueTabPane);
+        rediStartService.registerAction(selectKeyOnNewTabAction);
+
         valueTab = new Tab();
         valueTab.setClosable(false);
         ObjectPropertyBase<RSKey> selectedKeyProperty = rediStartService.selectedKeyProperty();
@@ -73,7 +85,7 @@ public class KeysContentController implements Initializable {
             if (key == null) {
                 return "Key";
             }
-            String title = key.getDatabase().getName() + "/" + key.getKey();
+            String title = key.getDatabase().getName() + " | " + key.getKey();
             return title;
         }, selectedKeyProperty));
 
@@ -87,6 +99,7 @@ public class KeysContentController implements Initializable {
         rediStartService.stringValueModeListProperty().addListener((observableValue, oldValueModeList, newValueModeList) -> {
             createValueModeMenu(newValueModeList);
         });
+        lbStatus.textProperty().unbind();
         lbStatus.textProperty().bind(rediStartService.valueStatusTextProperty());
     }
 

@@ -127,8 +127,8 @@ public class MainViewController extends RSMovableListener implements Initializab
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.movable(appTitleBarBox);
         ResizeUtils.addResizeListener(GUIState.getStage(), mainPane);
+        super.movable(appTitleBarBox);
         maximizeImage = imgvMaximize.getImage();
         maximizeRestoreImage = new Image( "/image/icons_max_restore_32px.png");
 
@@ -258,36 +258,8 @@ public class MainViewController extends RSMovableListener implements Initializab
             }
         });
 
-/*
-        sideBtnConnection.setOnMouseEntered(event -> {
-            if (connectionContextMenu.isShowing()) {
-                connectionContextMenu.hide();
-            }
-        });
-
-        sideBtnCollection.setOnMouseEntered(event -> {
-            if (connectionContextMenu.isShowing()) {
-                connectionContextMenu.hide();
-            }
-        });
-
-        stackPane.setOnMouseEntered(event -> {
-            if (connectionContextMenu.isShowing()) {
-                connectionContextMenu.hide();
-            }
-        });
-*/
-
-
 
         // 监听鼠标移出侧边数据键按钮上时的事件
-/*
-        sideBtnKeys.setOnMouseExited(event -> {
-            if (connectionContextMenu.isShowing()) {
-                connectionContextMenu.hide();
-            }
-        });
-*/
 
 
     }

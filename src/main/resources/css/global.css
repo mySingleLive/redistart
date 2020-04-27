@@ -232,7 +232,7 @@
 }
 
 .navigation-view .jfx-list-view .jfx-list-cell {
-    -fx-font-weight: ITALIC;
+    -fx-font-weight: NORMAL;
     -fx-font-size: 10;
     -fx-text-fill: #989898;
     /*-fx-pref-height: 30;*/
@@ -788,6 +788,10 @@
     -fx-icon-color: -rs-icon-hover-color;
 }
 
+.rs-tool-bar .line {
+    -fx-stroke: #7a716d;
+}
+
 
 
 .string-value-plain-text {
@@ -802,10 +806,19 @@
 .flat-button-box {
     -fx-text-fill: -rs-common-text-fill;
     -fx-cursor: HAND;
+    -fx-alignment: CENTER;
 }
 
 .flat-button-box:hover {
     -fx-background-color: #4a4543;
 }
 
+.flat-button-box:selected {
+    -fx-background-color: #4a4543;
+}
+
+
+.flat-button-box .ikonli-font-icon {
+    -fx-icon-color: #dac8c8;
+}
 

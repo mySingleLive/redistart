@@ -16,11 +16,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 
@@ -75,12 +72,14 @@ public class StringValueController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         plainTextEditor.init();
         plainTextEditor.setStyle("-fx-font-size: 13");
+        plainTextEditor.wrapTextProperty().bind(rediStartService.wrapTextProperty());
         plainTextEditor.textProperty().addListener((observableValue, oldVal, newVal) -> {
             plainTextValue.set(newVal);
         });
 
         jsonEditor.init();
         jsonEditor.setStyle("-fx-font-size: 13");
+        jsonEditor.wrapTextProperty().bind(rediStartService.wrapTextProperty());
 
         stackPane.getChildren().addAll(plainTextEditor.getEditorScrollPane(), jsonEditor.getEditorScrollPane());
 

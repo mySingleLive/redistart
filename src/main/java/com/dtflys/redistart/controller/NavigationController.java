@@ -3,6 +3,7 @@ package com.dtflys.redistart.controller;
 import com.dtflys.redistart.controls.list.RSKeyListCell;
 import com.dtflys.redistart.controls.item.RedisConnectionItem;
 import com.dtflys.redistart.controls.menu.RSKeyTypeMenuItem;
+import com.dtflys.redistart.model.action.RSAction;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
 import com.dtflys.redistart.model.key.*;
@@ -22,10 +23,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -83,9 +82,18 @@ public class NavigationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         connectionService.setOnAfterAddConnection(this::addRedisConnectionItem);
-        keyListView.setCellFactory(rsKeyListView -> new RSKeyListCell());
+        keyListView.setCellFactory(rsKeyListView -> new RSKeyListCell().setOnMouseDoubleClick(key -> {
+            System.out.println("双击 " + key.getKey());
+            rediStartService.doAction(RSAction.SELECT_KEY_ON_NEW_TAB, key);
+        }));
         keyListView.setCache(false);
         keyListView.setCacheShape(false);
+
+        keyListView.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                event.consume();
+            }
+        });
 
         List<RSKeyType> allTypes = RSKeyType.toList();
         allTypes.forEach(type -> {
@@ -136,7 +144,6 @@ public class NavigationController implements Initializable {
                 bindData(keySet, connectionService.getSelectedConnection().getSelectedDatabase());
             }
         }
-
     }
 
     private ChangeListener<Boolean> lastTypeChangeListener = null;
@@ -198,7 +205,7 @@ public class NavigationController implements Initializable {
                 lastIndex.set(-1);
             }
         });
-        MultipleSelectionModel selectionModel = keyListView.getSelectionModel();
+        MultipleSelectionModel keySelectionModel = keyListView.getSelectionModel();
 
         keySet.setOnLoadCompleted(keyFindResult -> {
             ObservableList<RSKey> items = keyListView.getItems();
@@ -212,26 +219,33 @@ public class NavigationController implements Initializable {
                 if (index > count) {
                     keyListView.scrollTo(index - count);
                 }
-                if (selectionModel.getSelectedItem() == null) {
-                    selectionModel.select(0);
+                if (keySelectionModel.getSelectedItem() == null) {
+                    keySelectionModel.select(0);
                 }
             }
         });
         lbKeyStatus.textProperty().unbind();
         lbKeyStatus.textProperty().bind(createKeyStatusBinding(keySet, database));
 
-
-
         ChangeListener<RSKey> selectedKeyChangeListener = (observableValue, oldItem, newItem) -> {
             if (newItem instanceof RSLoadMore) {
                 keySet.findNextPage();
             } else if (newItem != null) {
-                rediStartService.setSelectedKey(newItem);
+                queryKey(newItem);
                 lbKeyTTL.setText("TTL: " + newItem.getTtl());
             }
         };
-        selectionModel.selectedItemProperty().removeListener(selectedKeyChangeListener);
-        selectionModel.selectedItemProperty().addListener(selectedKeyChangeListener);
+        keySelectionModel.selectedItemProperty().removeListener(selectedKeyChangeListener);
+        keySelectionModel.selectedItemProperty().addListener(selectedKeyChangeListener);
+    }
+
+
+    public void queryKey(RSKey key) {
+        rediStartService.setSelectedKey(key);
+    }
+
+
+    public void openNewTabWithQueryKey(RSKey key) {
 
     }
 

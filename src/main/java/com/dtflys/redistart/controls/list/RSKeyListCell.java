@@ -11,8 +11,11 @@ import javafx.beans.property.ObjectPropertyBase;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+
+import java.util.function.Consumer;
 
 public class RSKeyListCell extends JFXListCell<RSKey> {
 
@@ -31,6 +34,8 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
     private Label loadMoreLabel = new Label();
 
     private Region leftSpace = new Region();
+
+    private Consumer<RSKey> onMouseDoubleClick;
 
     public RSKeyListCell() {
 
@@ -68,6 +73,19 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
 //            ttlLabel.setText("ttl: " + item.getTtl());
 //            this.setText(item.getKey());
 //            this.setGraphic(typeIconView);
+
+            setOnMouseClicked(event -> {
+                if (!(item instanceof RSLoadMore)) {
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        System.out.println("鼠标右键");
+                    }
+                    else if (event.getClickCount() == 2) {
+                        if (onMouseDoubleClick != null) {
+                            onMouseDoubleClick.accept(item);
+                        }
+                    }
+                }
+            });
 
             if (item instanceof RSLoadMore) {
                 setGraphic(loadMoreBox);
@@ -121,6 +139,15 @@ public class RSKeyListCell extends JFXListCell<RSKey> {
                 this.setGraphic(keyNameBox);
             }
         }
+    }
+
+    public Consumer<RSKey> getOnMouseDoubleClick() {
+        return onMouseDoubleClick;
+    }
+
+    public RSKeyListCell setOnMouseDoubleClick(Consumer<RSKey> onMouseDoubleClick) {
+        this.onMouseDoubleClick = onMouseDoubleClick;
+        return this;
     }
 
     private boolean initBeforeSuper(RSKey item, boolean empty) {
