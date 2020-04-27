@@ -676,13 +676,25 @@
     -fx-background-color: #44403e;
 }
 
+.search-advanced-conditions .field-label {
+    -fx-text-fill: #a69c96;
+}
+
 .search-advanced-conditions .type-box {
     -fx-cursor: HAND;
 }
 
 .search-advanced-conditions .type-box:hover {
-    -fx-background-color: #585350;
+    -fx-background-color: #544e4c;
     -fx-background-radius: 2.5;
+}
+
+.search-advanced-conditions .ttl-field {
+    -fx-background-color: #44403e;
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0 0 0 5;
 }
 
 #leftBox {
@@ -804,17 +816,17 @@
 }
 
 .flat-button-box {
-    -fx-text-fill: -rs-common-text-fill;
+    -fx-text-fill: #ababab;
     -fx-cursor: HAND;
     -fx-alignment: CENTER;
 }
 
 .flat-button-box:hover {
-    -fx-background-color: #4a4543;
+    -fx-background-color: #544e4c;
 }
 
 .flat-button-box:selected {
-    -fx-background-color: #4a4543;
+    -fx-background-color: #544e4c;
 }
 
 

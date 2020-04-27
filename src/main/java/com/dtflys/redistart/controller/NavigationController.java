@@ -7,21 +7,29 @@ import com.dtflys.redistart.model.action.RSAction;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
 import com.dtflys.redistart.model.key.*;
+import com.dtflys.redistart.model.ttl.RSTtlOperator;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
-import com.jfoenix.controls.JFXCheckBox;
+import com.dtflys.redistart.utils.ConfirmResult;
+import com.dtflys.redistart.utils.ControlUtils;
+import com.dtflys.redistart.utils.DialogUtils;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -34,6 +42,7 @@ import javax.annotation.Resource;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 @FXMLController
 public class NavigationController implements Initializable {
@@ -59,7 +68,28 @@ public class NavigationController implements Initializable {
     @FXML
     private HBox typesBox;
 
+    @FXML
+    private HBox ttlConditionBox;
+
+    @FXML
+    private HBox ttlOpBox;
+
     private ContextMenu typesMenu = new ContextMenu();
+
+    private ContextMenu ttlOpMenu = new ContextMenu();
+
+    private ContextMenu addTypesMenu = new ContextMenu();
+
+    @FXML
+    private Label lbTTLOp;
+
+    @FXML
+    private JFXButton btnAddKey;
+
+    private ObjectPropertyBase<RSTtlOperator> currentTTLOp = new SimpleObjectProperty<>();
+
+    @FXML
+    private CustomTextField txTTLCondition;
 
     @FXML
     private JFXListView<RSKey> keyListView;
@@ -95,6 +125,8 @@ public class NavigationController implements Initializable {
             }
         });
 
+        ControlUtils.numberField(txTTLCondition, "-1");
+
         List<RSKeyType> allTypes = RSKeyType.toList();
         allTypes.forEach(type -> {
             searchOptionTypeMap.put(type, new SimpleBooleanProperty(false));
@@ -122,14 +154,60 @@ public class NavigationController implements Initializable {
                 typeBooleanProperties));
 
         allTypes.forEach(keyType -> {
-            RSKeyTypeMenuItem item = new RSKeyTypeMenuItem(keyType);
-            JFXCheckBox checkBox = item.getCheckBox();
-            item.setOnAction(event -> {
+            RSKeyTypeMenuItem tyItem = new RSKeyTypeMenuItem(true, keyType);
+            CheckBox checkBox = tyItem.getCheckBox();
+            tyItem.setOnAction(event -> {
                 checkBox.setSelected(!checkBox.isSelected());
             });
-            typesMenu.getItems().add(item);
+            typesMenu.getItems().add(tyItem);
+
+            RSKeyTypeMenuItem addTyItem = new RSKeyTypeMenuItem(false, keyType);
+            addTyItem.setText(addTyItem.getText() +" key");
+            addTyItem.setOnAction(event -> {
+                DialogUtils.showModalDialog(Map.of(
+                        "title", "添加Key",
+                        "content", "",
+                        "width", 280,
+                        "height", 120,
+                        "onInit", (Consumer<DialogController>) dController -> {
+                            HBox contentBox = dController.getContentBox();
+                            contentBox.getChildren().clear();
+                            contentBox.setAlignment(Pos.CENTER_LEFT);
+                            CustomTextField keyNameField = new CustomTextField();
+                            keyNameField.setPromptText("Key Name");
+                            HBox.setMargin(keyNameField, new Insets(10, 0, 0, 15));
+                            contentBox.getChildren().add(keyNameField);
+                        },
+
+                        "onConfirm", (Consumer<ConfirmResult>) result -> {
+                            if (ConfirmResult.OK == result) {
+                            }
+                        }));
+
+            });
+            addTypesMenu.getItems().add(addTyItem);
         });
 
+        for (RSTtlOperator op : RSTtlOperator.values()) {
+            MenuItem item = new MenuItem();
+            item.setText(op.getDisplayText());
+            item.setOnAction(event -> {
+                currentTTLOp.set(op);
+            });
+            ttlOpMenu.getItems().add(item);
+        }
+
+
+        currentTTLOp.addListener((observableValue, oldOp, newOp) -> {
+            ttlConditionBox.getChildren().clear();
+            ttlConditionBox.getChildren().add(ttlOpBox);
+            if (newOp != RSTtlOperator.NONE) {
+                ttlConditionBox.getChildren().add(txTTLCondition);
+            }
+        });
+        currentTTLOp.set(RSTtlOperator.NONE);
+        lbTTLOp.textProperty().bind(Bindings.createStringBinding(
+                () -> currentTTLOp.get().getDisplayText(), currentTTLOp));
 
 
         if (connectionService.getSelectedConnection() != null) {
@@ -280,5 +358,13 @@ public class NavigationController implements Initializable {
 
     public void onTerminalAction(ActionEvent actionEvent) {
 
+    }
+
+    public void onTTLOperatorClick(MouseEvent mouseEvent) {
+        ttlOpMenu.show(ttlOpBox, Side.BOTTOM, 0, 0);
+    }
+
+    public void onAddKeyClick(MouseEvent mouseEvent) {
+        addTypesMenu.show(btnAddKey, Side.BOTTOM, 0, 0);
     }
 }
