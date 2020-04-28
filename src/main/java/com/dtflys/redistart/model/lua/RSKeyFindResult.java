@@ -1,4 +1,6 @@
-package com.dtflys.redistart.model.key;
+package com.dtflys.redistart.model.lua;
+
+import com.dtflys.redistart.model.key.RSKey;
 
 import java.util.List;
 

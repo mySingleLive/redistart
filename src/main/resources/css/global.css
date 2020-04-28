@@ -817,6 +817,7 @@
 
 .flat-button-box {
     -fx-text-fill: #ababab;
+    -fx-font-family: Arial;
     -fx-cursor: HAND;
     -fx-alignment: CENTER;
 }
@@ -832,5 +833,21 @@
 
 .flat-button-box .ikonli-font-icon {
     -fx-icon-color: #dac8c8;
+}
+
+
+.flat-button-box2 {
+    -fx-text-fill: #ababab;
+    -fx-font-family: "YaHei Consolas Hybrid";
+    -fx-cursor: HAND;
+    -fx-alignment: CENTER;
+}
+
+.flat-button-box2:hover {
+    -fx-background-color: #514a49;
+}
+
+.flat-button-box2:selected {
+    -fx-background-color: #514a49;
 }
 

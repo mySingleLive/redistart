@@ -31,8 +31,12 @@ public class CommandService {
         if (redisNamedScript != null) {
             Class<T> resultType = luaRecord.getResultType();
             executorService.submit(() -> {
-                T result = redisNamedScript.eval(connection, resultType, luaRecord.getArguments());
-                luaRecord.doOnResult(result);
+                try {
+                    T result = redisNamedScript.eval(connection, resultType, luaRecord.getArguments());
+                    luaRecord.doOnResult(result);
+                } catch (Throwable th) {
+                    th.printStackTrace();
+                }
             });
         }
     }

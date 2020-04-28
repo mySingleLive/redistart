@@ -4,6 +4,7 @@ import com.dtflys.redistart.model.action.RSAction;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.key.RSKey;
 import com.dtflys.redistart.model.page.RSContentPage;
+import com.dtflys.redistart.model.page.RSDashboardPage;
 import com.dtflys.redistart.model.page.RSKeysContentPage;
 import com.dtflys.redistart.model.value.RSStringValueMode;
 import com.dtflys.redistart.model.valuemode.StringValueMode;
@@ -25,6 +26,7 @@ public class RediStartService {
     private final List<RSContentPage> pages = FXCollections.observableArrayList();
     private final ObjectPropertyBase<RSContentPage> selectedPage = new SimpleObjectProperty<>();
     private final Map<RedisConnection, RSKeysContentPage> keysContentPageMap = new HashMap<>();
+    private final Map<RedisConnection, RSDashboardPage> dashboardPageMap = new HashMap<>();
     private final ObjectPropertyBase<RSKey> selectedKey = new SimpleObjectProperty<>();
     private final StringProperty valueStatusText = new SimpleStringProperty("");
     private final ObjectPropertyBase<StringValueMode> stringValueMode = new SimpleObjectProperty<>(null);
@@ -44,6 +46,8 @@ public class RediStartService {
                     pages.add(newPage);
                     if (newPage instanceof RSKeysContentPage) {
                         keysContentPageMap.put(((RSKeysContentPage) newPage).getConnection(), (RSKeysContentPage) newPage);
+                    } else if (newPage instanceof RSDashboardPage) {
+                        dashboardPageMap.put(((RSDashboardPage) newPage).getConnection(), (RSDashboardPage) newPage);
                     }
                 }
                 Consumer<RSContentPage> onSelect = newPage.getOnSelect();
@@ -56,6 +60,10 @@ public class RediStartService {
 
     public Map<RedisConnection, RSKeysContentPage> getKeysContentPageMap() {
         return keysContentPageMap;
+    }
+
+    public Map<RedisConnection, RSDashboardPage> getDashboardPageMap() {
+        return dashboardPageMap;
     }
 
     public RSContentPage getSelectedPage() {

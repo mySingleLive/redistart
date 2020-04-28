@@ -14,19 +14,26 @@ public abstract class RSContentPage<T> {
 
     private final int pageType;
 
-    private final boolean showSelectionItem;
+    private final boolean useConnectionSelection;
+
+    private final boolean useDatabaseSelection;
 
     private Consumer<RSContentPage<T>> onInit;
 
     private Consumer<RSContentPage<T>> onSelect;
 
-    public RSContentPage(int pageType, boolean showSelectionItem) {
+    public RSContentPage(int pageType, boolean useConnectionSelection, boolean useDatabaseSelection) {
         this.pageType = pageType;
-        this.showSelectionItem = showSelectionItem;
+        this.useConnectionSelection = useConnectionSelection;
+        this.useDatabaseSelection = useDatabaseSelection;
     }
 
-    public boolean isShowSelectionItem() {
-        return showSelectionItem;
+    public boolean isUseConnectionSelection() {
+        return useConnectionSelection;
+    }
+
+    public boolean isUseDatabaseSelection() {
+        return useDatabaseSelection;
     }
 
     public int getPageType() {

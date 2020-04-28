@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.dtflys.redistart.model.command.RSLuaRecord;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
-import com.dtflys.redistart.model.search.RSSearchInfo;
+import com.dtflys.redistart.model.lua.RSAddKeyResult;
+import com.dtflys.redistart.model.lua.RSKeyFindResult;
+import com.dtflys.redistart.model.search.RSSearchCondition;
+import com.dtflys.redistart.model.ttl.RSTtlOperator;
 import com.dtflys.redistart.service.CommandService;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectPropertyBase;
@@ -12,9 +15,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -28,8 +31,9 @@ public class RSKeySet {
     private volatile long lastIndex = 0;
     private volatile boolean finished = false;
     private final Lock lock = new ReentrantLock();
-    private RSSearchInfo searchInfo = new RSSearchInfo();
+    private RSSearchCondition searchCondition = new RSSearchCondition();
     private ObservableList<RSKey> keyList = FXCollections.observableArrayList();
+    private List<RSKey> addedKeyList = new LinkedList<>();
     private final CommandService commandService;
     private Consumer<RSKeyFindResult> onBeforeAddResults;
     private Consumer<RSKeyFindResult> onLoadCompleted;
@@ -40,12 +44,12 @@ public class RSKeySet {
         connection = database.getConnection();
         this.commandService = commandService;
         setStatus(RSKeyFindStatus.INIT);
-        searchInfo.patternProperty().addListener((observableValue, oldValue, newValue) -> {
+        searchCondition.patternProperty().addListener((observableValue, oldValue, newValue) -> {
             if (oldValue != null) {
                 refreshData();
             }
         });
-        searchInfo.typesProperty().addListener((observableValue, oldValue, newValue) -> {
+        searchCondition.typesProperty().addListener((observableValue, oldValue, newValue) -> {
             if (oldValue != null && (
                     getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED
                     || getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
@@ -53,6 +57,27 @@ public class RSKeySet {
                 refreshData();
             }
         });
+        searchCondition.ttlOperatorProperty().addListener((observableValue, oldOp, newOp) -> {
+            if (oldOp != null && (
+                    getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED
+                            || getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
+            )) {
+                refreshData();
+            }
+        });
+        searchCondition.ttlProperty().addListener((observableValue, oldVal, newVal) -> {
+            if (oldVal != null && (
+                    getStatus() == RSKeyFindStatus.SEARCH_PAGE_COMPLETED
+                            || getStatus() == RSKeyFindStatus.LOAD_PAGE_COMPLETED
+            )) {
+                refreshData();
+            }
+        });
+
+    }
+
+    public List<RSKey> getAddedKeyList() {
+        return addedKeyList;
     }
 
     public void refreshData() {
@@ -72,12 +97,12 @@ public class RSKeySet {
     }
 
     public void findNextPage(int pageSize, int onePageSize, int scanCount) {
-        if (getSearchInfo().isSearchMode()) {
+        if (getSearchCondition().isSearchMode()) {
             setStatus(RSKeyFindStatus.SEARCHING);
         } else {
             setStatus(RSKeyFindStatus.LOADING);
         }
-        String searchJson = JSON.toJSONString(searchInfo);
+        String searchJson = JSON.toJSONString(searchCondition);
         new RSLuaRecord<>("findNextKeys.lua", RSKeyFindResult.class, lastIndex, pageSize, searchJson)
                 .onResult(keyFindResult -> {
                     Platform.runLater(() -> {
@@ -124,8 +149,47 @@ public class RSKeySet {
                 .eval(connection, commandService);
     }
 
-    public RSSearchInfo getSearchInfo() {
-        return searchInfo;
+    public void addNewKey(RSKeyType type, String keyName, Consumer<RSAddKeyResult> onAddKeyComplete) {
+        switch (type) {
+            case string:
+                addNewStringKey(keyName, onAddKeyComplete);
+                break;
+            case hash:
+                break;
+        }
+    }
+
+    public void addNewStringKey(String keyName, Consumer<RSAddKeyResult> onAddKeyComplete) {
+        new RSLuaRecord<>("addStringKey.lua", RSAddKeyResult.class, keyName, "")
+                .onResult(result -> {
+                    Platform.runLater(() -> {
+                        if (onAddKeyComplete != null) {
+                            addKeyToList(result);
+                            onAddKeyComplete.accept(result);
+                        }
+                    });
+                })
+                .eval(connection, commandService);
+    }
+
+    private RSKey addKeyToList(RSAddKeyResult result) {
+        RSKey newKey = new RSKey();
+        newKey.setDatabase(database);
+        newKey.setKey(result.getKeyName());
+        newKey.setType(result.getType());
+        newKey.setTtl(-1L);
+        if (keyList.size() > 2 && keyList.get(keyList.size() - 1) instanceof RSLoadMore) {
+            keyList.add(keyList.size() - 1, newKey);
+        } else {
+            keyList.add(newKey);
+        }
+        addedKeyList.add(newKey);
+        result.setKey(newKey);
+        return newKey;
+    }
+
+    public RSSearchCondition getSearchCondition() {
+        return searchCondition;
     }
 
     public void setOnBeforeAddResults(Consumer<RSKeyFindResult> onBeforeAddResults) {
@@ -142,6 +206,7 @@ public class RSKeySet {
 
     public void clear() {
         Platform.runLater(() -> {
+            addedKeyList.clear();
             keyList.clear();
             startIndex = 0;
             lastIndex = 0;

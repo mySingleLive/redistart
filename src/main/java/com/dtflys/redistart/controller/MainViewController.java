@@ -7,11 +7,14 @@ import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
 import com.dtflys.redistart.model.page.RSConnectionManagerPage;
 import com.dtflys.redistart.model.page.RSContentPage;
+import com.dtflys.redistart.model.page.RSDashboardPage;
 import com.dtflys.redistart.model.page.RSKeysContentPage;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
+import com.dtflys.redistart.utils.AbstractRSView;
 import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.ConnectionSettingView;
+import com.dtflys.redistart.view.DashboardView;
 import com.dtflys.redistart.view.KeysContentView;
 import de.felixroske.jfxsupport.FXMLController;
 import de.felixroske.jfxsupport.GUIState;
@@ -123,6 +126,9 @@ public class MainViewController extends RSMovableListener implements Initializab
     @Resource
     private KeysContentView keysContentView;
 
+    @Resource
+    private DashboardView dashboardView;
+
     private final RSConnectionManagerPage connectionManagerPage = new RSConnectionManagerPage();;
 
     @Override
@@ -209,8 +215,11 @@ public class MainViewController extends RSMovableListener implements Initializab
             }
 
             titleBox.getChildren().clear();
-            if (newPage.isShowSelectionItem()) {
-                titleBox.getChildren().addAll(selectedConnBox, selectedDBBox);
+            if (newPage.isUseConnectionSelection()) {
+                titleBox.getChildren().add(selectedConnBox);
+                if (newPage.isUseDatabaseSelection()) {
+                    titleBox.getChildren().add(selectedDBBox);
+                }
             }
             titleBox.getChildren().add(lbAppTitle);
         });
@@ -257,11 +266,6 @@ public class MainViewController extends RSMovableListener implements Initializab
                 databaseContextMenu.show(selectedDBBox, Side.BOTTOM, 0, 0);
             }
         });
-
-
-        // 监听鼠标移出侧边数据键按钮上时的事件
-
-
     }
 
     private void clearSideBarButtonsStyle() {
@@ -292,14 +296,26 @@ public class MainViewController extends RSMovableListener implements Initializab
     public RSKeysContentPage createKeysContentPage(RedisConnection connection) {
         System.out.println("打开连接: " + connection.getConnectionConfig().getName());
         RSKeysContentPage keysContentPage = new RSKeysContentPage(connection);
-        Parent root = keysContentView.loadAsParent(Map.of());
+        addPageToStackPane(keysContentPage, keysContentView);
+        return keysContentPage;
+    }
+
+
+    public RSDashboardPage createDashboardPage(RedisConnection connection) {
+        RSDashboardPage dashboardPage = new RSDashboardPage(connection);
+        addPageToStackPane(dashboardPage, dashboardView);
+        return dashboardPage;
+    }
+
+
+    private void addPageToStackPane(RSContentPage page, AbstractRSView view) {
+        Parent root = view.loadAsParent(Map.of());
         stackPane.getChildren().add(root);
-        keysContentPage.setOnSelect(page -> {
+        page.setOnSelect(p -> {
             Platform.runLater(() -> {
                 root.toFront();
             });
         });
-        return keysContentPage;
     }
 
     public void onAppCloseClicked(MouseEvent mouseEvent) {
@@ -335,6 +351,17 @@ public class MainViewController extends RSMovableListener implements Initializab
         }
     }
 
+    public void selectDashboardPage(RedisConnection connection) {
+        if (connection != null) {
+            RSDashboardPage page = rediStartService.getDashboardPageMap().get(connection);
+            if (page == null) {
+                page = createDashboardPage(connection);
+            }
+            connectionService.setSelectedConnection(connection);
+            rediStartService.setSelectedPage(page);
+        }
+    }
+
     public void onSelectKeysTab(MouseEvent mouseEvent) {
         RedisConnection connection = connectionService.getSelectedConnection();
         selectKeysContentPage(connection);
@@ -345,6 +372,10 @@ public class MainViewController extends RSMovableListener implements Initializab
     }
 
     public void onSelectSettingsTab(MouseEvent mouseEvent) {
+    }
 
+    public void onSelectDashboardTab(MouseEvent mouseEvent) {
+        RedisConnection connection = connectionService.getSelectedConnection();
+        selectDashboardPage(connection);
     }
 }

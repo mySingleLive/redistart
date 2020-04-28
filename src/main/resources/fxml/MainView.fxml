@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane fx:id="mainPane" prefHeight="708.0" prefWidth="1142.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
+<BorderPane fx:id="mainPane" prefHeight="708.0" prefWidth="1142.0" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.MainViewController">
    <center>
       <StackPane fx:id="stackPane" styleClass="backPane">
          <children>
@@ -80,7 +69,7 @@
                   </MenuBar>
                   <HBox fx:id="titleBox" prefHeight="100.0" GridPane.columnIndex="2">
                      <children>
-                        <HBox fx:id="selectedConnBox" alignment="CENTER_LEFT" prefHeight="30.0">
+                        <HBox fx:id="selectedConnBox" alignment="CENTER_LEFT" prefHeight="30.0" styleClass="flat-button-box2">
                            <children>
                               <FontIcon fx:id="selectedConnIcon" iconColor="#aea6a6" iconLiteral="mdi-checkbox-blank-circle" iconSize="6" />
                               <Label fx:id="lbSelectedConn" maxWidth="80.0" text="没有打开的链接" textOverrun="CENTER_WORD_ELLIPSIS">
@@ -89,8 +78,11 @@
                                  </padding>
                               </Label>
                            </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
                         </HBox>
-                        <HBox fx:id="selectedDBBox" alignment="CENTER_LEFT" prefHeight="30.0">
+                        <HBox fx:id="selectedDBBox" alignment="CENTER_LEFT" prefHeight="30.0" styleClass="flat-button-box2">
                            <children>
                               <FontIcon iconColor="#d0c0c0" iconLiteral="mdi-database" iconSize="14" />
                               <Label fx:id="lbSelectedDB" maxWidth="80.0" text="No DB">
@@ -99,8 +91,11 @@
                                  </HBox.margin>
                               </Label>
                            </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
                            <HBox.margin>
-                              <Insets left="10.0" />
+                              <Insets left="0.0" />
                            </HBox.margin>
                         </HBox>
                         <Label fx:id="lbAppTitle" alignment="CENTER" text="RediStart" textAlignment="CENTER" HBox.hgrow="ALWAYS">
@@ -212,7 +207,7 @@
                   </FontIcon>
                </children>
             </HBox>
-            <HBox fx:id="sideBtnDashboard" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
+            <HBox fx:id="sideBtnDashboard" onMouseClicked="#onSelectDashboardTab" prefHeight="50.0" styleClass="left-side-tab" GridPane.rowIndex="2">
                <children>
                   <FontIcon iconColor="#838383" iconLiteral="fas-chart-pie" iconSize="21">
                      <HBox.margin>

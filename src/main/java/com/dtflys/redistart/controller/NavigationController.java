@@ -7,10 +7,10 @@ import com.dtflys.redistart.model.action.RSAction;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.database.RedisDatabase;
 import com.dtflys.redistart.model.key.*;
+import com.dtflys.redistart.model.lua.RSResultCode;
 import com.dtflys.redistart.model.ttl.RSTtlOperator;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
-import com.dtflys.redistart.utils.ConfirmResult;
 import com.dtflys.redistart.utils.ControlUtils;
 import com.dtflys.redistart.utils.DialogUtils;
 import com.jfoenix.controls.JFXButton;
@@ -32,10 +32,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import javax.annotation.Resource;
@@ -167,21 +172,63 @@ public class NavigationController implements Initializable {
                 DialogUtils.showModalDialog(Map.of(
                         "title", "添加Key",
                         "content", "",
-                        "width", 280,
-                        "height", 120,
+                        "width", 320,
+                        "height", 60,
+                        "showOkButton", false,
+                        "showCancelButton", false,
                         "onInit", (Consumer<DialogController>) dController -> {
                             HBox contentBox = dController.getContentBox();
                             contentBox.getChildren().clear();
                             contentBox.setAlignment(Pos.CENTER_LEFT);
                             CustomTextField keyNameField = new CustomTextField();
+                            keyNameField.setPrefWidth(Region.USE_COMPUTED_SIZE);
                             keyNameField.setPromptText("Key Name");
-                            HBox.setMargin(keyNameField, new Insets(10, 0, 0, 15));
-                            contentBox.getChildren().add(keyNameField);
-                        },
+                            HBox iconBox = new HBox();
+//                            ObjectPropertyBase<RSKeyType> currentType = new SimpleObjectProperty<>(keyType);
+//                            ContextMenu dTypeMenu = new ContextMenu();
+//                            allTypes.forEach(dKeyType -> {
+//                                RSKeyTypeMenuItem dAddTypeItem = new RSKeyTypeMenuItem(false, dKeyType);
+//                                dTypeMenu.getItems().add(dAddTypeItem);
+//                            });
 
-                        "onConfirm", (Consumer<ConfirmResult>) result -> {
-                            if (ConfirmResult.OK == result) {
-                            }
+                            ImageView imgView = new ImageView(keyType.getListIconImage());
+                            imgView.setFitWidth(18);
+                            imgView.setFitHeight(14);
+                            iconBox.setAlignment(Pos.CENTER);
+                            HBox.setMargin(imgView, new Insets(0, 5, 0, 5));
+                            iconBox.getChildren().add(imgView);
+//                            iconBox.setOnMouseClicked(mouseEvent -> {
+//                                dTypeMenu.show(iconBox, 0, 0);
+//                            });
+                            keyNameField.setLeft(iconBox);
+                            keyNameField.setOnKeyPressed(keyEvent -> {
+                                String text = keyNameField.getText();
+                                if (keyEvent.getCode() == KeyCode.ENTER) {
+                                    if (!text.isBlank()) {
+                                        RedisConnection connection = connectionService.getSelectedConnection();
+                                        if (connection == null) {
+                                            return;
+                                        }
+                                        RedisDatabase database = connection.getSelectedDatabase();
+                                        if (database == null) {
+                                            return;
+                                        }
+                                        database.getKeySet().addNewKey(keyType, text, result -> {
+                                            if (result.getCode() == RSResultCode.SUCCESS) {
+                                                keyListView.scrollTo(result.getKey());
+                                                keyListView.getSelectionModel().select(result.getKey());
+                                                dController.close();
+                                            } else {
+                                            }
+                                        });
+                                    }
+                                } else if (keyEvent.getCode() == KeyCode.ESCAPE) {
+                                    dController.close();
+                                }
+                            });
+                            HBox.setHgrow(keyNameField, Priority.ALWAYS);
+                            HBox.setMargin(keyNameField, new Insets(0, 0, 0, 0));
+                            contentBox.getChildren().add(keyNameField);
                         }));
 
             });
@@ -234,7 +281,7 @@ public class NavigationController implements Initializable {
         txSearchField.textProperty().unbind();
 
         ChangeListener<Boolean> searchTypesChangeListener = (observableValue, oldVal, newVal) -> {
-            keySet.getSearchInfo().getTypes();
+            keySet.getSearchCondition().getTypes();
             List<String> changedList = new ArrayList<>();
             for (RSKeyType type : searchOptionTypeMap.keySet()) {
                 BooleanProperty booleanProperty = searchOptionTypeMap.get(type);
@@ -242,7 +289,7 @@ public class NavigationController implements Initializable {
                     changedList.add(type.name());
                 }
             }
-            keySet.getSearchInfo().setTypes(changedList);
+            keySet.getSearchCondition().setTypes(changedList);
         };
 
         for (MenuItem item : typesMenu.getItems()) {
@@ -268,8 +315,17 @@ public class NavigationController implements Initializable {
             RSKeyTypeMenuItem keyTypeMenuItem = (RSKeyTypeMenuItem) item;
             keyTypeMenuItem.bind(searchOptionTypeMap.get(keyTypeMenuItem.getKeyType()));
         }
-
-        keySet.getSearchInfo().patternProperty().bind(txSearchField.textProperty());
+        keySet.getSearchCondition().patternProperty().bind(txSearchField.textProperty());
+        keySet.getSearchCondition().ttlOperatorProperty().bind(currentTTLOp);
+        keySet.getSearchCondition().ttlProperty().bind(Bindings.createIntegerBinding(
+                () -> {
+                    try {
+                        return Integer.parseInt(txTTLCondition.getText());
+                    } catch (Throwable th) {
+                        return -1;
+                    }
+                },
+                txTTLCondition.textProperty()));
         AtomicInteger lastIndex = new AtomicInteger(-1);
         keySet.setOnBeforeAddResults(keyFindResult -> {
             ObservableList<RSKey> items = keyListView.getItems();
@@ -277,6 +333,9 @@ public class NavigationController implements Initializable {
                 RSKey lastItem = items.get(items.size() - 1);
                 if (lastItem instanceof RSLoadMore) {
                     items.remove(items.size() - 1);
+                }
+                if (keySet.getAddedKeyList().size() > 0) {
+                    items.removeAll(keySet.getAddedKeyList());
                 }
                 lastIndex.set(items.size());
             } else {

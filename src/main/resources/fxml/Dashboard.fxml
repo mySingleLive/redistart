@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox prefHeight="310.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.DashboardController">
+   <children>
+      <PieChart />
+   </children>
+</VBox>

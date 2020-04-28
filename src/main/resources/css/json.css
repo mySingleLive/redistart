@@ -14,11 +14,12 @@
 
 
 .string-value-json-text .lineno {
-    -fx-background-color: #404040;
+    /*-fx-background-color: #404040;*/
+    -fx-background-color: transparent;
     -fx-font-size: 12;
     -fx-font-weight: normal;
     -fx-font-family: Arial;
-    -fx-pref-width: 40;
+    -fx-pref-width: 60;
     -fx-padding: 0 15 0 0;
 }
 
