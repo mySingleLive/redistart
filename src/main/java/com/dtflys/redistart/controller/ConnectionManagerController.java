@@ -149,7 +149,6 @@ public class ConnectionManagerController implements Initializable {
             row.setOnMouseClicked(eventHandler -> {
                 if (eventHandler.getClickCount() == 2 && !row.isEmpty()) {
                     RedisConnection connection = row.getItem();
-                    System.out.println("-- " + connection.getConnectionConfig().getName());
                     DialogUtils.showModalDialog(Map.of(
                             "content", "",
                             "width", 260,

@@ -79,20 +79,27 @@ public class KeysContentController implements Initializable {
 
         valueTab = new Tab();
         valueTab.setClosable(false);
-        ObjectPropertyBase<RSKey> selectedKeyProperty = rediStartService.selectedKeyProperty();
-        valueTab.textProperty().bind(Bindings.createStringBinding(() -> {
-            RSKey key = selectedKeyProperty.get();
-            if (key == null) {
-                return "Key";
-            }
-            String title = key.getDatabase().getName() + " | " + key.getKey();
-            return title;
-        }, selectedKeyProperty));
+//        ObjectPropertyBase<RSKey> selectedKeyProperty = rediStartService.selectedKeyProperty();
+        valueTab.setText("KEY");
+        valueTab.getStyleClass().add("query-tab");
 
         Parent stringValueRoot = stringValueView.loadAsParent(Map.of());
         valueTab.setContent(stringValueRoot);
 
+/*
+        valueTab.styleProperty().bind(Bindings.createStringBinding(() -> {
+            int len = valueTabPane.getTabs().size();
+            int size = 220 - len * 10;
+            if (size < 150) {
+                size = 150;
+            }
+            return "-fx-pref-width: " + size;
+        }, valueTabPane.getTabs()));
+*/
+
+
         valueTabPane.getTabs().add(valueTab);
+        valueTabPane.setDisableAnimation(true);
 
         createValueModeMenu(rediStartService.getStringValueModeList());
 
