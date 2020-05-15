@@ -1,4 +1,4 @@
-package com.dtflys.redistart.model.info;
+package com.dtflys.redistart.model.server.info;
 
 public class MemoryInfo {
 

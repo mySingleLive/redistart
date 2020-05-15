@@ -11,6 +11,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @SpringBootApplication
 @Configuration
 public class App extends AbstractJavaFxApplicationSupport {
@@ -36,5 +39,6 @@ public class App extends AbstractJavaFxApplicationSupport {
     public static void launchApp(String[] args) {
         launch(App.class, MainView.class, args);
     }
+
 
 }
