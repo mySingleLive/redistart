@@ -1,6 +1,5 @@
 package com.dtflys.redistart.model.database;
 
-import com.dtflys.redistart.model.connection.BasicRedisConnection;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.model.key.RSKeySet;
 import com.dtflys.redistart.service.CommandService;
