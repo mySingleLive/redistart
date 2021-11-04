@@ -74,7 +74,7 @@
                                  <PasswordField fx:id="txAuth" minWidth="0.0" prefWidth="0.0" promptText="(可选) Redis服务验证密码" visible="false" />
                                  <TextField fx:id="txAuthVisible" prefWidth="260.0" promptText="(可选) Redis服务验证密码" />
                                  <Region prefWidth="10.0" />
-                                 <FontIcon fx:id="iconPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
+                                 <FontIcon fx:id="iconPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye-blocked" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                     <HBox.margin>
                                        <Insets left="10.0" top="4.0" />
                                     </HBox.margin>
@@ -210,7 +210,7 @@
                                                 <CustomTextField GridPane.columnIndex="1" />
                                                 <Label text="验证方式" GridPane.rowIndex="1" />
                                                 <ComboBox fx:id="cmbValidType" promptText="选择SSH验证方式" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                    
+
                                                 </ComboBox>
                                              </children>
                                              <padding>
@@ -227,8 +227,8 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label text="私钥" />
-                                                <CustomTextField promptText="SSH私钥" GridPane.columnIndex="1" />
+                                                <Label text="公钥" />
+                                                <CustomTextField fx:id="sshPubKey" promptText="SSH公钥" GridPane.columnIndex="1" />
                                              </children>
                                           </GridPane>
                                           <GridPane styleClass="groupPane2">
@@ -249,7 +249,7 @@
                                                       <PasswordField fx:id="txSshPassword" minWidth="0.0" prefWidth="0.0" promptText="(可选) Redis服务验证密码" visible="false" />
                                                       <TextField fx:id="txSshPasswordVisible" prefWidth="260.0" promptText="SSH验证密码" />
                                                       <Region prefWidth="10.0" />
-                                                      <FontIcon fx:id="iconSshPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
+                                                      <FontIcon fx:id="iconSshPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye-blocked" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                                          <HBox.margin>
                                                             <Insets left="10.0" top="4.0" />
                                                          </HBox.margin>
