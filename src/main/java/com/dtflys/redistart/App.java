@@ -1,18 +1,13 @@
 package com.dtflys.redistart;
 
 import com.dtflys.redistart.script.RedisScriptScanner;
-import com.dtflys.redistart.utils.ResizeUtils;
 import com.dtflys.redistart.view.MainView;
 import de.felixroske.jfxsupport.AbstractJavaFxApplicationSupport;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @Configuration
@@ -39,6 +34,5 @@ public class App extends AbstractJavaFxApplicationSupport {
     public static void launchApp(String[] args) {
         launch(App.class, MainView.class, args);
     }
-
 
 }
