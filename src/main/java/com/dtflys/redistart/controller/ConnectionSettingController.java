@@ -3,7 +3,7 @@ package com.dtflys.redistart.controller;
 import com.dtflys.redistart.model.RedisConnectionConfig;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ControlUtils;
-import com.dtflys.redistart.utils.DialogUtils;
+import com.dtflys.redistart.utils.Dialogs;
 import com.dtflys.redistart.utils.IdGenerator;
 import com.dtflys.redistart.utils.RSController;
 import com.dtflys.redistart.view.DialogView;
@@ -28,13 +28,12 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 public class ConnectionSettingController implements Initializable, RSController {
 
-    private final static String LITERAL_PWD_VISIBLE = "icm-eye";
+    private final static String LITERAL_PWD_VISIBLE = "icm-eye-blocked";
 
-    private final static String LITERAL_PWD_INVISIBLE = "icm-eye-blocked";
+    private final static String LITERAL_PWD_INVISIBLE = "icm-eye";
 
     private boolean modify = false;
 
@@ -74,6 +73,9 @@ public class ConnectionSettingController implements Initializable, RSController 
     private CheckBox cbUseSSH;
 
     @FXML
+    private TextField sshPublicKey;
+
+    @FXML
     private CustomTextField txSSHPort;
 
     @FXML
@@ -95,8 +97,8 @@ public class ConnectionSettingController implements Initializable, RSController 
         hideAuthText();
         secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
         sshSettingTabView.disableProperty().bind(cbUseSSH.selectedProperty().not());
-        cmbValidType.getItems().addAll("私钥", "密码");
-
+        cmbValidType.getItems().addAll("公钥", "密码");
+//        sshPublicKey.disableProperty().bind(cmbValidType.getSelectionModel().selectedIndexProperty().isEqualTo(0));
 
         if (modify && connectionConfig != null) {
             txName.setText(connectionConfig.getName());
@@ -176,6 +178,9 @@ public class ConnectionSettingController implements Initializable, RSController 
 
 
     private RedisConnectionConfig getConnectionConfig() {
+
+        // Redis 连接基本信息
+
         String name = txName.getText().trim();
         String redisHost = txRedisHost.getText().trim();
         String redisPortText = txRedisPort.getText().trim();
@@ -212,17 +217,19 @@ public class ConnectionSettingController implements Initializable, RSController 
         connectionConfig.setRedisPassword(redisPassword);
         connectionConfig.setQueryPageSize(queryPageSize);
         connectionConfig.setCreateTime(new Date());
+
+
         return connectionConfig;
     }
 
 
     public void onTestConnectionAction(ActionEvent actionEvent) {
         RedisConnectionConfig connectionConfig = getConnectionConfig();
-        DialogUtils.showModalDialog(Map.of(
-                "content", "",
-                "width", 270,
-                "showCancelButton", false,
-                "onInit", (Consumer<DialogController>) dController -> {
+        Dialogs.applicationModal()
+                .content("")
+                .width(270)
+                .showCancelButton(false)
+                .onInit(dController -> {
                     HBox contentBox = dController.getContentBox();
                     contentBox.getChildren().clear();
                     Region leftRegion = new Region();
@@ -238,7 +245,6 @@ public class ConnectionSettingController implements Initializable, RSController 
                     contentBox.getChildren().addAll(leftRegion, spinner, label);
                     JFXButton okButton = dController.getOkButton();
                     okButton.setDisable(true);
-
                     connectionService.startTestConnection(connectionConfig, result -> {
                         Platform.runLater(() -> {
                             spinner.setOpacity(0);
@@ -250,8 +256,8 @@ public class ConnectionSettingController implements Initializable, RSController 
                             }
                         });
                     });
-                }
-        ));
+                })
+                .show();
     }
 
 }

@@ -9,7 +9,16 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DialogUtils {
+public class Dialogs {
+
+    public static RSDialog modality(Modality modality) {
+        return new RSDialog(modality);
+    }
+
+    public static RSDialog applicationModal() {
+        return new RSDialog(Modality.APPLICATION_MODAL);
+    }
+
 
     public static void showDialog(Modality modality, Map<String, Object> args) {
         String title = MapUtils.getString(args, "title");

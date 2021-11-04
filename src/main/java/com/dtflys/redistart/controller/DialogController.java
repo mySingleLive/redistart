@@ -63,8 +63,8 @@ public class DialogController extends RSMovableListener implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.movable(mainPane);
-        lbTitle.setText(Optional.of(title).get());
-        lbContent.setText(Optional.of(content).get());
+        Optional.of(title).ifPresent(value -> lbTitle.setText(value));
+        Optional.of(content).ifPresent(value -> lbContent.setText(value));
         if (width != null) {
             mainPane.setPrefWidth(width);
         }

@@ -26,6 +26,18 @@ public class RedisConnectionConfig {
 
     private final BooleanProperty isUseSSH = new SimpleBooleanProperty(false);
 
+    private final StringProperty sshHost = new SimpleStringProperty();
+
+    private final IntegerProperty sshPort = new SimpleIntegerProperty();
+
+    private final StringProperty sshUsername = new SimpleStringProperty();
+
+    private final StringProperty sshAuthType = new SimpleStringProperty();
+
+    private final StringProperty sshPubKey = new SimpleStringProperty();
+
+    private final StringProperty sshPass = new SimpleStringProperty();
+
     /* Advanced Settings */
 
     private final IntegerProperty timeout = new SimpleIntegerProperty();
@@ -116,6 +128,78 @@ public class RedisConnectionConfig {
 
     public void setIsUseSSH(boolean isUseSSH) {
         this.isUseSSH.set(isUseSSH);
+    }
+
+    public String getSshHost() {
+        return sshHost.get();
+    }
+
+    public StringProperty sshHostProperty() {
+        return sshHost;
+    }
+
+    public void setSshHost(String sshHost) {
+        this.sshHost.set(sshHost);
+    }
+
+    public int getSshPort() {
+        return sshPort.get();
+    }
+
+    public IntegerProperty sshPortProperty() {
+        return sshPort;
+    }
+
+    public void setSshPort(int sshPort) {
+        this.sshPort.set(sshPort);
+    }
+
+    public String getSshUsername() {
+        return sshUsername.get();
+    }
+
+    public StringProperty sshUsernameProperty() {
+        return sshUsername;
+    }
+
+    public void setSshUsername(String sshUsername) {
+        this.sshUsername.set(sshUsername);
+    }
+
+    public String getSshAuthType() {
+        return sshAuthType.get();
+    }
+
+    public StringProperty sshAuthTypeProperty() {
+        return sshAuthType;
+    }
+
+    public void setSshAuthType(String sshAuthType) {
+        this.sshAuthType.set(sshAuthType);
+    }
+
+    public String getSshPubKey() {
+        return sshPubKey.get();
+    }
+
+    public StringProperty sshPubKeyProperty() {
+        return sshPubKey;
+    }
+
+    public void setSshPubKey(String sshPubKey) {
+        this.sshPubKey.set(sshPubKey);
+    }
+
+    public String getSshPass() {
+        return sshPass.get();
+    }
+
+    public StringProperty sshPassProperty() {
+        return sshPass;
+    }
+
+    public void setSshPass(String sshPass) {
+        this.sshPass.set(sshPass);
     }
 
     public int getTimeout() {

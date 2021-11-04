@@ -3,7 +3,7 @@ package com.dtflys.redistart.controller;
 import com.dtflys.redistart.model.connection.RedisConnection;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.utils.ConfirmResult;
-import com.dtflys.redistart.utils.DialogUtils;
+import com.dtflys.redistart.utils.Dialogs;
 import com.dtflys.redistart.view.ConnectionSettingView;
 import com.jfoenix.controls.JFXSpinner;
 import de.felixroske.jfxsupport.FXMLController;
@@ -149,13 +149,13 @@ public class ConnectionManagerController implements Initializable {
             row.setOnMouseClicked(eventHandler -> {
                 if (eventHandler.getClickCount() == 2 && !row.isEmpty()) {
                     RedisConnection connection = row.getItem();
-                    DialogUtils.showModalDialog(Map.of(
-                            "content", "",
-                            "width", 260,
-                            "height", 130,
-                            "showOkButton", false,
-                            "showCancelButton", false,
-                            "onInit", (Consumer<DialogController>) dController -> {
+                    Dialogs.applicationModal()
+                            .content("")
+                            .width(260)
+                            .height(130)
+                            .showOkButton(false)
+                            .showCancelButton(false)
+                            .onInit(dController -> {
                                 HBox contentBox = dController.getContentBox();
                                 contentBox.getChildren().clear();
                                 contentBox.setAlignment(Pos.CENTER_LEFT);
@@ -166,8 +166,8 @@ public class ConnectionManagerController implements Initializable {
                                     dialogControllers[0] = dController;
                                 }
                                 connection.openConnection();
-                            }
-                    ));
+                            })
+                            .show();
                 }
             });
             return row;
@@ -220,15 +220,16 @@ public class ConnectionManagerController implements Initializable {
     }
 
     public void onDeleteConnectionClick(MouseEvent mouseEvent) {
-        DialogUtils.showModalDialog(Map.of(
-                "title", "Redistart",
-                "content", "是否删除?",
-                "onConfirm", (Consumer<ConfirmResult>) result -> {
+        Dialogs.applicationModal()
+                .title("Redistart")
+                .content("是否删除?")
+                .onConfirm(result -> {
                     if (ConfirmResult.OK == result) {
                         RedisConnection connection = connTableView.getSelectionModel().getSelectedItem();
                         connectionService.deleteConnection(connection);
                     }
-                }));
+                })
+                .show();
     }
 
     public void onImportConnectionClick(MouseEvent mouseEvent) {

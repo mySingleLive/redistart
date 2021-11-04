@@ -12,7 +12,7 @@ import com.dtflys.redistart.model.ttl.RSTtlOperator;
 import com.dtflys.redistart.service.ConnectionService;
 import com.dtflys.redistart.service.RediStartService;
 import com.dtflys.redistart.utils.ControlUtils;
-import com.dtflys.redistart.utils.DialogUtils;
+import com.dtflys.redistart.utils.Dialogs;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import de.felixroske.jfxsupport.FXMLController;
@@ -40,7 +40,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import javax.annotation.Resource;
@@ -169,14 +168,14 @@ public class NavigationController implements Initializable {
             RSKeyTypeMenuItem addTyItem = new RSKeyTypeMenuItem(false, keyType);
             addTyItem.setText(addTyItem.getText() +" key");
             addTyItem.setOnAction(event -> {
-                DialogUtils.showModalDialog(Map.of(
-                        "title", "添加Key",
-                        "content", "",
-                        "width", 320,
-                        "height", 60,
-                        "showOkButton", false,
-                        "showCancelButton", false,
-                        "onInit", (Consumer<DialogController>) dController -> {
+                Dialogs.applicationModal()
+                        .title("添加Key")
+                        .content("")
+                        .width(320)
+                        .height(60)
+                        .showOkButton(false)
+                        .showCancelButton(false)
+                        .onInit(dController -> {
                             HBox contentBox = dController.getContentBox();
                             contentBox.getChildren().clear();
                             contentBox.setAlignment(Pos.CENTER_LEFT);
@@ -229,8 +228,8 @@ public class NavigationController implements Initializable {
                             HBox.setHgrow(keyNameField, Priority.ALWAYS);
                             HBox.setMargin(keyNameField, new Insets(0, 0, 0, 0));
                             contentBox.getChildren().add(keyNameField);
-                        }));
-
+                        })
+                        .show();
             });
             addTypesMenu.getItems().add(addTyItem);
         });
