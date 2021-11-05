@@ -23,6 +23,7 @@
         <commons-io.version>2.4</commons-io.version>
         <guava.version>28.1-jre</guava.version>
         <redisson.version>3.11.1</redisson.version>
+        <jsch.version>0.1.54</jsch.version>
         <common.lang.version>3.5</common.lang.version>
         <commons.collections.version>4.1</commons.collections.version>
         <mainClass>com.dtflys.redistart.utils.AppLauncher</mainClass>
@@ -220,37 +221,6 @@
             <version>11.33</version>
         </dependency>
 
-
-        <!--
-                <dependency>
-                    <groupId>de.jensd</groupId>
-                    <artifactId>fontawesomefx-commons</artifactId>
-                    <version>11.0</version>
-                </dependency>
-
-
-                <dependency>
-                    <groupId>de.jensd</groupId>
-                    <artifactId>fontawesomefx-controls</artifactId>
-                    <version>11.0</version>
-                </dependency>
-
-
-                <dependency>
-                    <groupId>de.jensd</groupId>
-                    <artifactId>fontawesomefx-fontawesome</artifactId>
-                    <version>4.7.0-5</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>de.jensd</groupId>
-                    <artifactId>fontawesomefx-emojione</artifactId>
-                    <version>2.2.7-2</version>
-                </dependency>
-        -->
-
-
-
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
@@ -261,6 +231,12 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <version>${redisson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>${jsch.version}</version>
         </dependency>
 
         <dependency>

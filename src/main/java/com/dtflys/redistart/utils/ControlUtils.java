@@ -39,7 +39,6 @@ public class ControlUtils {
                 val = val.substring(index);
             }
             textField.setText(val);
-
         };
     }
 

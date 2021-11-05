@@ -18,6 +18,7 @@
 <?import org.controlsfx.control.textfield.CustomTextField?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
+<?import com.dtflys.redistart.view.model.ConnectionViewModel?>
 <VBox fx:id="mainBox" prefHeight="480.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
    <children>
       <JFXTabPane fx:id="connSettingTabView" prefHeight="410.0" styleClass="connSettingsTabView">
@@ -39,11 +40,12 @@
                            <Label text="Redis地址" GridPane.rowIndex="1" />
                            <Label text="Redis端口" GridPane.rowIndex="2" />
                            <Label text="名称" />
-                           <CustomTextField fx:id="txName" promptText="连接名称" GridPane.columnIndex="1" />
-                           <CustomTextField fx:id="txRedisHost" promptText="(必填) Redis服务地址" text="localhost" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <CustomTextField fx:id="txName" promptText="连接名称" GridPane.columnIndex="1"/>
+                           <CustomTextField fx:id="txRedisHost" promptText="(必填) Redis服务地址"
+                                            GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <children>
-                                 <CustomTextField fx:id="txRedisPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号" text="6379" />
+                                 <CustomTextField fx:id="txRedisPort" prefColumnCount="0" prefWidth="60.0" promptText="(必填) 端口号"/>
                                  <Region prefHeight="200.0" />
                               </children>
                               <GridPane.margin>
@@ -71,8 +73,11 @@
                            <Label text="密码" />
                            <HBox GridPane.columnIndex="1">
                               <children>
-                                 <PasswordField fx:id="txAuth" minWidth="0.0" prefWidth="0.0" promptText="(可选) Redis服务验证密码" visible="false" />
-                                 <TextField fx:id="txAuthVisible" prefWidth="260.0" promptText="(可选) Redis服务验证密码" />
+                                 <PasswordField fx:id="txAuth"
+                                                minWidth="0.0" prefWidth="0.0"
+                                                promptText="(可选) Redis服务验证密码" visible="false" />
+                                 <TextField fx:id="txAuthVisible"
+                                            prefWidth="260.0" promptText="(可选) Redis服务验证密码" />
                                  <Region prefWidth="10.0" />
                                  <FontIcon fx:id="iconPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye-blocked" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                     <HBox.margin>
@@ -171,10 +176,12 @@
                                              <children>
                                                 <Label text="主机地址" />
                                                 <Label text="主机端口" GridPane.rowIndex="1" />
-                                                <CustomTextField fx:id="txSSHHost" text="localhost" GridPane.columnIndex="1" />
+                                                <CustomTextField fx:id="txSSHHost"
+                                                                 GridPane.columnIndex="1" />
                                                 <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
-                                                      <CustomTextField fx:id="txSSHPort" prefColumnCount="0" prefWidth="60.0" promptText="端口号" text="22" />
+                                                      <CustomTextField fx:id="txSSHPort"
+                                                                       prefColumnCount="0" prefWidth="60.0" promptText="端口号" />
                                                       <Region prefHeight="200.0" />
                                                    </children>
                                                    <GridPane.margin>
@@ -207,10 +214,9 @@
                                              </VBox.margin>
                                              <children>
                                                 <Label text="用户名" />
-                                                <CustomTextField GridPane.columnIndex="1" />
+                                                <CustomTextField fx:id="txSSHUsername" GridPane.columnIndex="1"/>
                                                 <Label text="验证方式" GridPane.rowIndex="1" />
                                                 <ComboBox fx:id="cmbValidType" promptText="选择SSH验证方式" GridPane.columnIndex="1" GridPane.rowIndex="1">
-
                                                 </ComboBox>
                                              </children>
                                              <padding>
@@ -228,7 +234,7 @@
                                             </rowConstraints>
                                              <children>
                                                 <Label text="公钥" />
-                                                <CustomTextField fx:id="sshPubKey" promptText="SSH公钥" GridPane.columnIndex="1" />
+                                                <CustomTextField fx:id="sshPrvKeyFile" promptText="SSH公钥" GridPane.columnIndex="1" />
                                              </children>
                                           </GridPane>
                                           <GridPane styleClass="groupPane2">
@@ -246,8 +252,10 @@
                                                 <Label text="密码" />
                                                 <HBox GridPane.columnIndex="1">
                                                    <children>
-                                                      <PasswordField fx:id="txSshPassword" minWidth="0.0" prefWidth="0.0" promptText="(可选) Redis服务验证密码" visible="false" />
-                                                      <TextField fx:id="txSshPasswordVisible" prefWidth="260.0" promptText="SSH验证密码" />
+                                                      <PasswordField fx:id="txSshPassword"
+                                                                     minWidth="0.0" prefWidth="0.0" promptText="(可选) Redis服务验证密码" visible="false" />
+                                                      <TextField fx:id="txSshPasswordVisible"
+                                                                 prefWidth="260.0" promptText="SSH验证密码" />
                                                       <Region prefWidth="10.0" />
                                                       <FontIcon fx:id="iconSshPwdVisibility" iconColor="WHITE" iconLiteral="icm-eye-blocked" iconSize="18" onMouseClicked="#onPwdVisibilityClick" selectionEnd="1">
                                                          <HBox.margin>

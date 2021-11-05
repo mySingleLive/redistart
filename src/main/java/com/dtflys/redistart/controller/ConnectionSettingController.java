@@ -7,6 +7,7 @@ import com.dtflys.redistart.utils.Dialogs;
 import com.dtflys.redistart.utils.IdGenerator;
 import com.dtflys.redistart.utils.RSController;
 import com.dtflys.redistart.view.DialogView;
+import com.dtflys.redistart.view.model.ConnectionViewModel;
 import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -73,10 +75,16 @@ public class ConnectionSettingController implements Initializable, RSController 
     private CheckBox cbUseSSH;
 
     @FXML
-    private TextField sshPublicKey;
+    private TextField txSSHHost;
 
     @FXML
     private CustomTextField txSSHPort;
+
+    @FXML
+    private CustomTextField txSSHUsername;
+
+    @FXML
+    private TextField sshPrvKeyFile;
 
     @FXML
     private TabPane sshSettingTabView;
@@ -89,24 +97,51 @@ public class ConnectionSettingController implements Initializable, RSController 
 
     private DialogView dialogView;
 
+    private ConnectionViewModel model = new ConnectionViewModel();
+
+    public ConnectionViewModel getModel() {
+        return model;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ControlUtils.numberField(txRedisPort);
         ControlUtils.numberField(txSSHPort);
         ControlUtils.numberField(txQueryPageSize);
+
+        NumberStringConverter numberStringConverter = new NumberStringConverter("#####");
+
+        txName.textProperty().bindBidirectional(model.nameProperty());
+        txRedisHost.textProperty().bindBidirectional(model.redisHostProperty());
+        txRedisPort.textProperty().bindBidirectional(model.redisPortProperty(), numberStringConverter);
+        txAuth.textProperty().bindBidirectional(model.redisPasswordProperty());
+        cbUseSSL.selectedProperty().bindBidirectional(model.isUseSSLProperty());
+        cbUseSSH.selectedProperty().bindBidirectional(model.isUseSSHProperty());
+        txSSHHost.textProperty().bindBidirectional(model.sshHostProperty());
+        txSSHPort.textProperty().bindBidirectional(model.sshPortProperty(), numberStringConverter);
+        txSSHUsername.textProperty().bindBidirectional(model.sshUsernameProperty());
+        sshPrvKeyFile.textProperty().bindBidirectional(model.sshPrivateKeyFileProperty());
+
         hideAuthText();
-        secGroup.disableProperty().bind(cbUseSSL.selectedProperty().not());
-        sshSettingTabView.disableProperty().bind(cbUseSSH.selectedProperty().not());
+        secGroup.disableProperty().bind(model.isUseSSLProperty().not());
+        sshSettingTabView.disableProperty().bind(model.isUseSSHProperty().not());
         cmbValidType.getItems().addAll("公钥", "密码");
+
+
 //        sshPublicKey.disableProperty().bind(cmbValidType.getSelectionModel().selectedIndexProperty().isEqualTo(0));
 
         if (modify && connectionConfig != null) {
-            txName.setText(connectionConfig.getName());
-            txRedisHost.setText(connectionConfig.getRedisHost());
-            txRedisPort.setText("" + connectionConfig.getRedisPort());
-            txAuth.setText(connectionConfig.getRedisPassword());
-            cbUseSSL.setSelected(connectionConfig.getIsUseSSL());
-            cbUseSSH.setSelected(connectionConfig.getIsUseSSH());
+            model.setName(connectionConfig.getName());
+            model.setRedisHost(connectionConfig.getRedisHost());
+            model.setRedisPort(connectionConfig.getRedisPort());
+            model.setRedisPassword(connectionConfig.getRedisPassword());
+            model.setIsUseSSL(connectionConfig.getIsUseSSL());
+            model.setIsUseSSH(connectionConfig.getIsUseSSH());
+            model.setSshHost(connectionConfig.getSshHost());
+            model.setSshPort(connectionConfig.getSshPort());
+            model.setSshUsername(connectionConfig.getSshUsername());
+            model.setSshPrivateKeyFile(connectionConfig.getSshPrivateKeyFile());
+            model.setSshPass(connectionConfig.getSshPass());
         }
     }
 
@@ -181,14 +216,9 @@ public class ConnectionSettingController implements Initializable, RSController 
 
         // Redis 连接基本信息
 
-        String name = txName.getText().trim();
-        String redisHost = txRedisHost.getText().trim();
-        String redisPortText = txRedisPort.getText().trim();
-        Integer redisPort = null;
-        try {
-            redisPort = Integer.parseInt(redisPortText);
-        } catch (Throwable th) {
-        }
+        String name = model.getName();
+        String redisHost = model.getRedisHost();
+        Integer redisPort = model.getRedisPort();
         String redisPassword = getAuthText();
         RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
         if (StringUtils.isBlank(name)) {
@@ -210,15 +240,19 @@ public class ConnectionSettingController implements Initializable, RSController 
         if (queryPageSize == null) {
             queryPageSize = 300;
         }
-
         connectionConfig.setName(name);
         connectionConfig.setRedisHost(redisHost);
         connectionConfig.setRedisPort(redisPort);
         connectionConfig.setRedisPassword(redisPassword);
         connectionConfig.setQueryPageSize(queryPageSize);
         connectionConfig.setCreateTime(new Date());
-
-
+        connectionConfig.setIsUseSSL(model.isIsUseSSL());
+        connectionConfig.setIsUseSSH(model.isIsUseSSH());
+        connectionConfig.setSshUsername(model.getSshUsername());
+        connectionConfig.setSshHost(model.getSshHost());
+        connectionConfig.setSshPort(model.getSshPort());
+        connectionConfig.setSshPrivateKeyFile(model.getSshPrivateKeyFile());
+        connectionConfig.setSshPass(model.getSshPass());
         return connectionConfig;
     }
 

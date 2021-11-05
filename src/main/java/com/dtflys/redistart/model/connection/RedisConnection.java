@@ -16,6 +16,7 @@ import org.redisson.client.protocol.RedisCommand;
 import org.redisson.client.protocol.RedisCommands;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RedisConnection extends BasicRedisConnection {
 
@@ -57,6 +58,7 @@ public class RedisConnection extends BasicRedisConnection {
                     doOpenConnection(0);
                     success = true;
                 } catch (Throwable th) {
+                    th.printStackTrace();
                     closeConnection();
                 }
                 if (!success) {
@@ -100,21 +102,39 @@ public class RedisConnection extends BasicRedisConnection {
         Map<String, String> dbMap = redisConnection.sync(StringCodec.INSTANCE, RedisCommands.INFO_KEYSPACE);
         List<String> dbNameList = new ArrayList<>(dbMap.keySet());
         var databaseList = new ArrayList<RedisDatabase>();
+        var maxIndex = 15;
+        Map<Integer, RedisDatabase> newDbMap = new LinkedHashMap<>();
         for (String dbName : dbNameList) {
-            RedisDatabase database = new RedisDatabase(this, commandService);
-            String db = MapUtils.getString(dbMap, dbName);
-            Map<String, Object> dbValues = parseInfoKeysapceResult(db);
+            RedisDatabase db = new RedisDatabase(this, commandService);
+            String dbStr = MapUtils.getString(dbMap, dbName);
+            Map<String, Object> dbValues = parseInfoKeysapceResult(dbStr);
             Integer index = Integer.parseInt(dbName.substring(2));
+            if (index > maxIndex) {
+                maxIndex = index;
+            }
             Long keys = MapUtils.getLong(dbValues, "keys");
             Integer expires = MapUtils.getInteger(dbValues, "expires");
             Long averageTTL = MapUtils.getLong(dbValues, "avg_ttl");
-            database.setName(dbName);
-            database.setIndex(index);
-            database.setSize(keys);
-            database.setExpires(expires);
-            database.setAverageTTL(averageTTL);
-            databaseList.add(database);
+            db.setName(dbName);
+            db.setIndex(index);
+            db.setSize(keys);
+            db.setExpires(expires);
+            db.setAverageTTL(averageTTL);
+            newDbMap.put(index, db);
         }
+        for (int i = 0; i <= maxIndex; i++) {
+            RedisDatabase db = newDbMap.get(i);
+            if (db == null) {
+                db =  new RedisDatabase(this, commandService);
+                db.setName("db" + i);
+                db.setIndex(i);
+                db.setSize(0L);
+                db.setExpires(-1);
+                db.setAverageTTL(-1L);
+            }
+            databaseList.add(db);
+        }
+
         databaseList.sort(Comparator.comparing(RedisDatabase::getIndex));
         if (!databaseList.isEmpty() && getSelectedDatabase() == null) {
             // Select first database as default

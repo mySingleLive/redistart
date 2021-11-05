@@ -29,7 +29,6 @@ public class RedisDatabase {
     private RSKeySet keySet;
 
     public RedisDatabase(RedisConnection connection, CommandService commandService) {
-//        super(connection.getConnectionConfig(), commandService);
         this.connection = connection;
         keySet = new RSKeySet(this, commandService);
     }
@@ -38,7 +37,6 @@ public class RedisDatabase {
         connection.getOnBeforeOpenDatabase().handle(this);
         new Thread(() -> {
             if (!isOpened()) {
-//                connection.selectDatabase(index);
                 System.out.println("------ Open Database Completed ------");
                 keySet.clear();
                 Platform.runLater(() -> {

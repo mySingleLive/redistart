@@ -1,22 +1,31 @@
-package com.dtflys.redistart.model;
+package com.dtflys.redistart.view.model;
 
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.IntegerPropertyBase;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.util.Date;
 
-public class RedisConnectionConfig {
-
-    private String id;
+public class ConnectionViewModel {
 
     /* Connection Settings */
 
     private final StringProperty name = new SimpleStringProperty();
 
-    private final StringProperty redisHost = new SimpleStringProperty();
+    private final StringProperty redisHost = new SimpleStringProperty("localhost");
 
-    private final IntegerProperty redisPort = new SimpleIntegerProperty();
+    private final IntegerProperty redisPort = new SimpleIntegerProperty(6379);
 
     private final StringProperty redisPassword = new SimpleStringProperty();
+
+    private final BooleanProperty passwordVisible = new SimpleBooleanProperty(false);
 
     /* SSL Settings */
 
@@ -50,14 +59,6 @@ public class RedisConnectionConfig {
 
     private final ObjectProperty<Date> createTime = new SimpleObjectProperty<>();
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name.get();
     }
@@ -65,6 +66,11 @@ public class RedisConnectionConfig {
     public StringProperty nameProperty() {
         return name;
     }
+
+    public StringProperty getNameProperty() {
+        return name;
+    }
+
 
     public void setName(String name) {
         this.name.set(name);
@@ -106,7 +112,19 @@ public class RedisConnectionConfig {
         this.redisPassword.set(redisPassword);
     }
 
-    public boolean getIsUseSSL() {
+    public boolean isPasswordVisible() {
+        return passwordVisible.get();
+    }
+
+    public BooleanProperty passwordVisibleProperty() {
+        return passwordVisible;
+    }
+
+    public void setPasswordVisible(boolean passwordVisible) {
+        this.passwordVisible.set(passwordVisible);
+    }
+
+    public boolean isIsUseSSL() {
         return isUseSSL.get();
     }
 
@@ -118,7 +136,7 @@ public class RedisConnectionConfig {
         this.isUseSSL.set(isUseSSL);
     }
 
-    public boolean getIsUseSSH() {
+    public boolean isIsUseSSH() {
         return isUseSSH.get();
     }
 

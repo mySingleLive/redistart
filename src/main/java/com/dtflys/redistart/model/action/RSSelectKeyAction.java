@@ -1,6 +1,5 @@
 package com.dtflys.redistart.model.action;
 
-import com.dtflys.redistart.view.values.StringValueView;
 import javafx.scene.control.TabPane;
 
 public class RSSelectKeyAction extends RSAbstractAction implements RSAction {
