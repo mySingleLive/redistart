@@ -111,6 +111,8 @@ public class ConnectionSettingController implements Initializable, RSController 
 
         NumberStringConverter numberStringConverter = new NumberStringConverter("#####");
 
+        // 绑定属性
+
         txName.textProperty().bindBidirectional(model.nameProperty());
         txRedisHost.textProperty().bindBidirectional(model.redisHostProperty());
         txRedisPort.textProperty().bindBidirectional(model.redisPortProperty(), numberStringConverter);
