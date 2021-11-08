@@ -173,26 +173,7 @@ public class ConnectionManagerController implements Initializable {
             return row;
         });
 
-/*
-        RedisConnectionConfig connectionConfig = new RedisConnectionConfig();
-        connectionConfig.setName("Test 1");
-        connectionConfig.setRedisHost("127.0.0.1");
-        connectionConfig.setRedisPort(6379);
-        connectionConfig.setRedisPassword("xxxxxx");
-        connectionConfig.setCreateTime(new Date());
-
-        RedisConnectionConfig connectionConfig2 = new RedisConnectionConfig();
-        connectionConfig2.setName("Test 2");
-        connectionConfig2.setRedisHost("127.0.0.1");
-        connectionConfig2.setRedisPassword("yyyyyy");
-        connectionConfig2.setRedisPort(6389);
-        connectionConfig2.setCreateTime(new Date());
-
-        connectionService.addConnection(connectionConfig);
-        connectionService.addConnection(connectionConfig2);
-*/
         connectionService.loadConnections();
-
         connTableView.setItems(connectionService.getConnections());
 
     }
