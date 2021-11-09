@@ -19,6 +19,7 @@
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <?import com.dtflys.redistart.view.model.ConnectionViewModel?>
+<?import javafx.scene.control.Button?>
 <VBox fx:id="mainBox" prefHeight="480.0" prefWidth="450.0" styleClass="backPane" stylesheets="@../css/global.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dtflys.redistart.controller.ConnectionSettingController">
    <children>
       <JFXTabPane fx:id="connSettingTabView" prefHeight="410.0" styleClass="connSettingsTabView">
@@ -233,8 +234,13 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label text="公钥" />
-                                                <CustomTextField fx:id="sshPrvKeyFile" promptText="SSH公钥" GridPane.columnIndex="1" />
+                                                <Label text="私钥" />
+                                                 <HBox GridPane.columnIndex="1">
+                                                     <children>
+                                                         <CustomTextField fx:id="sshPrvKeyFile" promptText="SSH私钥" prefWidth="260.0" GridPane.columnIndex="1" />
+                                                         <JFXButton text="..." maxWidth="35.0" />
+                                                     </children>
+                                                 </HBox>
                                              </children>
                                           </GridPane>
                                           <GridPane styleClass="groupPane2">
