@@ -10,9 +10,10 @@
 
     <properties>
         <java.version>11</java.version>
+        <organizationName>DtFlyx</organizationName>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <openjfx.version>12.0.1</openjfx.version>
+        <openjfx.version>17.0.1</openjfx.version>
         <jfoenix.version>9.0.9</jfoenix.version>
         <controlsfx.version>11.0.1</controlsfx.version>
         <gson.version>2.8.4</gson.version>
@@ -383,6 +384,7 @@
                             <goal>package</goal>
                         </goals>
                         <configuration>
+                            <iconFile>RediStart-64x64.ico</iconFile>
                             <mainClass>${mainClass}</mainClass>
                             <bundleJre>true</bundleJre>
                             <customizedJre>true</customizedJre>
@@ -392,6 +394,34 @@
                             <administratorRequired>false</administratorRequired>
                             <copyDependencies>true</copyDependencies>
                             <platform>windows</platform>
+                            <winConfig>
+                                <!-- general properties -->
+<!--                                <icoFile>C:\Users\Lenovo\Desktop\icon.ico</icoFile>-->
+                                <generateSetup>true</generateSetup>
+                                <generateMsi>true</generateMsi>
+                                <generateMsm>true</generateMsm>
+                                <!-- exe creation properties -->
+                                <headerType>gui</headerType>
+                                <companyName>${organizationName}</companyName>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>${version}</txtFileVersion>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>${version}</txtProductVersion>
+                                <fileDescription>${description}</fileDescription>
+                                <copyright>${organizationName}</copyright>
+                                <productName>${name}</productName>
+                                <internalName>${name}</internalName>
+                                <!-- <originalFilename>${name}.exe</originalFilename> -->
+                                <originalFilename>${name}.exe</originalFilename>
+                                <!-- installer generation properties -->
+                                <disableDirPage>true</disableDirPage>
+                                <disableProgramGroupPage>true</disableProgramGroupPage>
+                                <disableFinishedPage>true</disableFinishedPage>
+                                <createDesktopIconTask>true</createDesktopIconTask>
+                                <!-- enables/disables installers generation -->
+                                <generateSetup>true</generateSetup>
+                                <generateMsi>true</generateMsi>
+                            </winConfig>
                         </configuration>
                     </execution>
                 </executions>

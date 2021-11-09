@@ -123,6 +123,7 @@ public class ConnectionSettingController implements Initializable, RSController 
         txSSHPort.textProperty().bindBidirectional(model.sshPortProperty(), numberStringConverter);
         txSSHUsername.textProperty().bindBidirectional(model.sshUsernameProperty());
         sshPrvKeyFile.textProperty().bindBidirectional(model.sshPrivateKeyFileProperty());
+        txQueryPageSize.textProperty().bindBidirectional(model.queryPageSizeProperty(), numberStringConverter);
 
         hideAuthText();
         secGroup.disableProperty().bind(model.isUseSSLProperty().not());
@@ -233,20 +234,10 @@ public class ConnectionSettingController implements Initializable, RSController 
         } else {
             connectionConfig.setId(this.connectionConfig.getId());
         }
-        String queryPageSizeText = txQueryPageSize.getText().trim();
-        Integer queryPageSize = null;
-        try {
-            queryPageSize = Integer.parseInt(queryPageSizeText);
-        } catch (Throwable th) {
-        }
-        if (queryPageSize == null) {
-            queryPageSize = 300;
-        }
         connectionConfig.setName(name);
         connectionConfig.setRedisHost(redisHost);
         connectionConfig.setRedisPort(redisPort);
         connectionConfig.setRedisPassword(redisPassword);
-        connectionConfig.setQueryPageSize(queryPageSize);
         connectionConfig.setCreateTime(new Date());
         connectionConfig.setIsUseSSL(model.isIsUseSSL());
         connectionConfig.setIsUseSSH(model.isIsUseSSH());
@@ -255,6 +246,7 @@ public class ConnectionSettingController implements Initializable, RSController 
         connectionConfig.setSshPort(model.getSshPort());
         connectionConfig.setSshPrivateKeyFile(model.getSshPrivateKeyFile());
         connectionConfig.setSshPass(model.getSshPass());
+        connectionConfig.setQueryPageSize(model.getQueryPageSize());
         return connectionConfig;
     }
 

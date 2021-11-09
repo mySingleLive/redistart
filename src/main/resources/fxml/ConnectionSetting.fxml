@@ -332,7 +332,7 @@
                               </HBox>
                               <HBox GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <children>
-                                    <CustomTextField fx:id="txQueryPageSize" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" text="100" />
+                                    <CustomTextField fx:id="txQueryPageSize" alignment="CENTER" prefColumnCount="0" prefWidth="160.0" />
                                     <Region prefHeight="200.0" />
                                  </children>
                               </HBox>

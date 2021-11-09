@@ -84,14 +84,13 @@ for i=1,len do
         if checkCondition(type, ttl, tyName) then
             local item = {
                 type = tyName,
-                ttl = ttl,
+                ttl = -1,
                 key = key
             }
             table.insert(keyData, item)
         end
     end
 end
-
 
 return cjson.encode({
     pos = pos,

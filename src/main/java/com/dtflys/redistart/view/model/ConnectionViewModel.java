@@ -55,7 +55,7 @@ public class ConnectionViewModel {
 
     private final IntegerProperty reconnectTimeout = new SimpleIntegerProperty();
 
-    private final IntegerProperty queryPageSize = new SimpleIntegerProperty();
+    private final IntegerProperty queryPageSize = new SimpleIntegerProperty(1000);
 
     private final ObjectProperty<Date> createTime = new SimpleObjectProperty<>();
 
